@@ -31,7 +31,7 @@ const ProductTemplate = ({ name, img, brand, review, price, id, size }) => {
       style={{ backgroundImage: `url(${img})` }}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
-      to={id}
+      to={`/products/${id}`}
     >
       <div role="button" tabIndex={0} className='absolute top-0 right-0 m-5 p-2 w-8 h-8 bg-white hover:bg-gray-100 rounded-full'>
         <div onClick={handleHeartClick}>

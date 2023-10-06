@@ -12,7 +12,6 @@ const Header = () => {
         <Link to="/" className={`mx-3 ${location.pathname ==='/'&& 'text-green-500'}`}>Home</Link>
         <Link to="/man" className={`mx-3 ${location.pathname ==='/man'&& 'text-green-500'}`}>Man</Link>
         <Link to="/woman" className={`mx-3 ${location.pathname ==='/woman'&& 'text-green-500'}`}>Woman</Link>
-        <Link to="/kids" className={`mx-3 ${location.pathname ==='/kids'&& 'text-green-500'}`}>Kids</Link>
       </div>
 
       <div className='relative flex right-0 ml-auto text-gray-700'>

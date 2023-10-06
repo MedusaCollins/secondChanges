@@ -94,7 +94,7 @@ app.post('/api/products', async(req,res)=>{
   }
 })
 
-app.get('/woman/:productId', async (req, res) => {
+app.get('/products/:productId', async (req, res) => {
   try {    
     const productId = req.params.productId;
     

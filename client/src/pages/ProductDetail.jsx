@@ -8,7 +8,7 @@ const ProductDetail = () => {
   const { productId } = useParams() 
 
   useEffect(() => {
-    axios.get(`${process.env.REACT_APP_DB}/woman/${productId}`)
+    axios.get(`${process.env.REACT_APP_DB}/products/${productId}`)
       .then((response) => {
         setProduct(response.data);
         setLoading(false);
@@ -30,7 +30,6 @@ const ProductDetail = () => {
       <h1>{product.name}</h1>
       <p>{product.description}</p>
       <img src={product.img[0]} alt={product.name} />
-      {/* Diğer ürün detaylarını buraya ekleyin */}
     </div>
   );
 };
