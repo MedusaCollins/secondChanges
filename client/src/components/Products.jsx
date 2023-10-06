@@ -1,17 +1,33 @@
-import React from 'react'
-import ProductTemplate from './templates/ProductTemplate.jsx'
+import { React, useState, useEffect } from 'react';
+import ProductTemplate from './templates/ProductTemplate.jsx';
+import axios from 'axios';
 
-const Products = () => {
+const Products = ({filter}) => {
+  const [products, setProducts] = useState([]);
+  useEffect(() => {
+    axios.post(`${process.env.REACT_APP_DB}/api/products`, filter)
+      .then((response) => {
+        setProducts(response.data);
+      })
+      .catch((error) => console.error(error));
+  }, []);
+
   return (
     <div className='flex gap-5'>
-        <ProductTemplate name="Skipper Collar Rayon Blouse" star="5" review="123" price="100,00" img="https://dolap.dsmcdn.com/dlp_231003_1/product/org/kadin/bluz/s-36-h-m_1244524095.jpg"/>
-        <ProductTemplate name="Skipper Collar Rayon Blouse" star="5" review="123" price="100,00" img="https://dolap.dsmcdn.com/dlp_231003_1/product/org/kadin/bluz/s-36-h-m_1244524095.jpg"/>
-        <ProductTemplate name="Skipper Collar Rayon Blouse" star="5" review="123" price="100,00" img="https://dolap.dsmcdn.com/dlp_231003_1/product/org/kadin/bluz/s-36-h-m_1244524095.jpg"/>
-        <ProductTemplate name="Skipper Collar Rayon Blouse" star="5" review="123" price="100,00" img="https://dolap.dsmcdn.com/dlp_231003_1/product/org/kadin/bluz/s-36-h-m_1244524095.jpg"/>
-        <ProductTemplate name="Skipper Collar Rayon Blouse" star="5" review="123" price="100,00" img="https://dolap.dsmcdn.com/dlp_231003_1/product/org/kadin/bluz/s-36-h-m_1244524095.jpg"/>
-        <ProductTemplate name="Skipper Collar Rayon Blouse" star="5" review="123" price="100,00" img="https://dolap.dsmcdn.com/dlp_231003_1/product/org/kadin/bluz/s-36-h-m_1244524095.jpg"/>
+      {products.map((product) => (
+        <ProductTemplate
+          key={product._id}
+          name={product.name}
+          id={product._id}
+          size={product.size}
+          brand={product.brand}
+          review={product.reviews.length}
+          price={product.price}
+          img={product.img[0]}
+        />
+      ))}
     </div>
-  )
+  );
 }
 
-export default Products
+export default Products;

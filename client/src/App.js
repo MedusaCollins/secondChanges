@@ -5,7 +5,7 @@ import Header from "./components/Header.jsx";
 import Home from "./pages/Home.jsx";
 import Man from "./pages/Man.jsx";
 import Woman from "./pages/Woman.jsx";
-import Kids from "./pages/Kids.jsx"
+import ProductDetail from "./pages/ProductDetail.jsx";
 function App() {
   return (
     <>
@@ -13,8 +13,9 @@ function App() {
       <Routes>
           <Route path="/" element={<Home/>}/>
           <Route path="/man" element={<Man/>}/>
+          <Route path="/man/:productId" element={<ProductDetail />} />
           <Route path="/woman" element={<Woman/>}/>
-          <Route path="/kids" element={<Kids/>} />
+          <Route path="/woman/:productId" element={<ProductDetail />} />
       </Routes>
     </>
 )}
