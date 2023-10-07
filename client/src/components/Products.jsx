@@ -10,7 +10,7 @@ const Products = ({filter}) => {
         setProducts(response.data);
       })
       .catch((error) => console.error(error));
-  }, []);
+  }, [filter]);
 
   return (
     <div className='flex gap-5'>

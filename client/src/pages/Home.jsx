@@ -12,7 +12,7 @@ const Home = () => {
         setProducts(response.data);
       })
       .catch((error) => console.error(error));
-  }, []);
+  }, [filters]);
   return (
     <div className='p-5 mx-24 gap-4'>
       <h1 className='text-xl font-semibold'>Home <span className='text-gray-300'>({products.length})</span></h1>

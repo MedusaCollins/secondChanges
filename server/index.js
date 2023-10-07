@@ -73,19 +73,9 @@ const product2 = new Product({
     },
   ],
 });
-app.get('/api/products', async (req, res) => {
-  try {
-    const products = await Product.find();
-    res.json(products);
-  } catch (err) {
-    console.error(err);
-    res.status(500).json({ error: 'Veritabanından ürünler alınamıyor.' });
-  }
-});
 
 app.post('/api/products', async(req,res)=>{
   try{
-    console.log(req.body)
     const products = await Product.find(req.body);
     res.status(202).json(products)
   }catch(err){

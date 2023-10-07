@@ -1,11 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useParams } from 'react-router-dom';
-
-const ProductDetail = () => {
+import Locator from '../components/Locator';
+import Carousel from '../components/Carousel';
+import About from '../components/About';
+export default function ProductDetail(){
   const [product, setProduct] = useState(null);
   const [loading, setLoading] = useState(true);
-  const { productId } = useParams() 
+  const { productId } = useParams()
 
   useEffect(() => {
     axios.get(`${process.env.REACT_APP_DB}/products/${productId}`)
@@ -15,23 +17,18 @@ const ProductDetail = () => {
       })
       .catch((error) => console.error(error));
   }, [productId]);
-
-  console.log(product)
-  if (loading) {
-    return <div>Loading...</div>;
+  if (loading && !product) {
+    return <div>Waiting for product...</div>;
   }
 
-  if (!product) {
-    return <div>Ürün bulunamadı.</div>;
-  }
 
   return (
-    <div>
-      <h1>{product.name}</h1>
-      <p>{product.description}</p>
-      <img src={product.img[0]} alt={product.name} />
+<div className='mx-24'>
+  <Locator product={product} />
+    <div className="flex justify-between pt-11">
+      <Carousel slides={product.img} />
+      <About product={product}/>
     </div>
+  </div>
   );
 };
-
-export default ProductDetail;
