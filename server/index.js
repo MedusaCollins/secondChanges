@@ -25,55 +25,71 @@ mongoose.connect(`${process.env.DB}`, { useNewUrlParser: true, useUnifiedTopolog
   });
 
   // Örnek bir kullanıcı oluştur
-const user1 = new User({
-  username: 'exampleuser1',
-  email: 'user1@example.com',
-  password: 'password1',
-});
+// const user1 = new User({
+//   username: 'exampleuser1',
+//   email: 'user1@example.com',
+//   password: 'password1',
+// });
 
-const user2 = new User({
-  username: 'exampleuser2',
-  email: 'user2@example.com',
-  password: 'password2',
-});
-
-const product2 = new Product({
-  name: 'Ürün 4',
-  description: 'Ürün 3 açıklaması',
-  img: ['https://dolap.dsmcdn.com/dlp_231003_1/product/org/kadin/bluz/s-36-h-m_1244524095.jpg', 'resim4.jpg'],
-  price: '50',
-  dprice: '45',
-  type: 'Giyim',
-  gender: 'Erkek',
-  usability: 'Yeni',
-  brand: 'Başka Bir Marka',
-  size: 'XL',
-  seller: [{ user: user2 }],
-  likes: [{ user: user1 }],
-  reviews: [
-    {
-      user: user1,
-      rating: 5,
-      comment: 'Harika bir ürün4!',
-    },
-    {
-      user: user1,
-      rating: 4,
-      comment: 'Harika bir ürün3!',
-    },
-    {
-      user: user1,
-      rating: 5,
-      comment: 'Harika bir ürün2!',
-    },
-    {
-      user: user1,
-      rating: 2,
-      comment: 'Harika bir ürün1!',
-    },
-  ],
-});
-
+// const freshUser = new User({
+//   username: 'Satıcı18',
+//   email: 'satici@example.com',
+//   password: 'sattimgitti',
+//   img: 'https://images.gardrops.com/uploads/2712017/avatar_photo/2712017-avatar-large.jpg',
+//   location: 'Turkey',
+//   phoneNumber: '5442859156',
+//   products: [{ _id: '652033a619ef510ced82dd8e' }],
+//   favoriteProducts: [{ _id: '652064b0a0037fe4650e53b1' }],
+//   reviews: [
+//     {
+//       _id: '651d5af90e8dd5e4b145ce84',
+//       rating: 5,
+//       comment: 'Gerçekten güzel bir ürünmüş, iyi ki almışım!',
+//     },
+//     {
+//       _id: '6520269ff6ae91043fd18290',
+//       rating: 2,
+//       comment: 'Berbat bir ürün, aldığım ürünün hiç yazdığı gibi yeni değil aksine çok eskimiş.',
+//     },
+//     {
+//       _id: '6520269ff6ae91043fd1828f',
+//       rating: 3,
+//       comment: 'Yaani ne çok kötü ne çok iyi.',
+//     },
+//   ],
+// });
+// freshUser.save();
+// const product3 = new Product({
+//   name: 'Ürün 5',
+//   description: "Ürün 5'in süper düper açıklaması.",
+//   img: ['https://dolap.dsmcdn.com/dlp_230623_1/product/org/kadin/sweatshirt/m-38-diger_1247488759.jpg', 'https://dolap.dsmcdn.com/dlp_230711_2/product/org/kadin/sweatshirt/m-38-diger_1247488760.jpg','httpsdolap.dsmcdn.com/dlp_230418_2/product/org/kadin/sweatshirt/m-38-diger_1247488761.jpg','https://dolap.dsmcdn.com/dlp_230810_1/product/org/kadin/sweatshirt/m-38-diger_1247488762.jpg'],
+//   price: '280',
+//   dprice: '250',
+//   type: 'Giyim',
+//   gender: 'Woman',
+//   usability: 'Yeni',
+//   brand: 'Zara',
+//   size: 'M',
+//   seller: '6522a031db2c4a18d6faf7fc',
+//   likes: ['6520269ff6ae91043fd1828f','6520269ff6ae91043fd18290'],
+//   asks: [
+//     {
+//       _id: '6520269ff6ae91043fd1828f',
+//       comment: 'Fişi yada etiketi bulunuyor mu?',
+//       replies: [
+//         {
+//           _id: '6522a031db2c4a18d6faf7fc',
+//           comment: 'Evet fiş bulunuyor ama etiketini söktüm.',
+//         },
+//       ],
+//     },
+//     {
+//       _id: '6520269ff6ae91043fd18290',
+//       comment: 'Güzel ürünmüş yıkandıktan sonra esneme oluyor mu?',
+//     },
+//   ],
+// });
+// product3.save()
 app.post('/api/products', async(req,res)=>{
   try{
     const products = await Product.find(req.body);
@@ -84,19 +100,31 @@ app.post('/api/products', async(req,res)=>{
   }
 })
 
+app.post('/findUser', async(req,res)=>{
+  try {
+    const user = await User.findbyId(req.body._id)
+    res.status(202).json(user)
+  } catch (err) {
+    console.log(err);
+    res.status(500).json({error: err});
+  }
+})
+
 app.get('/products/:productId', async (req, res) => {
   try {    
     const productId = req.params.productId;
     
     // Ürünü veritabanından çekmek için Mongoose veya başka bir veritabanı kütüphanesi kullanın
     const product = await Product.findById(productId);
-    
+
+    // Ürünün satıcısını çekin
+    const seller = await User.findById(product.seller);
+
     if (!product) {
       // Ürün bulunamazsa 404 hatası döndürün
       return res.status(404).json({ error: 'Ürün bulunamadı' });
     }
-    
-    // Ürünü bulursanız, istemciye gönderin
+    console.log(seller)
     res.json(product);
   } catch (err) {
     console.error(err);

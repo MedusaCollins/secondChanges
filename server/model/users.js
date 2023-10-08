@@ -31,12 +31,20 @@ const userSchema = {
         ref: 'Product',
       },
     ],
-    reviews: [
-      {
+    reviews: [{
+      _id:{
         type: Schema.Types.ObjectId,
-        ref: 'Review',
+        ref: 'User',
       },
-    ],
+      rating:{
+        type: Number,
+        required: true,
+      },
+      comment:{
+        type:String,
+        required:true
+      }
+      }],
   };
   
   const User = mongoose.model("User", userSchema);

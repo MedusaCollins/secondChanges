@@ -21,7 +21,6 @@ const Products = ({filter}) => {
           id={product._id}
           size={product.size}
           brand={product.brand}
-          review={product.reviews.length}
           price={product.price}
           img={product.img[0]}
         />

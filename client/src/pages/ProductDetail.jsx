@@ -14,18 +14,19 @@ export default function ProductDetail(){
       .then((response) => {
         setProduct(response.data);
         setLoading(false);
+        // axios.post(`${process.env.REACT_APP_DB}/findUser`, {_id:response.data.seller}).then((response)=>{
+        //   console.log(response)
+        // });
       })
       .catch((error) => console.error(error));
   }, [productId]);
   if (loading && !product) {
     return <div>Waiting for product...</div>;
   }
-
-
   return (
-<div className='mx-24'>
+<div className='mx-32'>
   <Locator product={product} />
-    <div className="flex justify-between pt-11">
+    <div className="flex justify-between gap-5 pt-11">
       <Carousel slides={product.img} />
       <About product={product}/>
     </div>

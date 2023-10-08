@@ -3,7 +3,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Link } from 'react-router-dom';
 import { faHeart, faCartShopping } from '@fortawesome/free-solid-svg-icons';
 
-const ProductTemplate = ({ name, img, brand, review, price, id, size }) => {
+const ProductTemplate = ({ name, img, brand, price, id, size }) => {
   const maxTextLength = 19;
   const [isHovered, setIsHovered] = useState(false);
   const [variable, setVariable] = useState({
