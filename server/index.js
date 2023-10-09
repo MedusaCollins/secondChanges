@@ -115,16 +115,21 @@ app.get('/products/:productId', async (req, res) => {
     const productId = req.params.productId;
     
     // Ürünü veritabanından çekmek için Mongoose veya başka bir veritabanı kütüphanesi kullanın
-    const product = await Product.findById(productId);
-
+    const product = await Product.findById(productId)
+    .populate('seller', 'username img reviews')
+    .populate('likes', 'username img')
+    .populate({
+      path: 'asks._id',
+      model: 'User',
+      select: 'username img'
+    })
     // Ürünün satıcısını çekin
-    const seller = await User.findById(product.seller);
+    // const seller = await User.findById(product.seller);
 
     if (!product) {
       // Ürün bulunamazsa 404 hatası döndürün
       return res.status(404).json({ error: 'Ürün bulunamadı' });
     }
-    console.log(seller)
     res.json(product);
   } catch (err) {
     console.error(err);
