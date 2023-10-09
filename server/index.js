@@ -59,36 +59,52 @@ mongoose.connect(`${process.env.DB}`, { useNewUrlParser: true, useUnifiedTopolog
 //   ],
 // });
 // freshUser.save();
-// const product3 = new Product({
-//   name: 'Ürün 5',
-//   description: "Ürün 5'in süper düper açıklaması.",
-//   img: ['https://dolap.dsmcdn.com/dlp_230623_1/product/org/kadin/sweatshirt/m-38-diger_1247488759.jpg', 'https://dolap.dsmcdn.com/dlp_230711_2/product/org/kadin/sweatshirt/m-38-diger_1247488760.jpg','httpsdolap.dsmcdn.com/dlp_230418_2/product/org/kadin/sweatshirt/m-38-diger_1247488761.jpg','https://dolap.dsmcdn.com/dlp_230810_1/product/org/kadin/sweatshirt/m-38-diger_1247488762.jpg'],
-//   price: '280',
-//   dprice: '250',
-//   type: 'Giyim',
-//   gender: 'Woman',
-//   usability: 'Yeni',
-//   brand: 'Zara',
-//   size: 'M',
-//   seller: '6522a031db2c4a18d6faf7fc',
-//   likes: ['6520269ff6ae91043fd1828f','6520269ff6ae91043fd18290'],
-//   asks: [
-//     {
-//       _id: '6520269ff6ae91043fd1828f',
-//       comment: 'Fişi yada etiketi bulunuyor mu?',
-//       replies: [
-//         {
-//           _id: '6522a031db2c4a18d6faf7fc',
-//           comment: 'Evet fiş bulunuyor ama etiketini söktüm.',
-//         },
-//       ],
-//     },
-//     {
-//       _id: '6520269ff6ae91043fd18290',
-//       comment: 'Güzel ürünmüş yıkandıktan sonra esneme oluyor mu?',
-//     },
-//   ],
-// });
+const product3 = new Product({
+  name: 'Ürün 5',
+  description: "Ürün 5'in süper düper açıklaması.",
+  img: ['https://dolap.dsmcdn.com/dlp_230623_1/product/org/kadin/sweatshirt/m-38-diger_1247488759.jpg', 'https://dolap.dsmcdn.com/dlp_230711_2/product/org/kadin/sweatshirt/m-38-diger_1247488760.jpg','httpsdolap.dsmcdn.com/dlp_230418_2/product/org/kadin/sweatshirt/m-38-diger_1247488761.jpg','https://dolap.dsmcdn.com/dlp_230810_1/product/org/kadin/sweatshirt/m-38-diger_1247488762.jpg'],
+  price: '280',
+  dprice: '250',
+  type: 'Giyim',
+  gender: 'Women',
+  usability: 'Yeni',
+  brand: 'Zara',
+  size: 'M',
+  seller: '6522a031db2c4a18d6faf7fc',
+  likes: ['6520269ff6ae91043fd1828f','6520269ff6ae91043fd18290'],
+  asks: [
+    {
+      _id: '6520269ff6ae91043fd1828f',
+      comment: 'Fişi yada etiketi bulunuyor mu?',
+      replies: [
+        {
+          _id: '6522a031db2c4a18d6faf7fc',
+          comment: 'Evet fiş bulunuyor ama etiketini söktüm.',
+        },
+      ],
+    },
+    {
+      _id: '6520269ff6ae91043fd18290',
+      comment: 'Güzel ürünmüş yıkandıktan sonra esneme oluyor mu?',
+    },
+  ],
+  offers: [
+    {
+      _id: '6520269ff6ae91043fd1828f',
+      comment: '100 olur mu',
+      replies: [
+        {
+          _id: '6522a031db2c4a18d6faf7fc',
+          comment: 'Evet fiş bulunuyor ama etiketini söktüm.',
+        },
+      ],
+    },
+    {
+      _id: '6520269ff6ae91043fd18290',
+      comment: '150ye ne dersin',
+    },
+  ],
+});
 // product3.save()
 app.post('/api/products', async(req,res)=>{
   try{
@@ -123,14 +139,33 @@ app.get('/products/:productId', async (req, res) => {
       model: 'User',
       select: 'username img'
     })
+    .populate({
+      path: 'asks.replies._id',
+      model: 'User',
+      select: 'username img'
+    })
+    .populate({
+      path: 'offers._id',
+      model: 'User',
+      select: 'username img'
+    })
+    .populate({
+      path: 'offers.replies._id',
+      model: 'User',
+      select: 'username img'
+    })
     // Ürünün satıcısını çekin
-    // const seller = await User.findById(product.seller);
-
+    const seller = await User.findById(product.seller, '-password -location -phoneNumber -email -favoriteProducts -products')
+    .populate({
+      path: 'reviews._id',
+      model: 'User',
+      select: 'username img'
+    })
     if (!product) {
       // Ürün bulunamazsa 404 hatası döndürün
       return res.status(404).json({ error: 'Ürün bulunamadı' });
     }
-    res.json(product);
+    res.json({product, seller});
   } catch (err) {
     console.error(err);
     res.status(500).json({ error: 'Ürün getirilirken bir hata oluştu.' });

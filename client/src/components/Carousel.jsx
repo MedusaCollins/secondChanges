@@ -35,7 +35,7 @@ export default function Carousel({ slides }) {
 
   return (
     <div
-      className="overflow-hidden relative w-[500px] h-[630px]"
+      className="overflow-hidden relative w-[500px] h-[630px] border-2 border-gray-300"
       onMouseDown={handleMouseDown}
       onMouseUp={handleMouseUp}
     >

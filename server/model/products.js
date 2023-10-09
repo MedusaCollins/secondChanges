@@ -68,6 +68,27 @@ const productsSchema={
           },
         }],
       }],
+      offers: [{
+        _id: {
+          type: mongoose.Schema.Types.ObjectId,
+          ref: 'User',
+          required: true,
+        },
+        comment: {
+          type: String,
+          required: true,
+        },
+        replies: [{
+          _id: {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'User',
+            required: true,
+          },
+          comment: {
+            type: String,
+          },
+        }],
+      }],
     };
 
 const Product = mongoose.model("Product", productsSchema);

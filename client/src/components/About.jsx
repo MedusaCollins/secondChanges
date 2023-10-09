@@ -1,26 +1,14 @@
-import React, { useState, useEffect } from 'react'
+import React from 'react'
 import ProductAbout from './templates/ProductAbout.jsx'
 import ProductPrice from './templates/ProductPrice.jsx'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faStar } from '@fortawesome/free-solid-svg-icons'
 
-const About = ({product}) => {
-  const [rating, setRating] = useState();
+const About = ({product, rating}) => {
 
-  useEffect(()=>{
-
-    const ratings = product.seller.reviews.map(review => review.rating);
-    if (ratings.length > 0) {
-      const totalRating = ratings.reduce((sum, rating) => sum + rating, 0);
-      const averageRating = totalRating / ratings.length;
-      setRating(averageRating.toFixed(1))
-    } else {
-      console.log('Henüz hiç rating yok.');
-    }
-  }, [product.seller.reviews])
   return (
     <div className='w-1/2 text-xl'>
-      <div className='flex justify-between mr-12'>
+      <div className='flex justify-between'>
         <div>
           <h1 className='mb-5 text-2xl font-semibold'>{product.name}</h1>
           <ProductAbout text="Usability" value={product.usability}/>
@@ -32,7 +20,7 @@ const About = ({product}) => {
 
         <div className='flex flex-col rounded-xl border  p-5'>
           <div className='m-auto'>
-          <img src={product.seller.img} alt="seller" className='w-16 h-16 rounded-full mb-1'/>
+          <img src={product.seller.img} alt="seller" className='w-16 h-16 rounded-full mb-1 border border-gray-300'/>
           {product.seller.username}
           </div>
           <div className='p-2'>
@@ -43,8 +31,12 @@ const About = ({product}) => {
       </div>
         <p className='text-base my-10'>{product.description}</p>
         <ProductPrice price={product.price} dprice={product.dprice}/>
-        <div className='text-xl font-semibold'>
-          <button className='rounded-lg border border-green-600 text-green-600 p-2 mr-5 w-32'>Teklif ver</button> <button className='rounded-lg border border-green-600 bg-green-600 text-white p-2 mr-5 w-32'>Satın al</button>
+        <div className='flex flex-col text-xl gap-5 mt-16 font-semibold'>
+          <button className='rounded-lg border border-green-600 bg-green-600 text-white p-2 '>Satın al</button>
+          <div className='w-full justify-between flex'>
+            <button className='rounded-lg border border-blue-400 text-blue-400 p-2 w-[45%]'>Yorum Yap</button>
+            <button className='rounded-lg border border-green-600 text-green-600 p-2 w-[45%]'>Teklif ver</button> 
+          </div>
         </div>
     </div>
   )
