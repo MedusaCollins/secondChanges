@@ -2,7 +2,7 @@ import React from 'react'
 import ProductAbout from './templates/ProductAbout.jsx'
 import ProductPrice from './templates/ProductPrice.jsx'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faStar } from '@fortawesome/free-solid-svg-icons'
+import { faStar as solidStar } from '@fortawesome/free-solid-svg-icons';
 
 const About = ({product, rating}) => {
 
@@ -18,13 +18,13 @@ const About = ({product, rating}) => {
           <ProductAbout text="Brand" value={product.brand}/>
         </div>
 
-        <div className='flex flex-col rounded-xl border  p-5'>
+        <div className='flex flex-col rounded-xl border p-5'>
           <div className='m-auto'>
           <img src={product.seller.img} alt="seller" className='w-16 h-16 rounded-full mb-1 border border-gray-300'/>
           {product.seller.username}
           </div>
           <div className='p-2'>
-            <FontAwesomeIcon icon={faStar} className='text-orange-500 text-left'/> {rating}<span className='text-gray-500'>/5 ({product.seller.reviews.length} reviews)</span>
+            <FontAwesomeIcon icon={solidStar} className='text-orange-500 text-left'/> {rating}<span className='text-gray-500'>/5 ({product.seller.reviews.length} reviews)</span>
           </div>
         </div>
 
@@ -32,12 +32,18 @@ const About = ({product, rating}) => {
         <p className='text-base my-10'>{product.description}</p>
         <ProductPrice price={product.price} dprice={product.dprice}/>
         <div className='flex flex-col text-xl gap-5 mt-16 font-semibold'>
-          <button className='rounded-lg border border-green-600 bg-green-600 text-white p-2 '>Satın al</button>
-          <div className='w-full justify-between flex'>
-            <button className='rounded-lg border border-blue-400 text-blue-400 p-2 w-[45%]'>Yorum Yap</button>
-            <button className='rounded-lg border border-green-600 text-green-600 p-2 w-[45%]'>Teklif ver</button> 
+          {"buyers" in product?(
+              <div className='rounded-lg border border-gray-600 bg-gray-600 text-center text-white p-2 '>Satıldı</div>
+          ):(
+            <>
+            <button className='rounded-lg border border-green-600 bg-green-600 text-white p-2 '>Satın al</button>
+            <div className='w-full justify-between flex'>
+              <button className='rounded-lg border border-blue-400 text-blue-400 p-2 w-[45%]'>Yorum Yap</button>
+              <button className='rounded-lg border border-green-600 text-green-600 p-2 w-[45%]'>Teklif ver</button> 
+            </div>
+            </>
+          )}
           </div>
-        </div>
     </div>
   )
 }

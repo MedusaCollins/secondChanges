@@ -18,7 +18,7 @@ const productsSchema={
       },
       dprice: {
         type: String,
-        required: true,
+        required: false,
       },
       type: {
         type: String,
@@ -43,10 +43,21 @@ const productsSchema={
         ref: 'User',
         required: true,
       },
-      likes: [{
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'User',
-      }],
+      buyers: {
+        _id:{
+          type: mongoose.Schema.Types.ObjectId,
+          ref: 'User',
+          required: true,
+        },
+        rating:{
+          type: Number,
+          required: true,
+        },
+        comment:{
+          type:String,
+          required:true
+        }
+        },
       asks: [{
         _id: {
           type: mongoose.Schema.Types.ObjectId,

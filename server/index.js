@@ -60,49 +60,45 @@ mongoose.connect(`${process.env.DB}`, { useNewUrlParser: true, useUnifiedTopolog
 // });
 // freshUser.save();
 const product3 = new Product({
-  name: 'Ürün 5',
-  description: "Ürün 5'in süper düper açıklaması.",
-  img: ['https://dolap.dsmcdn.com/dlp_230623_1/product/org/kadin/sweatshirt/m-38-diger_1247488759.jpg', 'https://dolap.dsmcdn.com/dlp_230711_2/product/org/kadin/sweatshirt/m-38-diger_1247488760.jpg','httpsdolap.dsmcdn.com/dlp_230418_2/product/org/kadin/sweatshirt/m-38-diger_1247488761.jpg','https://dolap.dsmcdn.com/dlp_230810_1/product/org/kadin/sweatshirt/m-38-diger_1247488762.jpg'],
-  price: '280',
-  dprice: '250',
+  name: 'American Vintage',
+  description: "Mınık leke var . Yıkama yapmadım cıkabılır . SON FİYATTIR ☘️ Boyum 172 kılom 60 m bedenim bende gorseldekı gıbı duruyor. Depoda kaldıgı ıcın kirlidir yıkama yapılmalı bılgınız olsun. 🌸",
+  img: ['https://dolap.dsmcdn.com/dlp_230503_2/product/org/kadin/gomlek/s-36-american-vintage_1248542116.jpg', 'https://dolap.dsmcdn.com/dlp_230817_1/product/org/kadin/gomlek/s-36-american-vintage_1248542117.jpg','https://dolap.dsmcdn.com/dlp_230817_1/product/org/kadin/gomlek/s-36-american-vintage_1248542118.jpg','https://dolap.dsmcdn.com/dlp_230817_1/product/org/kadin/gomlek/s-36-american-vintage_1248542119.jpg'],
+  price: '35',
+  dprice: '',
   type: 'Giyim',
   gender: 'Women',
-  usability: 'Yeni',
-  brand: 'Zara',
-  size: 'M',
+  usability: 'Az Kullanılmış',
+  brand: 'Collins',
+  size: 'S',
   seller: '6522a031db2c4a18d6faf7fc',
   likes: ['6520269ff6ae91043fd1828f','6520269ff6ae91043fd18290'],
   asks: [
     {
       _id: '6520269ff6ae91043fd1828f',
-      comment: 'Fişi yada etiketi bulunuyor mu?',
+      comment: 'Vayyy çokiyimis',
       replies: [
         {
           _id: '6522a031db2c4a18d6faf7fc',
-          comment: 'Evet fiş bulunuyor ama etiketini söktüm.',
+          comment: 'Aynen',
         },
       ],
     },
     {
       _id: '6520269ff6ae91043fd18290',
-      comment: 'Güzel ürünmüş yıkandıktan sonra esneme oluyor mu?',
+      comment: 'A',
     },
   ],
   offers: [
     {
       _id: '6520269ff6ae91043fd1828f',
-      comment: '100 olur mu',
+      comment: '20 olur mu',
       replies: [
         {
           _id: '6522a031db2c4a18d6faf7fc',
-          comment: 'Evet fiş bulunuyor ama etiketini söktüm.',
+          comment: 'Hayır',
         },
       ],
-    },
-    {
-      _id: '6520269ff6ae91043fd18290',
-      comment: '150ye ne dersin',
-    },
+    }
   ],
 });
 // product3.save()
@@ -133,7 +129,11 @@ app.get('/products/:productId', async (req, res) => {
     // Ürünü veritabanından çekmek için Mongoose veya başka bir veritabanı kütüphanesi kullanın
     const product = await Product.findById(productId)
     .populate('seller', 'username img reviews')
-    .populate('likes', 'username img')
+    .populate({
+      path: 'buyers._id',
+      model: 'User',
+      select: 'username img'
+    })
     .populate({
       path: 'asks._id',
       model: 'User',
