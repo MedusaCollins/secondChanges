@@ -18,13 +18,17 @@ const About = ({product, rating}) => {
           <ProductAbout text="Brand" value={product.brand}/>
         </div>
 
-        <div className='flex flex-col rounded-xl border p-5'>
+        <div className='flex flex-col rounded-xl border p-5 min-w-[200px]'>
           <div className='m-auto'>
-          <img src={product.seller.img} alt="seller" className='w-16 h-16 rounded-full mb-1 border border-gray-300'/>
+          <img src={product.seller.img} alt="seller" className='w-16 h-16 rounded-full mb-1 border mx-auto border-gray-300'/>
           {product.seller.username}
           </div>
-          <div className='p-2'>
-            <FontAwesomeIcon icon={solidStar} className='text-orange-500 text-left'/> {rating}<span className='text-gray-500'>/5 ({product.seller.reviews.length} reviews)</span>
+          <div className='p-2 text-center'>
+            {product.seller.reviews.length>=1?(
+              <>
+              <FontAwesomeIcon icon={solidStar} className='text-orange-500 text-left'/> {rating}<span className='text-gray-500'>/5 ({product.seller.reviews.length} reviews)</span>
+              </>
+            ):<span className='text-gray-500'>{product.seller.reviews.length} reviews</span>}
           </div>
         </div>
 

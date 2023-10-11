@@ -40,23 +40,23 @@ mongoose.connect(`${process.env.DB}`, { useNewUrlParser: true, useUnifiedTopolog
 //   phoneNumber: '5442859156',
 //   products: [{ _id: '652033a619ef510ced82dd8e' }],
 //   favoriteProducts: [{ _id: '652064b0a0037fe4650e53b1' }],
-//   reviews: [
-//     {
-//       _id: '651d5af90e8dd5e4b145ce84',
-//       rating: 5,
-//       comment: 'Gerçekten güzel bir ürünmüş, iyi ki almışım!',
-//     },
-//     {
-//       _id: '6520269ff6ae91043fd18290',
-//       rating: 2,
-//       comment: 'Berbat bir ürün, aldığım ürünün hiç yazdığı gibi yeni değil aksine çok eskimiş.',
-//     },
-//     {
-//       _id: '6520269ff6ae91043fd1828f',
-//       rating: 3,
-//       comment: 'Yaani ne çok kötü ne çok iyi.',
-//     },
-//   ],
+  // reviews: [
+  //   {
+  //     _id: '651d5af90e8dd5e4b145ce84',
+  //     rating: 5,
+  //     comment: 'Gerçekten güzel bir ürünmüş, iyi ki almışım!',
+  //   },
+  //   {
+  //     _id: '6520269ff6ae91043fd18290',
+  //     rating: 2,
+  //     comment: 'Berbat bir ürün, aldığım ürünün hiç yazdığı gibi yeni değil aksine çok eskimiş.',
+  //   },
+  //   {
+  //     _id: '6520269ff6ae91043fd1828f',
+  //     rating: 3,
+  //     comment: 'Yaani ne çok kötü ne çok iyi.',
+  //   },
+  // ],
 // });
 // freshUser.save();
 // const product3 = new Product({
@@ -102,6 +102,17 @@ mongoose.connect(`${process.env.DB}`, { useNewUrlParser: true, useUnifiedTopolog
 //   ],
 // });
 // product3.save()
+
+app.post("/createProduct", (req,res)=>{
+  console.log(req.body)
+  try {
+    const newProduct = new Product(req.body)
+    newProduct.save()
+  } catch (error) {
+    console.log(error)
+  }
+  res.status(200).json(req.body)
+})
 
 app.post("/login", (req, res) => {
   User.findOne({ email: req.body.email }).then((user) => {

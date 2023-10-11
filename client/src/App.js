@@ -6,7 +6,7 @@ import Home from "./pages/Home.jsx";
 import Man from "./pages/Man.jsx";
 import Woman from "./pages/Woman.jsx";
 import ProductDetail from "./pages/ProductDetail.jsx";
-import ManageProduct from "./pages/ManageProduct.jsx";
+import MyProduct from "./pages/MyProduct.jsx";
 function App() {
   const [user, setUser] = useState({})
   const [isLogging, setIsLogging] = useState(false);
@@ -22,7 +22,7 @@ function App() {
           <Route path="/man" element={<Man/>}/>
           <Route path="/woman" element={<Woman/>}/>
           <Route path="/products/:productId" element={<ProductDetail />} />
-          <Route path="/myproduct/" element={<ManageProduct />} />
+          <Route path="/myproducts/" element={<MyProduct user={user} islogging={isLogging}/>} />
           
       </Routes>
     </>

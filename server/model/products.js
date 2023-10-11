@@ -47,32 +47,32 @@ const productsSchema={
         _id:{
           type: mongoose.Schema.Types.ObjectId,
           ref: 'User',
-          required: true,
+          required: false,
         },
         rating:{
           type: Number,
-          required: true,
+          required: false,
         },
         comment:{
           type:String,
-          required:true
+          required:false
         }
         },
       asks: [{
         _id: {
           type: mongoose.Schema.Types.ObjectId,
           ref: 'User',
-          required: true,
+          required: false,
         },
         comment: {
           type: String,
-          required: true,
+          required: false,
         },
         replies: [{
           _id: {
             type: mongoose.Schema.Types.ObjectId,
             ref: 'User',
-            required: true,
+            required: false,
           },
           comment: {
             type: String,
@@ -83,17 +83,17 @@ const productsSchema={
         _id: {
           type: mongoose.Schema.Types.ObjectId,
           ref: 'User',
-          required: true,
+          required: false,
         },
         comment: {
           type: String,
-          required: true,
+          required: false,
         },
         replies: [{
           _id: {
             type: mongoose.Schema.Types.ObjectId,
             ref: 'User',
-            required: true,
+            required: false,
           },
           comment: {
             type: String,
