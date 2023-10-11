@@ -1,5 +1,5 @@
 import {React, useState, useEffect, useRef } from 'react';
-import Popup from './Popup.jsx';
+import Popup from './Popup';
 
 import { Link, useLocation } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -33,6 +33,16 @@ const Header = ({handleLogin, user, islogging}) => {
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
   };
+
+
+
+    const [isChecked, setIsChecked] = useState(false)
+  
+    const handleCheckboxChange = () => {
+      setIsChecked(!isChecked)
+    }
+    
+  
   const logOut = ()=>{
     handleLogin(false, {})
     setIsMenuOpen(!isMenuOpen);
@@ -68,29 +78,49 @@ const Header = ({handleLogin, user, islogging}) => {
                 <p className="text-gray-500 text-sm">{user.email}</p>
               </div>
             </li>
-            <li className='flex gap-2 border-b-2 border-dotted items-center'>
-              <Link to="/settings" className="w-full hover:bg-gray-200 p-2 transition-all flex items-center">
+            <li className='flex flex-col border-b-2 border-dotted items-center'>
+              <Link to="/settings" className="w-full hover:bg-gray-200 p-2 transition-all flex items-center" onClick={toggleMenu}>
                 <FontAwesomeIcon icon={faUser} className="mr-2" /> Profile
               </Link>
-            </li>
-            <li className='flex gap-2 border-b-2 border-dotted items-center'>
-              <Link to="/settings" className="w-full hover:bg-gray-200 p-2 transition-all flex items-center">
+              <Link to="/settings" className="w-full hover:bg-gray-200 p-2 transition-all flex items-center" onClick={toggleMenu}>
+                <FontAwesomeIcon icon={faUser} className="mr-2" /> Offers
+              </Link>
+              <Link to="/myproducts" className="w-full hover:bg-gray-200 p-2 transition-all flex items-center" onClick={toggleMenu}>
+                <FontAwesomeIcon icon={faUser} className="mr-2" /> Manage my products
+              </Link>
+              <Link to="/settings" className="w-full hover:bg-gray-200 p-2 transition-all flex items-center" onClick={toggleMenu}>
                 <FontAwesomeIcon icon={faGear} className="mr-2" /> User settings
               </Link>
             </li>
+
             <li className='flex gap-2 border-b-2 border-dotted items-center'>
-              <div className='flex w-full'>
-              <Link to="/settings" className="w-full hover:bg-gray-200 p-2 transition-all flex items-center">
-                <FontAwesomeIcon icon={faMoon} className="mr-2" /> Dark mode
-              </Link>
-              <label className="switch relative w-12 h-6 bg-gray-300 rounded-full shadow-inner cursor-pointer">
-                <input type="checkbox" className="absolute opacity-0 w-0 h-0" />
-                <span className="slider absolute left-0 top-0 w-6 h-6 bg-green-500 rounded-full shadow-md transition transform translate-x-0 hover:translate-x-6"></span>
-              </label>
+              <div className='flex w-full hover:bg-gray-200'>
+                <Link className="w-full p-2 transition-all flex items-center">
+                  <FontAwesomeIcon icon={faMoon} className="mr-2" /> Dark Mode
+                </Link>
+                <label className='flex cursor-pointer select-none items-center'>
+                  <div className='relative'>
+                    <input
+                      type='checkbox'
+                      checked={isChecked}
+                      onChange={handleCheckboxChange}
+                      className='sr-only'
+                    />
+                    <div
+                      className={`box block h-5 w-9 mx-5 rounded-full ${isChecked ? 'bg-gray-500' : 'bg-gray-500'}`}
+                    ></div>
+                    
+                    <div
+                      className={`absolute right-10 top-[2px] flex h-4 w-4 items-center justify-center rounded-full bg-white transition ${
+                        isChecked ? 'translate-x-[10%] ' : 'translate-x-[115%]'
+                      }`}
+                    ></div>
+                  </div>
+                </label>
               </div>
             </li>
           </ul>
-          <button onClick={logOut} className="block w-full hover:bg-gray-200 p-2 transition-all">Çıkış yap</button>
+          <button onClick={logOut} className="block w-full text-left hover:bg-gray-200 p-2 transition-all">Log out</button>
         </div>
         
         )}
