@@ -59,49 +59,103 @@ mongoose.connect(`${process.env.DB}`, { useNewUrlParser: true, useUnifiedTopolog
 //   ],
 // });
 // freshUser.save();
-const product3 = new Product({
-  name: 'American Vintage',
-  description: "Mınık leke var . Yıkama yapmadım cıkabılır . SON FİYATTIR ☘️ Boyum 172 kılom 60 m bedenim bende gorseldekı gıbı duruyor. Depoda kaldıgı ıcın kirlidir yıkama yapılmalı bılgınız olsun. 🌸",
-  img: ['https://dolap.dsmcdn.com/dlp_230503_2/product/org/kadin/gomlek/s-36-american-vintage_1248542116.jpg', 'https://dolap.dsmcdn.com/dlp_230817_1/product/org/kadin/gomlek/s-36-american-vintage_1248542117.jpg','https://dolap.dsmcdn.com/dlp_230817_1/product/org/kadin/gomlek/s-36-american-vintage_1248542118.jpg','https://dolap.dsmcdn.com/dlp_230817_1/product/org/kadin/gomlek/s-36-american-vintage_1248542119.jpg'],
-  price: '35',
-  dprice: '',
-  type: 'Giyim',
-  gender: 'Women',
-  usability: 'Az Kullanılmış',
-  brand: 'Collins',
-  size: 'S',
-  seller: '6522a031db2c4a18d6faf7fc',
-  likes: ['6520269ff6ae91043fd1828f','6520269ff6ae91043fd18290'],
-  asks: [
-    {
-      _id: '6520269ff6ae91043fd1828f',
-      comment: 'Vayyy çokiyimis',
-      replies: [
-        {
-          _id: '6522a031db2c4a18d6faf7fc',
-          comment: 'Aynen',
-        },
-      ],
-    },
-    {
-      _id: '6520269ff6ae91043fd18290',
-      comment: 'A',
-    },
-  ],
-  offers: [
-    {
-      _id: '6520269ff6ae91043fd1828f',
-      comment: '20 olur mu',
-      replies: [
-        {
-          _id: '6522a031db2c4a18d6faf7fc',
-          comment: 'Hayır',
-        },
-      ],
-    }
-  ],
-});
+// const product3 = new Product({
+//   name: 'American Vintage',
+//   description: "Mınık leke var . Yıkama yapmadım cıkabılır . SON FİYATTIR ☘️ Boyum 172 kılom 60 m bedenim bende gorseldekı gıbı duruyor. Depoda kaldıgı ıcın kirlidir yıkama yapılmalı bılgınız olsun. 🌸",
+//   img: ['https://dolap.dsmcdn.com/dlp_230503_2/product/org/kadin/gomlek/s-36-american-vintage_1248542116.jpg', 'https://dolap.dsmcdn.com/dlp_230817_1/product/org/kadin/gomlek/s-36-american-vintage_1248542117.jpg','https://dolap.dsmcdn.com/dlp_230817_1/product/org/kadin/gomlek/s-36-american-vintage_1248542118.jpg','https://dolap.dsmcdn.com/dlp_230817_1/product/org/kadin/gomlek/s-36-american-vintage_1248542119.jpg'],
+//   price: '35',
+//   dprice: '',
+//   type: 'Giyim',
+//   gender: 'Women',
+//   usability: 'Az Kullanılmış',
+//   brand: 'Collins',
+//   size: 'S',
+//   seller: '6522a031db2c4a18d6faf7fc',
+//   likes: ['6520269ff6ae91043fd1828f','6520269ff6ae91043fd18290'],
+//   asks: [
+//     {
+//       _id: '6520269ff6ae91043fd1828f',
+//       comment: 'Vayyy çokiyimis',
+//       replies: [
+//         {
+//           _id: '6522a031db2c4a18d6faf7fc',
+//           comment: 'Aynen',
+//         },
+//       ],
+//     },
+//     {
+//       _id: '6520269ff6ae91043fd18290',
+//       comment: 'A',
+//     },
+//   ],
+//   offers: [
+//     {
+//       _id: '6520269ff6ae91043fd1828f',
+//       comment: '20 olur mu',
+//       replies: [
+//         {
+//           _id: '6522a031db2c4a18d6faf7fc',
+//           comment: 'Hayır',
+//         },
+//       ],
+//     }
+//   ],
+// });
 // product3.save()
+
+app.post("/login", (req, res) => {
+  User.findOne({ email: req.body.email }).then((user) => {
+    if (user) {
+      bcrypt.compare(req.body.password, user.password, (err, result) => {
+        if (err) {
+          console.log(err);
+        } else if (result) {
+          res.status(200).json(user);
+        } else {
+          res.status(202).json({ error:"Şifre yanlış."})
+        }
+      })} 
+    else {
+    res.status(202).json({ error:"Böyle bir hesap bulunamadı."})
+    }
+  }).catch((err) => {
+    res.status(500).json({ error: err })});
+  });
+
+
+app.post('/createUser', async(req,res)=>{
+  console.log(req.body)
+  var { username, email, password} = req.body
+  if(!username || !email || !password){
+    return res.status(400).json({ error: "Username, email and password is not empty." });
+  }else{
+    User.findOne({username: username}).then((user)=>{
+      if(user){
+        return res.status(202).json({ error: "The username is already associated with an existing account."})
+      }else{
+        bcrypt.hash(password, 10, (err,hash)=>{
+          if(err){
+            res.status(500).json({error: "hashing error"})
+          }else{
+            const newUser = new User({
+              username: username,
+              email: email,
+              password: hash,
+              img: 'https://images.gardrops.com/uploads/2712017/avatar_photo/2712017-avatar-large.jpg'
+            });
+            newUser.save().then(savedUser => {
+              console.log(savedUser.password + " account is created.");
+              res.status(200).json(savedUser);
+            })
+            .catch(err => {
+              console.log(err);
+              res.status(500).json({ error: "Kullanıcı kaydetme hatası." });
+            });
+          }});
+      }});
+  }
+})
+
 app.post('/api/products', async(req,res)=>{
   try{
     const products = await Product.find(req.body);

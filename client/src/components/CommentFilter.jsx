@@ -36,7 +36,7 @@ const CommentFilter = ({filter,product}) => {
                     <div className='border-l-2 pl-2 border-green-500 flex flex-col my-2'>
                     {e.replies.map((e,i)=>(
                     <div key={i} className='flex gap-3 ml-5'>
-                      <img src={e._id.img} alt="comment user profile pic" className='w-12 h-12 rounded-full'/>
+                      <img src={e._id.img} alt="comment user profile pic" className='w-12 h-12 mt-2 rounded-full'/>
                       <div className='flex flex-col'>
                         <span className='font-semibold text-xl'>{e._id.username}</span>
                         <span className='text-lg'>{e.comment}</span>

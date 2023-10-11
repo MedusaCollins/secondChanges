@@ -17,8 +17,6 @@ const userSchema = {
       required: true,
     },
     img: String,
-    location: String,
-    phoneNumber: String,
     products: [
       {
         type: Schema.Types.ObjectId,

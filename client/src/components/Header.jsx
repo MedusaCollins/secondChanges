@@ -1,12 +1,45 @@
-import {React } from 'react';
+import {React, useState, useEffect, useRef } from 'react';
+import Popup from './Popup.jsx';
+
 import { Link, useLocation } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faMagnifyingGlass, faBell, faHeart, faCartShopping } from '@fortawesome/free-solid-svg-icons';
+import { faMagnifyingGlass, faBell, faHeart, faCartShopping, faGear, faUser, faMoon } from '@fortawesome/free-solid-svg-icons';
 
-const Header = () => {
+const Header = ({handleLogin, user, islogging}) => {
   const location = useLocation()
+  const [isPopupOpen, setPopupOpen] = useState(false);
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const menuRef = useRef(null);
+
+  useEffect(() => {
+    function handleClickOutside(event) {
+      if (menuRef.current && !menuRef.current.contains(event.target)) {
+        setIsMenuOpen(false);
+      }
+    }
+  
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, [menuRef]);
+
+  const openPopup = () => {
+    setPopupOpen(true);
+  };
+  const closePopup = () => {
+    setPopupOpen(false);
+  };
+  const toggleMenu = () => {
+    setIsMenuOpen(!isMenuOpen);
+  };
+  const logOut = ()=>{
+    handleLogin(false, {})
+    setIsMenuOpen(!isMenuOpen);
+  }
   return (
     <div className='flex top-0 left-0 right-0 px-5 border-b-slate-100 border-b-[2px]'>
+        <Popup isOpen={isPopupOpen} onClose={closePopup} handleLogin={handleLogin} user={user}/>
       <Link to="/" className='text-green-500 font-semibold text-xl my-2'>secondChanges</Link>
       <div className='ml-12 items-center flex text-gray-700 font-medium'>
         <Link to="/" className={`mx-3 ${location.pathname ==='/'&& 'text-green-500'}`}>Home</Link>
@@ -19,11 +52,55 @@ const Header = () => {
         <FontAwesomeIcon icon={faBell} className='m-4'/>
         <FontAwesomeIcon icon={faHeart} className='m-4'/>
         <FontAwesomeIcon icon={faCartShopping} className='m-4'/>
-        <img
+        
+        {islogging?(
+        <button onClick={()=> toggleMenu()}>{user.username}</button>
+        ):(
+        <button className='border rounded-lg w-16 m-2 px-auto' onClick={openPopup}>Login</button>
+        )}
+        {isMenuOpen && (
+          <div className="absolute -right-0 mt-12 min-w-[16rem] bg-white text-center border rounded-md shadow-lg flex-col-reverse z-30" ref={menuRef}>
+          <ul>
+            <li className="p-2 flex gap-2 border-b-2 border-dotted items-center">
+              <img src={user.img} alt="" className="w-8 h-8 rounded-full" />
+              <div className="text-left">
+                <p className="font-semibold">{user.username}</p>
+                <p className="text-gray-500 text-sm">{user.email}</p>
+              </div>
+            </li>
+            <li className='flex gap-2 border-b-2 border-dotted items-center'>
+              <Link to="/settings" className="w-full hover:bg-gray-200 p-2 transition-all flex items-center">
+                <FontAwesomeIcon icon={faUser} className="mr-2" /> Profile
+              </Link>
+            </li>
+            <li className='flex gap-2 border-b-2 border-dotted items-center'>
+              <Link to="/settings" className="w-full hover:bg-gray-200 p-2 transition-all flex items-center">
+                <FontAwesomeIcon icon={faGear} className="mr-2" /> User settings
+              </Link>
+            </li>
+            <li className='flex gap-2 border-b-2 border-dotted items-center'>
+              <div className='flex w-full'>
+              <Link to="/settings" className="w-full hover:bg-gray-200 p-2 transition-all flex items-center">
+                <FontAwesomeIcon icon={faMoon} className="mr-2" /> Dark mode
+              </Link>
+              <label className="switch relative w-12 h-6 bg-gray-300 rounded-full shadow-inner cursor-pointer">
+                <input type="checkbox" className="absolute opacity-0 w-0 h-0" />
+                <span className="slider absolute left-0 top-0 w-6 h-6 bg-green-500 rounded-full shadow-md transition transform translate-x-0 hover:translate-x-6"></span>
+              </label>
+              </div>
+            </li>
+          </ul>
+          <button onClick={logOut} className="block w-full hover:bg-gray-200 p-2 transition-all">Çıkış yap</button>
+        </div>
+        
+        )}
+
+
+        {/* <img
           src="https://cdn.discordapp.com/attachments/734241879050420264/1159118118216552448/image.png?ex=652fdbde&is=651d66de&hm=7ff7ca47d94f5f6e8d844400d9efadfed9d873407cf67eff9c44e8e0fca3f77f&"
           alt="userimg"
           className='w-8 h-8 rounded-full m-2'
-        />
+        /> */}
       </div>
     </div>
   );
