@@ -13,7 +13,7 @@ const Products = ({filter}) => {
   }, [filter]);
 
   return (
-    <div className='flex gap-5'>
+    <div className='flex flex-wrap items-start justify-center gap-5'>
       {products.map((product) => (
         <ProductTemplate
           key={product._id}

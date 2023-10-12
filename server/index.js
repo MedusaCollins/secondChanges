@@ -5,6 +5,7 @@ import cors from "cors";
 import bcrypt from "bcrypt";
 import User from "./model/users.js";
 import Product from "./model/products.js";
+
 import { config } from "dotenv";
 config();
 
@@ -104,7 +105,6 @@ mongoose.connect(`${process.env.DB}`, { useNewUrlParser: true, useUnifiedTopolog
 // product3.save()
 
 app.post("/createProduct", (req,res)=>{
-  console.log(req.body)
   try {
     const newProduct = new Product(req.body)
     newProduct.save()
@@ -236,4 +236,3 @@ app.get('/products/:productId', async (req, res) => {
     res.status(500).json({ error: 'Ürün getirilirken bir hata oluştu.' });
   }
 });
-

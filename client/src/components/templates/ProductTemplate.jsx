@@ -27,7 +27,7 @@ const ProductTemplate = ({ name, img, brand, price, id, size }) => {
   return (
     <Link
       key={id} // Burada "key" prop'u eklenmiş
-      className={`rounded-xl w-[18rem] h-[20rem] mx-auto bg-cover bg-center relative cursor-pointer hover:border hover:border-separate border-slate-500`}
+      className={`rounded-xl w-[18rem] h-[20rem] bg-cover bg-center relative cursor-pointer hover:border hover:border-separate border-slate-500`}
       style={{ backgroundImage: `url(${img})` }}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
