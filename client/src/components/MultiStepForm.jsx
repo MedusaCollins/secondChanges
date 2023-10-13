@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import ProductInput from './templates/ProductInput';
 import axios from 'axios';
 
-const MultiStepForm = ({ user }) => {
+const MultiStepForm = ({ user, handleLogin, isModalOpen }) => {
   const [formData, setFormData] = useState({
     name: 'name',
     description: 'detail',
@@ -82,13 +82,15 @@ const MultiStepForm = ({ user }) => {
       img: updatedImages,
     });
   };
+
   async function handleReviewSubmit() {
     try {
       const response = await axios.post(`${process.env.REACT_APP_DB}/createProduct`, formData);
       if (response.data.error) {
         console.log(response.data.eror);
       } else {
-        console.log(response.data);
+        handleLogin(true, response.data);
+        isModalOpen(false);
       }
     } catch (error) {
       console.error('Hata oluştu: ', error);

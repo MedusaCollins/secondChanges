@@ -104,15 +104,21 @@ mongoose.connect(`${process.env.DB}`, { useNewUrlParser: true, useUnifiedTopolog
 // });
 // product3.save()
 
-app.post("/createProduct", (req,res)=>{
+
+
+app.post("/createProduct", async (req, res) => {
   try {
-    const newProduct = new Product(req.body)
-    newProduct.save()
+    const newProduct = new Product(req.body);
+    await newProduct.save();
+    const seller = await User.findById(req.body.seller);
+    seller.products.push(newProduct);
+    await seller.save();
+    res.status(200).json(seller);
   } catch (error) {
-    console.log(error)
+    console.log(error);
+    res.status(500).json({ error: "Ürün oluşturulurken bir hata oluştu." });
   }
-  res.status(200).json(req.body)
-})
+});
 
 app.post("/login", (req, res) => {
   User.findOne({ email: req.body.email }).then((user) => {

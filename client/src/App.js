@@ -18,11 +18,11 @@ function App() {
     <>
       <Header handleLogin={handleLogin} user={user} islogging={isLogging}/>
       <Routes>
-          <Route path="/" element={<Home/>}/>
+          <Route path="/" element={<Home user={user}/>}/>
           <Route path="/man" element={<Man/>}/>
           <Route path="/woman" element={<Woman/>}/>
           <Route path="/products/:productId" element={<ProductDetail />} />
-          <Route path="/myproducts/" element={<MyProduct user={user} islogging={isLogging}/>} />
+          <Route path="/myproducts/" element={<MyProduct user={user} islogging={isLogging} handleLogin={handleLogin}/>} />
           
       </Routes>
     </>

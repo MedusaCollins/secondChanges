@@ -121,16 +121,8 @@ const Header = ({handleLogin, user, islogging}) => {
             </li>
           </ul>
           <button onClick={logOut} className="block w-full text-left hover:bg-gray-200 p-2 transition-all">Log out</button>
-        </div>
-        
+        </div>    
         )}
-
-
-        {/* <img
-          src="https://cdn.discordapp.com/attachments/734241879050420264/1159118118216552448/image.png?ex=652fdbde&is=651d66de&hm=7ff7ca47d94f5f6e8d844400d9efadfed9d873407cf67eff9c44e8e0fca3f77f&"
-          alt="userimg"
-          className='w-8 h-8 rounded-full m-2'
-        /> */}
       </div>
     </div>
   );
