@@ -91,8 +91,10 @@ const MultiStepForm = ({ user, handleLogin, isModalOpen }) => {
       } else {
         handleLogin(true, response.data);
         isModalOpen(false);
+        javascript:window.top.location.reload(true)
       }
-    } catch (error) {
+    }
+    catch (error) {
       console.error('Hata oluştu: ', error);
     }
   };

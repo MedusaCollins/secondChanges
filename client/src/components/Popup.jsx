@@ -53,8 +53,8 @@ function Popup({ isOpen, onClose, handleLogin }) {
             errorMessage: response.data.error,
           }));
         } else {
-          // localStorage.setItem('username', formState.username);
-          // localStorage.setItem('password', formState.password);
+          localStorage.setItem('username', formState.email);
+          localStorage.setItem('password', formState.password);
           handleLogin(true, response.data);
           handleCloseClick();
         }

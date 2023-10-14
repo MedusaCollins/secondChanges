@@ -14,6 +14,7 @@ function App() {
     setIsLogging(loggedIn);
     setUser(userData)
   }, []);
+  
   return (
     <>
       <Header handleLogin={handleLogin} user={user} islogging={isLogging}/>
@@ -22,8 +23,7 @@ function App() {
           <Route path="/man" element={<Man/>}/>
           <Route path="/woman" element={<Woman/>}/>
           <Route path="/products/:productId" element={<ProductDetail />} />
-          <Route path="/myproducts/" element={<MyProduct user={user} islogging={isLogging} handleLogin={handleLogin}/>} />
-          
+          {Object.keys(user).length === 0?(<Route path="/myproducts/" element={<Home user={user}/>}/>):(<Route path="/myproducts/" element={<MyProduct user={user} islogging={isLogging} handleLogin={handleLogin}/>} />)}
       </Routes>
     </>
 )}

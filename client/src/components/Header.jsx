@@ -1,5 +1,6 @@
 import {React, useState, useEffect, useRef } from 'react';
 import Popup from './Popup';
+import axios from 'axios';
 
 import { Link, useLocation } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -17,12 +18,44 @@ const Header = ({handleLogin, user, islogging}) => {
         setIsMenuOpen(false);
       }
     }
-  
     document.addEventListener('mousedown', handleClickOutside);
     return () => {
       document.removeEventListener('mousedown', handleClickOutside);
     };
   }, [menuRef]);
+
+  useEffect(()=>{
+    async function autoLogin() {
+      const storedUsername = localStorage.getItem('username');
+      const storedPassword = localStorage.getItem('password');
+
+      // console.log(storedUsername, storedPassword)
+      if (storedUsername && storedPassword) {
+        try {
+          const response = await axios.post(`${process.env.REACT_APP_DB}/login`, {
+            email: storedUsername,
+            password: storedPassword,
+          });
+          if (!response.data.error) {
+            handleLogin(true, response.data);
+          }
+        } catch (error) {
+          console.error('Hata oluştu: ', error);
+        }
+      } else {
+        console.log("Hesap yok")
+      }
+    }
+    autoLogin()
+  }, [])
+  const logOut = ()=>{
+    localStorage.removeItem('username');
+    localStorage.removeItem('password');
+    setIsMenuOpen(!isMenuOpen);
+    handleLogin(false, {})
+  }
+  
+
 
   const openPopup = () => {
     setPopupOpen(true);
@@ -35,18 +68,12 @@ const Header = ({handleLogin, user, islogging}) => {
   };
 
 
-
-    const [isChecked, setIsChecked] = useState(false)
+  const [isChecked, setIsChecked] = useState(false)
   
-    const handleCheckboxChange = () => {
-      setIsChecked(!isChecked)
-    }
-    
-  
-  const logOut = ()=>{
-    handleLogin(false, {})
-    setIsMenuOpen(!isMenuOpen);
+  const handleCheckboxChange = () => {
+    setIsChecked(!isChecked)
   }
+    
   return (
     <div className='flex top-0 left-0 right-0 px-5 border-b-slate-100 border-b-[2px]'>
         <Popup isOpen={isPopupOpen} onClose={closePopup} handleLogin={handleLogin} user={user}/>
