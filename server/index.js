@@ -106,7 +106,42 @@ mongoose.connect(`${process.env.DB}`, { useNewUrlParser: true, useUnifiedTopolog
 
 
 
-app.post("/createProduct", async (req, res) => {
+
+app.post("/addComment", async (req, res) => {
+  try {
+    const product = await Product.findById(req.body.productId);
+    if (!product) {
+      return res.status(404).json({ error: 'Product not found.' });
+    }
+
+    // Öncelikle userId alanındaki kullanıcının _id'sini alın
+    const userId = req.body._id;
+
+    // Kullanıcının _id'sini kullanarak kullanıcı belgesini sorgulayın
+    const user = await User.findById(userId, 'username img');
+
+    console.log(user)
+    // Eğer kullanıcı belgesi bulunursa, yeni yorumu oluşturun
+    if (user) {
+      const newComment = {
+        _id: user,
+        comment: req.body.comment,
+      };
+
+      product.asks.push(newComment);
+      await product.save();
+
+      res.status(200).json(newComment);
+    } else {
+      res.status(404).json({ error: 'User not found.' });
+    }
+  } catch (error) {
+    res.status(500).json(error);
+  }
+});
+
+
+app.post("/createProduct", async(req,res)=>{
   try {
     const newProduct = new Product(req.body);
     await newProduct.save();
@@ -119,26 +154,6 @@ app.post("/createProduct", async (req, res) => {
     res.status(500).json({ error: "Ürün oluşturulurken bir hata oluştu." });
   }
 });
-
-app.post("/login", (req, res) => {
-  User.findOne({ email: req.body.email }).then((user) => {
-    if (user) {
-      bcrypt.compare(req.body.password, user.password, (err, result) => {
-        if (err) {
-          console.log(err);
-        } else if (result) {
-          res.status(200).json(user);
-        } else {
-          res.status(202).json({ error:"Şifre yanlış."})
-        }
-      })} 
-    else {
-    res.status(202).json({ error:"Böyle bir hesap bulunamadı."})
-    }
-  }).catch((err) => {
-    res.status(500).json({ error: err })});
-  });
-
 
 app.post('/createUser', async(req,res)=>{
   console.log(req.body)
@@ -172,6 +187,27 @@ app.post('/createUser', async(req,res)=>{
       }});
   }
 })
+
+app.post("/login", (req, res) => {
+  User.findOne({ email: req.body.email }).then((user) => {
+    if (user) {
+      bcrypt.compare(req.body.password, user.password, (err, result) => {
+        if (err) {
+          console.log(err);
+        } else if (result) {
+          res.status(200).json(user);
+        } else {
+          res.status(202).json({ error:"Şifre yanlış."})
+        }
+      })} 
+    else {
+    res.status(202).json({ error:"Böyle bir hesap bulunamadı."})
+    }
+  }).catch((err) => {
+    res.status(500).json({ error: err })});
+  });
+
+
 
 app.post('/api/products', async(req,res)=>{
   try{
@@ -225,7 +261,6 @@ app.get('/products/:productId', async (req, res) => {
       model: 'User',
       select: 'username img'
     })
-    // Ürünün satıcısını çekin
     const seller = await User.findById(product.seller, '-password -location -phoneNumber -email -favoriteProducts -products')
     .populate({
       path: 'reviews._id',
@@ -233,7 +268,6 @@ app.get('/products/:productId', async (req, res) => {
       select: 'username img'
     })
     if (!product) {
-      // Ürün bulunamazsa 404 hatası döndürün
       return res.status(404).json({ error: 'Ürün bulunamadı' });
     }
     res.json({product, seller});

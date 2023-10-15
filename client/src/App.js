@@ -13,6 +13,7 @@ function App() {
   const handleLogin = useCallback((loggedIn, userData) => {
     setIsLogging(loggedIn);
     setUser(userData)
+    console.log(userData)
   }, []);
   
   return (
@@ -22,7 +23,7 @@ function App() {
           <Route path="/" element={<Home user={user}/>}/>
           <Route path="/man" element={<Man/>}/>
           <Route path="/woman" element={<Woman/>}/>
-          <Route path="/products/:productId" element={<ProductDetail />} />
+          <Route path="/products/:productId" element={<ProductDetail user={user}/>} />
           {Object.keys(user).length === 0?(<Route path="/myproducts/" element={<Home user={user}/>}/>):(<Route path="/myproducts/" element={<MyProduct user={user} islogging={isLogging} handleLogin={handleLogin}/>} />)}
       </Routes>
     </>

@@ -1,10 +1,31 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 import ProductAbout from './templates/ProductAbout.jsx'
 import ProductPrice from './templates/ProductPrice.jsx'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faStar as solidStar } from '@fortawesome/free-solid-svg-icons';
+import ProductInput from '../components/templates/ProductInput.jsx';
+import axios from 'axios'
 
-const About = ({product, rating}) => {
+const About = ({product, rating, user}) => {
+  const [popUp, setPopUp] = useState(0)
+  const [formData, setFormData] = useState({
+    _id: "",
+    productId: product._id,
+    comment: ''
+  });
+  
+  useEffect(() => {
+    setFormData((prevData) => ({ ...prevData, _id: user._id }));
+  }, [user._id]);
+
+  async function handleSendComment() {
+    const response = await axios.post(`${process.env.REACT_APP_DB}/addComment`, formData);
+    if(response.data.error){
+      console.log(response.data.errror)
+    }else{
+      console.log(response.data)
+    }
+  }
 
   return (
     <div className='w-1/2 text-xl'>
@@ -42,12 +63,22 @@ const About = ({product, rating}) => {
             <>
             <button className='rounded-lg border border-green-600 bg-green-600 text-white p-2 '>Satın al</button>
             <div className='w-full justify-between flex'>
-              <button className='rounded-lg border border-blue-400 text-blue-400 p-2 w-[45%]'>Yorum Yap</button>
+              <button className='rounded-lg border border-blue-400 text-blue-400 p-2 w-[45%]' onClick={()=> setPopUp(1)}>Soru sor</button>
               <button className='rounded-lg border border-green-600 text-green-600 p-2 w-[45%]'>Teklif ver</button> 
             </div>
             </>
           )}
+
           </div>
+        {popUp? (
+                <div className="fixed inset-0 z-50 flex items-center justify-center backdrop-blur-md">
+                  <div className='fixed inset-0 bg-black opacity-50 transition' onClick={()=>setPopUp(0)}></div>
+                  <div className="relative bg-white w-96 h-48 rounded-lg p-4">
+                    <ProductInput name="Product Detail" type="textarea" placeholder="You can ask anything that comes to your mind about the product." onChange={(e) => setFormData({ ...formData, comment: e.target.value })} />
+                    <button onClick={()=>handleSendComment()} className="bg-blue-500 hover:bg-blue-700 text-white p-2 text-sm rounded-lg transition absolute bottom-3 right-5">Send Comment</button>
+                  </div>
+                </div>
+              ):null}
     </div>
   )
 }

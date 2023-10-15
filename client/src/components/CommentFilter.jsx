@@ -11,7 +11,7 @@ const CommentFilter = ({filter,product}) => {
                 {filter==="offers"&&'Kullanıcıların bu ürüne yapmış olduğu teklifler'}
                 {filter==="Seller Comments"&&'Satıcının sattığı başka ürünlere gelen yorumlar'}
             </h1>
-            {product.map((e, i)=>(
+            {product.reverse().map((e, i)=>(
               <div key={i} className='flex gap-3 my-12'>
                 <img src={e._id.img} alt="comment user profile pic" className='w-12 h-12 mt-2 rounded-full'/>
                 <div className='flex flex-col'>
@@ -32,20 +32,23 @@ const CommentFilter = ({filter,product}) => {
                   <button className='w-12 my-2 text-left text-green-600 font-bold text-lg'>reply</button>
                   </>}
 
-                {filter!=="Seller Comments"?(
-                    <div className='border-l-2 pl-2 border-green-500 flex flex-col my-2'>
-                    {e.replies.map((e,i)=>(
-                    <div key={i} className='flex gap-3 ml-5'>
-                      <img src={e._id.img} alt="comment user profile pic" className='w-12 h-12 mt-2 rounded-full'/>
-                      <div className='flex flex-col'>
-                        <span className='font-semibold text-xl'>{e._id.username}</span>
-                        <span className='text-lg'>{e.comment}</span>
-                        <button className='w-12 my-2 text-left text-green-600 font-bold text-lg'>reply</button>
-                      </div>
-                    </div>
-                    ))}
-                    </div>
-                ):null}
+                  {filter !== 'Seller Comments' ? (
+                  <div className='border-l-2 pl-2 border-green-500 flex flex-col'>
+                    {e.replies.map((e, i) => (
+                        <div key={i} className='flex gap-3 ml-5'>
+                          <img src={e.user.img} alt='comment user profile pic' className='w-12 h-12 mt-2 rounded-full' />
+                          <div className='flex flex-col'>
+                            <span className='font-semibold text-xl'>{e.user.username}</span>
+                            <span className='text-lg'>{e.comment}</span>
+                            <button className='w-12 my-2 text-left text-green-600 font-bold text-lg'>
+                              reply
+                            </button>
+                          </div>
+                        </div>
+                      ))
+                    }
+                  </div>
+                ) : null}
                 </div>
               </div>
             ))}

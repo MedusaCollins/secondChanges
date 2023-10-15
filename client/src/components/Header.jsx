@@ -26,14 +26,13 @@ const Header = ({handleLogin, user, islogging}) => {
 
   useEffect(()=>{
     async function autoLogin() {
-      const storedUsername = localStorage.getItem('username');
+      const storedEmail = localStorage.getItem('email');
       const storedPassword = localStorage.getItem('password');
 
-      // console.log(storedUsername, storedPassword)
-      if (storedUsername && storedPassword) {
+      if (storedEmail && storedPassword) {
         try {
           const response = await axios.post(`${process.env.REACT_APP_DB}/login`, {
-            email: storedUsername,
+            email: storedEmail,
             password: storedPassword,
           });
           if (!response.data.error) {
@@ -47,7 +46,7 @@ const Header = ({handleLogin, user, islogging}) => {
       }
     }
     autoLogin()
-  }, [])
+  }, [handleLogin])
   const logOut = ()=>{
     localStorage.removeItem('username');
     localStorage.removeItem('password');

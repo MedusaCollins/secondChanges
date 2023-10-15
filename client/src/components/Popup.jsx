@@ -53,7 +53,7 @@ function Popup({ isOpen, onClose, handleLogin }) {
             errorMessage: response.data.error,
           }));
         } else {
-          localStorage.setItem('username', formState.email);
+          localStorage.setItem('email', formState.email);
           localStorage.setItem('password', formState.password);
           handleLogin(true, response.data);
           handleCloseClick();
@@ -82,6 +82,8 @@ function Popup({ isOpen, onClose, handleLogin }) {
           } else {
             handleLogin(true, response.data);
             handleCloseClick();
+            localStorage.setItem('email', formState.email);
+            localStorage.setItem('password', formState.password);
           }
         } catch (error) {
           console.error('Hata oluştu: ', error);

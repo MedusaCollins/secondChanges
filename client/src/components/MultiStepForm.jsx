@@ -91,7 +91,7 @@ const MultiStepForm = ({ user, handleLogin, isModalOpen }) => {
       } else {
         handleLogin(true, response.data);
         isModalOpen(false);
-        javascript:window.top.location.reload(true)
+        window.top.location.reload(true)
       }
     }
     catch (error) {
@@ -105,7 +105,7 @@ const MultiStepForm = ({ user, handleLogin, isModalOpen }) => {
         return (
           <div>
             <ProductInput name="Product name" type="input" value={formData.name} onChange={(e) => handleFormDataChange({ ...formData, name: e.target.value })} />
-            <ProductInput name="Product Detail" type="textarea" value={formData.about} placeholder="Write a few sentences about the product." onChange={(e) => setFormData({ ...formData, description: e.target.value })} />
+            <ProductInput name="Product Detail" type="textarea" value={formData.description} placeholder="Write a few sentences about the product." onChange={(e) => setFormData({ ...formData, description: e.target.value })} />
           </div>
         );
       case "Product Details":
@@ -113,7 +113,7 @@ const MultiStepForm = ({ user, handleLogin, isModalOpen }) => {
           <div>
             <div className='flex gap-5'>
               <ProductInput name="Type" type="input" value={formData.type} onChange={(e) => handleFormDataChange({ ...formData, type: e.target.value })} />
-              <ProductInput name="Gender" type="input" value={formData.about} onChange={(e) => handleFormDataChange({ ...formData, gender: e.target.value })} />
+              <ProductInput name="Gender" type="input" value={formData.gender} onChange={(e) => handleFormDataChange({ ...formData, gender: e.target.value })} />
             </div>
             <div className='flex gap-5'>
               <ProductInput name="Size" type="input" value={formData.size} onChange={(e) => handleFormDataChange({ ...formData, size: e.target.value })} />

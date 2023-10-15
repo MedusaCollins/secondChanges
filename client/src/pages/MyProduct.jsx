@@ -5,9 +5,8 @@ import MultiStepForm from '../components/MultiStepForm.jsx';
 import Products from '../components/Products.jsx';
 import axios from 'axios';
 
-const MyProduct = ({ isLogging, user, handleLogin }) => {
+const MyProduct = ({ user, handleLogin }) => {
   const [isModalOpen, setModalOpen] = useState(false);
-  const [products, setProducts] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [filters] = useState({ seller: user._id });
 
@@ -15,7 +14,7 @@ const MyProduct = ({ isLogging, user, handleLogin }) => {
     async function autoLogin() {
       const storedUsername = localStorage.getItem('username');
       const storedPassword = localStorage.getItem('password');
-
+  
       if (storedUsername && storedPassword) {
         try {
           const response = await axios.post(`${process.env.REACT_APP_DB}/login`, {
@@ -24,12 +23,7 @@ const MyProduct = ({ isLogging, user, handleLogin }) => {
           });
           if (!response.data.error) {
             handleLogin(true, response.data);
-            axios.post(`${process.env.REACT_APP_DB}/api/products`, filters)
-              .then((newResponse) => {
-                setProducts(newResponse.data);
-                setIsLoading(false);
-              })
-              .catch((error) => console.error(error));
+            setIsLoading(false);
           }
         } catch (error) {
           console.error('Hata oluştu: ', error);
@@ -38,17 +32,9 @@ const MyProduct = ({ isLogging, user, handleLogin }) => {
         setIsLoading(false);
       }
     }
-
+  
     autoLogin();
-  }, [filters]);
-
-  const openModal = () => {
-    setModalOpen(true);
-  };
-
-  const closeModal = () => {
-    setModalOpen(false);
-  };
+  }, [filters, handleLogin]);
 
   if (isLoading) {
     return <div>Yükleniyor...</div>;
@@ -65,7 +51,7 @@ const MyProduct = ({ isLogging, user, handleLogin }) => {
           <div className="flex flex-col items-center justify-center h-screen -mt-12">
             <FontAwesomeIcon icon={faFolder} className="w-16 h-16 text-green-500" />
             <p className="text-xl">Add Products</p>
-            <button onClick={openModal} className="bg-green-500 hover:bg-green-600 text-white p-2 text-sm rounded-lg mt-5 transition">
+            <button onClick={()=>setModalOpen(true)} className="bg-green-500 hover:bg-green-600 text-white p-2 text-sm rounded-lg mt-5 transition">
               <FontAwesomeIcon icon={faPlus} /> New Product
             </button>
           </div>
@@ -74,14 +60,14 @@ const MyProduct = ({ isLogging, user, handleLogin }) => {
 
       {isModalOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center backdrop-blur-md">
-          <div className='fixed inset-0 bg-black opacity-50' onClick={closeModal}></div>
+          <div className='fixed inset-0 bg-black opacity-50' onClick={()=>setModalOpen(false)}></div>
           <div className="relative bg-white w-96 rounded-lg p-4">
-            <div className="absolute top-2 right-2 cursor-pointer" onClick={closeModal}>
+            <div className="absolute top-2 right-2 cursor-pointer" onClick={()=>setModalOpen(false)}>
               <FontAwesomeIcon icon={faTimes} className="text-gray-500" />
             </div>
 
             <h2 className="text-base font-semibold leading-7 text-gray-900">New Product</h2>
-            <MultiStepForm user={user} filters={filters} setProducts={setProducts} handleLogin={handleLogin} isModalOpen={setModalOpen} />
+            <MultiStepForm user={user} filters={filters} handleLogin={handleLogin} isModalOpen={setModalOpen} />
           </div>
         </div>
       )}

@@ -10,7 +10,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faStar as solidStar } from '@fortawesome/free-solid-svg-icons';
 import { faStar as regularStar } from '@fortawesome/free-regular-svg-icons';
 
-export default function ProductDetail(){
+export default function ProductDetail({user}){
   const [product, setProduct] = useState(null);
   const [seller, setSeller] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -46,7 +46,7 @@ export default function ProductDetail(){
     <div className="flex flex-col justify-between pt-11">
       <div className='flex justify-between mb-12 px-5'>
         <Carousel slides={product.img} />
-        <About product={product} rating={rating}/>
+        <About product={product} rating={rating} user={user}/>
       </div>
       {"buyers" in product?(
       <div className='flex flex-col gap-5'>

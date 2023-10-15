@@ -46,7 +46,7 @@ export default function Carousel({ slides }) {
         }}
       >
         {slides.map((s, index) => {
-          return <img key={index} src={s} alt={`Slide ${index + 1}`} />;
+          return <img key={index} src={s} className="w-[500px] h-[630px]" alt={`Slide ${index + 1}`} />;
         })}
       </div>
 
