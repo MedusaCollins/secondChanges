@@ -12,6 +12,7 @@ const About = ({product, rating, user, comments, setComments}) => {
     userId: '',
     productId: product._id,
     comment: '',
+    reqType: ''
   });
 
   useEffect(() => {
@@ -66,8 +67,8 @@ const About = ({product, rating, user, comments, setComments}) => {
             <>
             <button className='rounded-lg border border-green-600 bg-green-600 text-white p-2 '>Satın al</button>
             <div className='w-full justify-between flex'>
-              <button className='rounded-lg border border-blue-400 text-blue-400 p-2 w-[45%]' onClick={()=> setPopUp(1)}>Soru sor</button>
-              <button className='rounded-lg border border-green-600 text-green-600 p-2 w-[45%]'>Teklif ver</button> 
+              <button className='rounded-lg border border-blue-400 text-blue-400 p-2 w-[45%]' onClick={()=> {setPopUp(1); setFormData({...formData, reqType: 'asks'})}}>Soru sor</button>
+              <button className='rounded-lg border border-green-600 text-green-600 p-2 w-[45%]'onClick={()=> {setPopUp(1); setFormData({...formData, reqType: 'offers'})}}>Teklif ver</button> 
             </div>
             </>
           )}

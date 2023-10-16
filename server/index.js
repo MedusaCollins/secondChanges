@@ -25,90 +25,9 @@ mongoose.connect(`${process.env.DB}`, { useNewUrlParser: true, useUnifiedTopolog
     console.error(`Mongodb connection error: ${err}`);
   });
 
-  // Örnek bir kullanıcı oluştur
-// const user1 = new User({
-//   username: 'exampleuser1',
-//   email: 'user1@example.com',
-//   password: 'password1',
-// });
-
-// const freshUser = new User({
-//   username: 'Satıcı18',
-//   email: 'satici@example.com',
-//   password: 'sattimgitti',
-//   img: 'https://images.gardrops.com/uploads/2712017/avatar_photo/2712017-avatar-large.jpg',
-//   location: 'Turkey',
-//   phoneNumber: '5442859156',
-//   products: [{ _id: '652033a619ef510ced82dd8e' }],
-//   favoriteProducts: [{ _id: '652064b0a0037fe4650e53b1' }],
-  // reviews: [
-  //   {
-  //     _id: '651d5af90e8dd5e4b145ce84',
-  //     rating: 5,
-  //     comment: 'Gerçekten güzel bir ürünmüş, iyi ki almışım!',
-  //   },
-  //   {
-  //     _id: '6520269ff6ae91043fd18290',
-  //     rating: 2,
-  //     comment: 'Berbat bir ürün, aldığım ürünün hiç yazdığı gibi yeni değil aksine çok eskimiş.',
-  //   },
-  //   {
-  //     _id: '6520269ff6ae91043fd1828f',
-  //     rating: 3,
-  //     comment: 'Yaani ne çok kötü ne çok iyi.',
-  //   },
-  // ],
-// });
-// freshUser.save();
-// const product3 = new Product({
-//   name: 'American Vintage',
-//   description: "Mınık leke var . Yıkama yapmadım cıkabılır . SON FİYATTIR ☘️ Boyum 172 kılom 60 m bedenim bende gorseldekı gıbı duruyor. Depoda kaldıgı ıcın kirlidir yıkama yapılmalı bılgınız olsun. 🌸",
-//   img: ['https://dolap.dsmcdn.com/dlp_230503_2/product/org/kadin/gomlek/s-36-american-vintage_1248542116.jpg', 'https://dolap.dsmcdn.com/dlp_230817_1/product/org/kadin/gomlek/s-36-american-vintage_1248542117.jpg','https://dolap.dsmcdn.com/dlp_230817_1/product/org/kadin/gomlek/s-36-american-vintage_1248542118.jpg','https://dolap.dsmcdn.com/dlp_230817_1/product/org/kadin/gomlek/s-36-american-vintage_1248542119.jpg'],
-//   price: '35',
-//   dprice: '',
-//   type: 'Giyim',
-//   gender: 'Women',
-//   usability: 'Az Kullanılmış',
-//   brand: 'Collins',
-//   size: 'S',
-//   seller: '6522a031db2c4a18d6faf7fc',
-//   likes: ['6520269ff6ae91043fd1828f','6520269ff6ae91043fd18290'],
-//   asks: [
-//     {
-//       _id: '6520269ff6ae91043fd1828f',
-//       comment: 'Vayyy çokiyimis',
-//       replies: [
-//         {
-//           _id: '6522a031db2c4a18d6faf7fc',
-//           comment: 'Aynen',
-//         },
-//       ],
-//     },
-//     {
-//       _id: '6520269ff6ae91043fd18290',
-//       comment: 'A',
-//     },
-//   ],
-//   offers: [
-//     {
-//       _id: '6520269ff6ae91043fd1828f',
-//       comment: '20 olur mu',
-//       replies: [
-//         {
-//           _id: '6522a031db2c4a18d6faf7fc',
-//           comment: 'Hayır',
-//         },
-//       ],
-//     }
-//   ],
-// });
-// product3.save()
-
-
 
 
 app.post("/addComment", async (req, res) => {
-  // console.log(req.body)
   try {
     const product = await Product.findById(req.body.productId);
     if (!product) {
@@ -125,7 +44,11 @@ app.post("/addComment", async (req, res) => {
         comment: req.body.comment,
       };
 
-      product.asks.push(newComment);
+      if(req.body.reqType==="asks"){
+        product.asks.push(newComment);
+      }else{
+        product.offers.push(newComment);
+      }
       await product.save();
 
       res.status(200).json(newComment);
@@ -138,8 +61,7 @@ app.post("/addComment", async (req, res) => {
 });
 
 app.post("/addReplies", async (req, res) => {
-
-  console.log(req.body);
+  console.log(req.body)
   try {
     const product = await Product.findById(req.body.productId)
     const user = await User.findById(req.body.userId)
@@ -153,52 +75,16 @@ app.post("/addReplies", async (req, res) => {
       comment: req.body.comment
     }
 
-    product.asks[req.body.askIndex].replies.push(newReply)
-
+    if(req.body.filter==="asks"){
+      product.asks[req.body.askIndex].replies.push(newReply)
+    }else{
+      product.offers[req.body.askIndex].replies.push(newReply)
+    }
     await product.save();
     res.status(200).json(newReply);
   } catch (error) {
     console.log(error)
   }
-  // try {
-  //   console.log(req.body)
-  //   const { commentId, userId, comment } = req.body;
-
-
-  //   // Parametre denetimi
-  //   if (!commentId || !userId || !comment) {
-  //     return res.status(400).json({ error: 'Missing parameters.' });
-  //   }
-
-  //   // Ürünü ve kullanıcıyı sorgula
-  //   const product = await Product.findById(commentId);        Productdata notdefined çözmek için product'ı önce findbyid ile bulmasını sağla
-  //   const user = await User.findById(userId, 'username img');
-
-  //   if (!product) {
-  //     return res.status(404).json({ error: 'Product not found.' });
-  //   }
-
-  //   if (!user) {
-  //     return res.status(404).json({ error: 'User not found.' });
-  //   }
-
-  //   // Yeni yanıt oluştur
-  //   const newReply = {
-  //     userId: userId,
-  //     comment: comment,
-  //   };
-
-  //   // Yanıtı ekleyip kaydet
-  //   product.asks.forEach((ask) => {
-  //     ask.replies.push(newReply);
-  //   });
-
-  //   await product.save();
-
-  //   res.status(200).json(newReply);
-  // } catch (error) {
-  //   res.status(500).json({ error: 'An error occurred.' });
-  // }
 });
 
 app.post("/createProduct", async(req,res)=>{
@@ -312,12 +198,12 @@ app.get('/products/:productId', async (req, res) => {
       select: 'username img'
     })
     .populate({
-      path: 'offers._id',
+      path: 'offers.userId',
       model: 'User',
       select: 'username img'
     })
     .populate({
-      path: 'offers.replies._id',
+      path: 'offers.replies.userId',
       model: 'User',
       select: 'username img'
     })

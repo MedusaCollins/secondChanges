@@ -19,7 +19,8 @@ const CommentFilter = ({filter,product, pId}) => {
   const [formData, setFormData] = useState({
     userId: '',
     productId: '',
-    comment: ''
+    comment: '',
+    reqType: ''
   })
 
 
@@ -29,7 +30,8 @@ const CommentFilter = ({filter,product, pId}) => {
     setFormData({
       userId: e.userId._id,
       productId: pId,
-      askIndex: i
+      askIndex: i,
+      filter: filter
     })
   }
   async function sendReplies() {

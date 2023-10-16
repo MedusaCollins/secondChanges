@@ -42,7 +42,7 @@ const Comments = ({product, user, seller, comments}) => {
 
       <div>
         {openDiv === 'Asks' && <CommentFilter product={product.asks} pId={product._id} user={user} filter='asks'/>}
-        {openDiv === 'Offers' && <CommentFilter product={product.offers} user={user} filter='offers'/>}
+        {openDiv === 'Offers' && <CommentFilter product={product.offers} pId={product._id} user={user} filter='offers'/>}
         {openDiv === 'Seller Comments' && <CommentFilter product={seller.reviews} filter='Seller Comments'/>}
       </div>
     </>
