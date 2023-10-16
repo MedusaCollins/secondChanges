@@ -108,23 +108,20 @@ mongoose.connect(`${process.env.DB}`, { useNewUrlParser: true, useUnifiedTopolog
 
 
 app.post("/addComment", async (req, res) => {
+  // console.log(req.body)
   try {
     const product = await Product.findById(req.body.productId);
     if (!product) {
       return res.status(404).json({ error: 'Product not found.' });
     }
 
-    // Öncelikle userId alanındaki kullanıcının _id'sini alın
-    const userId = req.body._id;
-
-    // Kullanıcının _id'sini kullanarak kullanıcı belgesini sorgulayın
+    const userId = req.body.userId;
     const user = await User.findById(userId, 'username img');
 
     console.log(user)
-    // Eğer kullanıcı belgesi bulunursa, yeni yorumu oluşturun
     if (user) {
       const newComment = {
-        _id: user,
+        userId: user,
         comment: req.body.comment,
       };
 
@@ -140,6 +137,69 @@ app.post("/addComment", async (req, res) => {
   }
 });
 
+app.post("/addReplies", async (req, res) => {
+
+  console.log(req.body);
+  try {
+    const product = await Product.findById(req.body.productId)
+    const user = await User.findById(req.body.userId)
+
+    if(!product || !user){
+      res.status(400).json({error:'Product/User not found.'})
+    }
+
+    const newReply = {
+      userId: user,
+      comment: req.body.comment
+    }
+
+    product.asks[req.body.askIndex].replies.push(newReply)
+
+    await product.save();
+    res.status(200).json(newReply);
+  } catch (error) {
+    console.log(error)
+  }
+  // try {
+  //   console.log(req.body)
+  //   const { commentId, userId, comment } = req.body;
+
+
+  //   // Parametre denetimi
+  //   if (!commentId || !userId || !comment) {
+  //     return res.status(400).json({ error: 'Missing parameters.' });
+  //   }
+
+  //   // Ürünü ve kullanıcıyı sorgula
+  //   const product = await Product.findById(commentId);        Productdata notdefined çözmek için product'ı önce findbyid ile bulmasını sağla
+  //   const user = await User.findById(userId, 'username img');
+
+  //   if (!product) {
+  //     return res.status(404).json({ error: 'Product not found.' });
+  //   }
+
+  //   if (!user) {
+  //     return res.status(404).json({ error: 'User not found.' });
+  //   }
+
+  //   // Yeni yanıt oluştur
+  //   const newReply = {
+  //     userId: userId,
+  //     comment: comment,
+  //   };
+
+  //   // Yanıtı ekleyip kaydet
+  //   product.asks.forEach((ask) => {
+  //     ask.replies.push(newReply);
+  //   });
+
+  //   await product.save();
+
+  //   res.status(200).json(newReply);
+  // } catch (error) {
+  //   res.status(500).json({ error: 'An error occurred.' });
+  // }
+});
 
 app.post("/createProduct", async(req,res)=>{
   try {
@@ -242,12 +302,12 @@ app.get('/products/:productId', async (req, res) => {
       select: 'username img'
     })
     .populate({
-      path: 'asks._id',
+      path: 'asks.userId',
       model: 'User',
       select: 'username img'
     })
     .populate({
-      path: 'asks.replies._id',
+      path: 'asks.replies.userId',
       model: 'User',
       select: 'username img'
     })

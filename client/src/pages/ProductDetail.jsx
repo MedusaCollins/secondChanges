@@ -16,6 +16,7 @@ export default function ProductDetail({user}){
   const [loading, setLoading] = useState(true);
   const { productId } = useParams()
   const [rating, setRating] = useState();
+  const [comments, setComments] = useState([]);
 
   useEffect(() => {
     axios.get(`${process.env.REACT_APP_DB}/products/${productId}`)
@@ -23,6 +24,7 @@ export default function ProductDetail({user}){
         console.log(response.data.product)
         setProduct(response.data.product);
         setSeller(response.data.seller);
+        console.log(response.data.product)
         setLoading(false);
         const ratings = response.data.product.seller.reviews.map(review => review.rating);
           if (ratings.length > 0) {
@@ -36,7 +38,7 @@ export default function ProductDetail({user}){
       .catch((error) => console.error(error));
       
 
-  }, [productId]);
+  }, [productId, comments]);
   if (loading && !product) {
     return <div>Waiting for product...</div>;
   }
@@ -46,7 +48,7 @@ export default function ProductDetail({user}){
     <div className="flex flex-col justify-between pt-11">
       <div className='flex justify-between mb-12 px-5'>
         <Carousel slides={product.img} />
-        <About product={product} rating={rating} user={user}/>
+        <About product={product} rating={rating} user={user} comments={comments} setComments={setComments}/>
       </div>
       {"buyers" in product?(
       <div className='flex flex-col gap-5'>
@@ -69,7 +71,7 @@ export default function ProductDetail({user}){
             </div>
       ):null}
       <div className='border-t-2 p-5'>
-        <Comments product={product} seller={seller}/>
+        <Comments product={product} seller={seller} user={user} comment={comments}/>
       </div>
     </div>
   </div>

@@ -59,7 +59,7 @@ const productsSchema={
         }
         },
       asks: [{
-        _id: {
+        userId: {
           type: mongoose.Schema.Types.ObjectId,
           ref: 'User',
           required: false,
@@ -69,7 +69,7 @@ const productsSchema={
           required: false,
         },
         replies: [{
-          _id: {
+          userId: {
             type: mongoose.Schema.Types.ObjectId,
             ref: 'User',
             required: false,
@@ -80,7 +80,7 @@ const productsSchema={
         }],
       }],
       offers: [{
-        _id: {
+        userId: {
           type: mongoose.Schema.Types.ObjectId,
           ref: 'User',
           required: false,
@@ -90,7 +90,7 @@ const productsSchema={
           required: false,
         },
         replies: [{
-          _id: {
+          userId: {
             type: mongoose.Schema.Types.ObjectId,
             ref: 'User',
             required: false,

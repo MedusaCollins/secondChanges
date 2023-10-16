@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import FilterTemplate from './templates/FilterTemplate';
 import CommentFilter from './CommentFilter';
 
-const Comments = ({product, seller}) => {
+const Comments = ({product, user, seller, comments}) => {
   const [openDiv, setOpenDiv] = useState('Asks'); 
   const toggleDiv = (divName) => {
     if (openDiv === divName) {
@@ -41,8 +41,8 @@ const Comments = ({product, seller}) => {
       </div>
 
       <div>
-        {openDiv === 'Asks' && <CommentFilter product={product.asks} filter='asks'/>}
-        {openDiv === 'Offers' && <CommentFilter product={product.offers} filter='offers'/>}
+        {openDiv === 'Asks' && <CommentFilter product={product.asks} pId={product._id} user={user} filter='asks'/>}
+        {openDiv === 'Offers' && <CommentFilter product={product.offers} user={user} filter='offers'/>}
         {openDiv === 'Seller Comments' && <CommentFilter product={seller.reviews} filter='Seller Comments'/>}
       </div>
     </>

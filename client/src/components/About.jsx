@@ -6,24 +6,27 @@ import { faStar as solidStar } from '@fortawesome/free-solid-svg-icons';
 import ProductInput from '../components/templates/ProductInput.jsx';
 import axios from 'axios'
 
-const About = ({product, rating, user}) => {
-  const [popUp, setPopUp] = useState(0)
+const About = ({product, rating, user, comments, setComments}) => {
+  const [popUp, setPopUp] = useState(0);
   const [formData, setFormData] = useState({
-    _id: "",
+    userId: '',
     productId: product._id,
-    comment: ''
+    comment: '',
   });
-  
+
   useEffect(() => {
-    setFormData((prevData) => ({ ...prevData, _id: user._id }));
+    setFormData((prevData) => ({ ...prevData, userId: user._id }));
   }, [user._id]);
 
   async function handleSendComment() {
     const response = await axios.post(`${process.env.REACT_APP_DB}/addComment`, formData);
-    if(response.data.error){
-      console.log(response.data.errror)
-    }else{
-      console.log(response.data)
+    if (response.data.error) {
+      console.log(response.data.error);
+    } else {
+      // Yeni yorumu comments durumuna ekleyin
+      setComments([...comments, response.data]);
+      setPopUp(0);
+      console.log(response.data);
     }
   }
 
