@@ -11,7 +11,6 @@ function App() {
   const handleLogin = useCallback((loggedIn, userData) => {
     setIsLogging(loggedIn);
     setUser(userData)
-    console.log(userData)
   }, []);
   
   return (

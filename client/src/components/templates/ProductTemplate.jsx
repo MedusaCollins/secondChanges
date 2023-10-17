@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import axios from 'axios';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Link } from 'react-router-dom';
 import { faHeart, faCartShopping } from '@fortawesome/free-solid-svg-icons';
@@ -16,10 +17,19 @@ const ProductTemplate = ({ name, img, brand, price, id, size, user }) => {
     displayName = name.substring(0, maxTextLength) + '...';
   }
 
-  const handleHeartClick = (e) => {
+  async function handleHeartClick(e) {
     e.preventDefault();
-    setVariable({ color: '#22c55e' });
-  };
+    setVariable((prevState) => ({
+      ...prevState,
+      color: prevState.color === '#22c55e' ? '#334155' : '#22c55e',
+    }));
+    if(variable.color!=="#22c55e"){
+      await axios.post(`${process.env.REACT_APP_DB}/like`, {productId: id, userId: user._id, reqType: 1})
+    }else{
+      await axios.post(`${process.env.REACT_APP_DB}/like`, {productId: id, userId: user._id, reqType: 0})
+    }
+  }
+  
 
   const handleCartClick = (e) => {
     e.preventDefault();
