@@ -88,27 +88,30 @@ app.post("/addReplies", async (req, res) => {
 });
 
 
-app.post("/like", async(req,res)=>{
+app.post("/like", async (req, res) => {
   try {
-    const product = await Product.findById(req.body.productId)
-    const user = await User.findById(req.body.userId)
-    if(!product || !user){
-      res.status(400).json({error:'Product/User not found.'})
+    const product = await Product.findById(req.body.productId);
+    const user = await User.findById(req.body.userId);
+    if (!product || !user) {
+      res.status(400).json({ error: 'Product/User not found.' });
+      return;
     }
-    if(req.body.reqType){
-      user.favoriteProducts.push(product._id)
-      await user.save()
-    }else{
-      const index = user.favoriteProducts.indexOf(product._id);
+    if (req.body.reqType) {
+      product.likes.push(user._id);
+      await product.save();
+    } else {
+      const index = product.likes.indexOf(user._id);
       if (index !== -1) {
-        user.favoriteProducts.splice(index, 1);
-        await user.save();
+        product.likes.splice(index, 1);
+        await product.save();
       }
     }
+    res.status(200).json({ message: 'Like updated successfully.' });
   } catch (error) {
     console.log(error);
+    res.status(500).json({ error: 'Internal server error.' });
   }
-})
+});
 app.post("/createProduct", async(req,res)=>{
   try {
     const newProduct = new Product(req.body);

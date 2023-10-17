@@ -6,7 +6,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Link } from 'react-router-dom';
 import { faHeart, faCartShopping } from '@fortawesome/free-solid-svg-icons';
 
-const ProductTemplate = ({ name, img, brand, price, id, size, user, handleLogin }) => {
+const ProductTemplate = ({ name, img,likes, brand, price, id, size, user, handleLogin }) => {
   const maxTextLength = 19;
   const [isPopupOpen, setPopupOpen] = useState(false);
   const [isHovered, setIsHovered] = useState(false);
@@ -16,14 +16,14 @@ const ProductTemplate = ({ name, img, brand, price, id, size, user, handleLogin 
   });
 
   useEffect(()=>{
-    if (user.favoriteProducts && id) {
-    if(user.favoriteProducts.includes(id)){
+    if (likes && user._id) {
+    if(likes.includes(user._id)){
       setVariable({color: '#22c55e'});
     }
   }else{
     setVariable({color: '#334155'});
   }
-  }, [user.favoriteProducts, id])
+  }, [likes, user._id])
 
 
   let displayName = name;

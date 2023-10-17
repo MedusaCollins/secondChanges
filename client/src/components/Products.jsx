@@ -26,6 +26,7 @@ const Products = ({ filter, setIsModalOpen, handleLogin, user }) => {
           brand={product.brand}
           price={product.price}
           img={product.img[0]}
+          likes={product.likes}
           user={user}
           handleLogin={handleLogin}
         />

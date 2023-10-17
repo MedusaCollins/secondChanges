@@ -43,6 +43,13 @@ const productsSchema={
         ref: 'User',
         required: true,
       },
+      likes:[
+        {
+          type: mongoose.Schema.Types.ObjectId,
+          ref: 'User',
+          required:false,
+        }
+      ],
       buyers: {
         _id:{
           type: mongoose.Schema.Types.ObjectId,
