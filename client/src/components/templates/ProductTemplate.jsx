@@ -1,55 +1,73 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+
+import Popup from '../Popup';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Link } from 'react-router-dom';
 import { faHeart, faCartShopping } from '@fortawesome/free-solid-svg-icons';
 
-const ProductTemplate = ({ name, img, brand, price, id, size, user }) => {
+const ProductTemplate = ({ name, img, brand, price, id, size, user, handleLogin }) => {
   const maxTextLength = 19;
+  const [isPopupOpen, setPopupOpen] = useState(false);
   const [isHovered, setIsHovered] = useState(false);
   const [variable, setVariable] = useState({
     isHoverable: false,
     color: '#334155'
   });
-  let displayName = name;
 
-  if (name.length > maxTextLength) {
-    displayName = name.substring(0, maxTextLength) + '...';
-  }
-
-  async function handleHeartClick(e) {
-    e.preventDefault();
-    setVariable((prevState) => ({
-      ...prevState,
-      color: prevState.color === '#22c55e' ? '#334155' : '#22c55e',
-    }));
-    if(variable.color!=="#22c55e"){
-      await axios.post(`${process.env.REACT_APP_DB}/like`, {productId: id, userId: user._id, reqType: 1})
-    }else{
-      await axios.post(`${process.env.REACT_APP_DB}/like`, {productId: id, userId: user._id, reqType: 0})
-    }
-  }
-  
-
-  const handleCartClick = (e) => {
-    e.preventDefault();
-  };
   useEffect(()=>{
     if (user.favoriteProducts && id) {
     if(user.favoriteProducts.includes(id)){
       setVariable({color: '#22c55e'});
     }
+  }else{
+    setVariable({color: '#334155'});
   }
   }, [user.favoriteProducts, id])
+
+
+  let displayName = name;
+
+  async function handleHeartClick(e) {
+    e.preventDefault();
+    if(user._id){
+      setVariable((prevState) => ({
+        ...prevState,
+        color: prevState.color === '#22c55e' ? '#334155' : '#22c55e',
+      }));
+      if(variable.color!=="#22c55e"){
+        await axios.post(`${process.env.REACT_APP_DB}/like`, {productId: id, userId: user._id, reqType: 1})
+      }else{
+        await axios.post(`${process.env.REACT_APP_DB}/like`, {productId: id, userId: user._id, reqType: 0})
+      }
+    }else{
+      setPopupOpen(true);
+    }
+  }
+  
+  const handleCartClick = (e) => {
+    e.preventDefault();
+  };
+
+
+  const closePopup = () => {
+    setPopupOpen(false);
+  };
+
+
+  if (name.length > maxTextLength) {
+    displayName = name.substring(0, maxTextLength) + '...';
+  }
   return (
+    <>
     <Link
       key={id}
       className={`rounded-xl w-[18rem] h-[20rem] bg-cover bg-center relative cursor-pointer hover:border hover:border-separate border-slate-500`}
       style={{ backgroundImage: `url(${img})` }}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
-      to={`/products/${id}`}
-    >
+      to={`/products/${id}`}>
+        
       <div role="button" tabIndex={0} className='absolute top-0 right-0 m-5 p-2 w-8 h-8 bg-white hover:bg-gray-100 rounded-full'>
         <div onClick={handleHeartClick}>
           <FontAwesomeIcon icon={faHeart} className='text-slate-700 transform -translate-y-[0.15rem]' style={{ color: variable.color }} />
@@ -71,6 +89,8 @@ const ProductTemplate = ({ name, img, brand, price, id, size, user }) => {
         )}
       </div>
     </Link>
+    <Popup isOpen={isPopupOpen} onClose={closePopup} handleLogin={handleLogin} user={user}/>
+    </>
   );
 };
 

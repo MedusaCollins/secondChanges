@@ -5,7 +5,7 @@ import axios from 'axios';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faFolder } from '@fortawesome/free-solid-svg-icons';
 
-const Products = ({ filter, setIsModalOpen, user }) => {
+const Products = ({ filter, setIsModalOpen, handleLogin, user }) => {
   const [products, setProducts] = useState([]); // State değişkeni düzgün sıralamada
 
   useEffect(() => {
@@ -27,6 +27,7 @@ const Products = ({ filter, setIsModalOpen, user }) => {
           price={product.price}
           img={product.img[0]}
           user={user}
+          handleLogin={handleLogin}
         />
       ))}
       {setIsModalOpen?

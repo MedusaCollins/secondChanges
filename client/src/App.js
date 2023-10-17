@@ -17,11 +17,11 @@ function App() {
     <>
       <Header handleLogin={handleLogin} user={user} islogging={isLogging}/>
       <Routes>
-          <Route path="/" element={<ShowProducts user={user} name="Home"/>}/>
-          <Route path="/man" element={<ShowProducts user={user} filter={{gender: 'Man'}} name="Man"/>}/>
-          <Route path="/woman" element={<ShowProducts user={user} filter={{gender: 'Women'}} name="Women"/>}/>
+          <Route path="/" element={<ShowProducts user={user} name="Home" handleLogin={handleLogin}/>}/>
+          <Route path="/man" element={<ShowProducts user={user} filter={{gender: 'Man'}} name="Man" handleLogin={handleLogin}/>}/>
+          <Route path="/woman" element={<ShowProducts user={user} filter={{gender: 'Women'}} name="Women" handleLogin={handleLogin}/>}/>
           <Route path="/products/:productId" element={<ProductDetail user={user}/>} />
-          {Object.keys(user).length === 0?(<Route path="/myproducts/" element={<ShowProducts user={user} name="Home"/>}/>):(<Route path="/myproducts/" element={<MyProduct user={user} islogging={isLogging} handleLogin={handleLogin}/>} />)}
+          {Object.keys(user).length === 0?(<Route path="/myproducts/" element={<ShowProducts user={user} name="Home" handleLogin={handleLogin}/>}/>):(<Route path="/myproducts/" element={<MyProduct user={user} islogging={isLogging} handleLogin={handleLogin}/>} />)}
       </Routes>
     </>
 )}

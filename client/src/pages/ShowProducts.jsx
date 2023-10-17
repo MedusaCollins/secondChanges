@@ -19,7 +19,7 @@ const ShowProducts = (props) => {
         <h1 className='text-xl font-semibold'>{props.name} <span className='text-gray-300'>({products.length})</span></h1>
         <div className='my-5'><Filter/></div>
         <div className='my-5'><Promo/></div>
-        <Products filter={filters} user={props.user}/>
+        <Products filter={filters} user={props.user} handleLogin={props.handleLogin}/>
       </div>
     )
   }
