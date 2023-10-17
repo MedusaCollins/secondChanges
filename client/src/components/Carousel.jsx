@@ -35,7 +35,7 @@ export default function Carousel({ slides }) {
 
   return (
     <div
-      className="overflow-hidden relative w-[500px] h-[630px] border-2 border-gray-300"
+      className="overflow-hidden relative w-[500px] h-[630px]border-2 border-gray-300"
       onMouseDown={handleMouseDown}
       onMouseUp={handleMouseUp}
     >
@@ -46,7 +46,7 @@ export default function Carousel({ slides }) {
         }}
       >
         {slides.map((s, index) => {
-          return <img key={index} src={s} className="w-[500px] h-[630px]" alt={`Slide ${index + 1}`} />;
+          return <img key={index} src={s} className="min-w-[500px] max-w-[500px] min-h-[630px] max-h-[630px] gap-5" alt={`Slide ${index + 1}`} />;
         })}
       </div>
 

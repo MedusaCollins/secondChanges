@@ -112,11 +112,13 @@ app.post("/like", async(req,res)=>{
 app.post("/createProduct", async(req,res)=>{
   try {
     const newProduct = new Product(req.body);
-    await newProduct.save();
     const seller = await User.findById(req.body.seller);
-    seller.products.push(newProduct);
-    await seller.save();
-    res.status(200).json(seller);
+    if(!seller){
+      res.status(400).json({error:'Product/User not found.'})
+    }else{
+      await newProduct.save();
+      res.status(200).json(seller);
+    }
   } catch (error) {
     console.log(error);
     res.status(500).json({ error: "Ürün oluşturulurken bir hata oluştu." });

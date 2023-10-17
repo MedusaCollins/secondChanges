@@ -44,7 +44,7 @@ const MyProduct = ({ user, handleLogin }) => {
     <>
       {user.products.length !== 0 ? (
         <div className='flex gap-5 justify-center mt-12'>
-          <Products filter={filters} setIsModalOpen={setModalOpen} />
+          <Products filter={filters} setIsModalOpen={setModalOpen} user={user} handleLogin={handleLogin}/>
         </div>
       ) : (
         <div>
