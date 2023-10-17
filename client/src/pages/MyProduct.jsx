@@ -10,6 +10,16 @@ const MyProduct = ({ user, handleLogin }) => {
   const [isLoading, setIsLoading] = useState(true);
   const [filters] = useState({ seller: user._id });
 
+  const [products, setProducts] = useState([]); // State değişkeni düzgün sıralamada
+
+  useEffect(() => {
+    axios.post(`${process.env.REACT_APP_DB}/api/products`, filters)
+      .then((response) => {
+        setProducts(response.data);
+      })
+      .catch((error) => console.error(error));
+  }, [filters]);
+
   useEffect(() => {
     async function autoLogin() {
       const storedUsername = localStorage.getItem('username');
@@ -33,8 +43,12 @@ const MyProduct = ({ user, handleLogin }) => {
       }
     }
   
+  
     autoLogin();
   }, [filters, handleLogin]);
+  useEffect(() => {
+    console.log(products);
+  }, [products]);
 
   if (isLoading) {
     return <div>Yükleniyor...</div>;
@@ -42,7 +56,7 @@ const MyProduct = ({ user, handleLogin }) => {
 
   return (
     <>
-      {user.products.length !== 0 ? (
+      {products.length > 0? (
         <div className='flex gap-5 justify-center mt-12'>
           <Products filter={filters} setIsModalOpen={setModalOpen} user={user} handleLogin={handleLogin}/>
         </div>
@@ -57,7 +71,6 @@ const MyProduct = ({ user, handleLogin }) => {
           </div>
         </div>
       )}
-
       {isModalOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center backdrop-blur-md">
           <div className='fixed inset-0 bg-black opacity-50' onClick={()=>setModalOpen(false)}></div>

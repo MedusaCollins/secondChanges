@@ -4,9 +4,9 @@ import axios from 'axios';
 import Popup from '../Popup';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Link } from 'react-router-dom';
-import { faHeart, faCartShopping } from '@fortawesome/free-solid-svg-icons';
+import { faHeart, faCartShopping, faDollarSign } from '@fortawesome/free-solid-svg-icons';
 
-const ProductTemplate = ({ name, img,likes, brand, price, id, size, user, handleLogin }) => {
+const ProductTemplate = ({ name, img,likes, brand, price, id, size,dprice, user, handleLogin }) => {
   const maxTextLength = 19;
   const [isPopupOpen, setPopupOpen] = useState(false);
   const [isHovered, setIsHovered] = useState(false);
@@ -79,7 +79,23 @@ const ProductTemplate = ({ name, img,likes, brand, price, id, size, user, handle
           {displayName}
         </h2>
         <p className='text-gray-500 text-l'>{brand}{' '}(<span className='text-slate-400'>{size}</span>)</p>
-        <p className="">${price}</p>
+        <div className="relative justify-between inline-flex items-center rounded-xl p-2">
+          {dprice!==""?<>
+            <span className=" font-semibold pr-2">
+              <FontAwesomeIcon icon={faDollarSign} />
+              {dprice},00
+            </span>
+            <span className="text-red-500 px-2 line-through align-bottom">
+              <FontAwesomeIcon icon={faDollarSign} />
+              {price},00
+            </span>
+            </>:
+            <><span className=" font-semibold pr-2">
+              <FontAwesomeIcon icon={faDollarSign} />
+              {price},00
+            </span>
+            </>}
+        </div>
         {isHovered && (
           <div role="button" tabIndex={0} href="#" onClick={handleCartClick} className='mx-auto mt-2'>
             <button className='bg-green-500 text-white py-2 px-4 rounded-full hover:bg-green-600'>

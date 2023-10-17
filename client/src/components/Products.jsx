@@ -6,7 +6,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faFolder } from '@fortawesome/free-solid-svg-icons';
 
 const Products = ({ filter, setIsModalOpen, handleLogin, user }) => {
-  const [products, setProducts] = useState([]); // State değişkeni düzgün sıralamada
+  const [products, setProducts] = useState([]);
 
   useEffect(() => {
     axios.post(`${process.env.REACT_APP_DB}/api/products`, filter)
@@ -25,6 +25,7 @@ const Products = ({ filter, setIsModalOpen, handleLogin, user }) => {
           size={product.size}
           brand={product.brand}
           price={product.price}
+          dprice={product.dprice}
           img={product.img[0]}
           likes={product.likes}
           user={user}
