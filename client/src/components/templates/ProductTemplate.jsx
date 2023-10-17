@@ -1,9 +1,9 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Link } from 'react-router-dom';
 import { faHeart, faCartShopping } from '@fortawesome/free-solid-svg-icons';
 
-const ProductTemplate = ({ name, img, brand, price, id, size }) => {
+const ProductTemplate = ({ name, img, brand, price, id, size, user }) => {
   const maxTextLength = 19;
   const [isHovered, setIsHovered] = useState(false);
   const [variable, setVariable] = useState({
@@ -24,6 +24,13 @@ const ProductTemplate = ({ name, img, brand, price, id, size }) => {
   const handleCartClick = (e) => {
     e.preventDefault();
   };
+  useEffect(()=>{
+    if (user.favoriteProducts && id) {
+    if(user.favoriteProducts.includes(id)){
+      setVariable({color: '#22c55e'});
+    }
+  }
+  }, [user.favoriteProducts, id])
   return (
     <Link
       key={id}
@@ -48,7 +55,7 @@ const ProductTemplate = ({ name, img, brand, price, id, size }) => {
         {isHovered && (
           <div role="button" tabIndex={0} href="#" onClick={handleCartClick} className='mx-auto mt-2'>
             <button className='bg-green-500 text-white py-2 px-4 rounded-full hover:bg-green-600'>
-              <FontAwesomeIcon icon={faCartShopping} /> Add to Cart
+              <FontAwesomeIcon icon={faCartShopping} />Add to Cart
             </button>
           </div>
         )}

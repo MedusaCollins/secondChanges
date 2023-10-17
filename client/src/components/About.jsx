@@ -78,8 +78,8 @@ const About = ({product, rating, user, comments, setComments}) => {
                 <div className="fixed inset-0 z-50 flex items-center justify-center backdrop-blur-md">
                   <div className='fixed inset-0 bg-black opacity-50 transition' onClick={()=>setPopUp(0)}></div>
                   <div className="relative bg-white w-96 h-48 rounded-lg p-4">
-                    <ProductInput name="Product Detail" type="textarea" placeholder="You can ask anything that comes to your mind about the product." onChange={(e) => setFormData({ ...formData, comment: e.target.value })} />
-                    <button onClick={()=>handleSendComment()} className="bg-blue-500 hover:bg-blue-700 text-white p-2 text-sm rounded-lg transition absolute bottom-3 right-5">Send Comment</button>
+                    <ProductInput name={formData.reqType==='asks'?"Your Question":"Your Offer"}type="textarea" placeholder={formData.reqType==='asks'?"You can ask anything that comes to your mind about the product.":"You can make an offer for the product."} onChange={(e) => setFormData({ ...formData, comment: e.target.value })} />
+                    <button onClick={()=>handleSendComment()} className="bg-blue-500 hover:bg-blue-700 text-white p-2 text-sm rounded-lg transition absolute bottom-3 right-5">{formData.reqType==='asks'?"Ask a Question":"Submit an Offer"}</button>
                   </div>
                 </div>
               ):null}
