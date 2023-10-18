@@ -25,6 +25,8 @@ export default function ProductDetail({user}){
         setSeller(response.data.seller);
         console.log(response.data.product)
         setLoading(false);
+
+        
         const ratings = response.data.product.seller.reviews.map(review => review.rating);
           if (ratings.length > 0) {
             const totalRating = ratings.reduce((sum, rating) => sum + rating, 0);

@@ -11,6 +11,7 @@ const ShowProducts = (props) => {
       axios.post(`${process.env.REACT_APP_DB}/api/products`, filters)
         .then((response) => {
           setProducts(response.data);
+          console.log(response.data)
         })
         .catch((error) => console.error(error));
     }, [filters]);

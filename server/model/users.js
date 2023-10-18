@@ -18,9 +18,13 @@ const userSchema = {
     },
     img: String,
     reviews: [{
-      _id:{
+      userId:{
         type: Schema.Types.ObjectId,
         ref: 'User',
+      },
+      productId:{
+        type: Schema.Types.ObjectId,
+        ref: 'Product',
       },
       rating:{
         type: Number,

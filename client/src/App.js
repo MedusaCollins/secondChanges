@@ -22,7 +22,7 @@ function App() {
           <Route path="/man" element={<ShowProducts user={user} filter={{gender: 'Man'}} name="Man" handleLogin={handleLogin}/>}/>
           <Route path="/woman" element={<ShowProducts user={user} filter={{gender: 'Women'}} name="Women" handleLogin={handleLogin}/>}/>
           <Route path="/products/:productId" element={<ProductDetail user={user}/>} />
-          <Route path="/profiles/:userName" element={<UserDetail/>} />
+          <Route path="/profiles/:userName" element={<UserDetail handleLogin={handleLogin} pUser={user}/>} />
           {Object.keys(user).length === 0?(<Route path="/myproducts/" element={<ShowProducts user={user} name="Home" handleLogin={handleLogin}/>}/>):(<Route path="/myproducts/" element={<MyProduct user={user} islogging={isLogging} handleLogin={handleLogin}/>} />)}
       </Routes>
     </>

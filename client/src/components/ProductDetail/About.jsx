@@ -17,6 +17,7 @@ const About = ({product, rating, user, comments, setComments}) => {
 
   useEffect(() => {
     setFormData((prevData) => ({ ...prevData, userId: user._id }));
+    console.log(product)
   }, [user._id]);
 
   async function handleSendComment() {
@@ -49,7 +50,7 @@ const About = ({product, rating, user, comments, setComments}) => {
           {product.seller.username}
           </div>
           <div className='p-2 text-center'>
-            {product.seller.reviews.length>=1?(
+            {product.seller.reviews.length>0?(
               <>
               <FontAwesomeIcon icon={solidStar} className='text-orange-500 text-left'/> {rating}<span className='text-gray-500'>/5 ({product.seller.reviews.length} reviews)</span>
               </>

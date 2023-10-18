@@ -108,9 +108,6 @@ const Header = ({handleLogin, user, islogging}) => {
               <Link to={`/profiles/${user.username}`} className="w-full hover:bg-gray-200 p-2 transition-all flex items-center" onClick={toggleMenu}>
                 <FontAwesomeIcon icon={faUser} className="mr-2" /> Profile
               </Link>
-              <Link to="/settings" className="w-full hover:bg-gray-200 p-2 transition-all flex items-center" onClick={toggleMenu}>
-                <FontAwesomeIcon icon={faUser} className="mr-2" /> Offers
-              </Link>
               <Link to="/myproducts" className="w-full hover:bg-gray-200 p-2 transition-all flex items-center" onClick={toggleMenu}>
                 <FontAwesomeIcon icon={faUser} className="mr-2" /> Manage my products
               </Link>
