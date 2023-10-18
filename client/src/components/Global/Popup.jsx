@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import axios from 'axios';
-import Input from './templates/Input';
+import Input from '../templates/Input';
 
 function Popup({ isOpen, onClose, handleLogin }) {
   const [formState, setFormState] = useState({

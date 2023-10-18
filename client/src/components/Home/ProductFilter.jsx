@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import FilterTemplate from './templates/FilterTemplate';
+import FilterTemplate from '../templates/FilterTemplate';
 import DetailFilter from './DetailFilter.jsx'
 
 const Filter = () => {

@@ -17,12 +17,6 @@ const userSchema = {
       required: true,
     },
     img: String,
-    favoriteProducts: [
-      {
-        type: Schema.Types.ObjectId,
-        ref: 'Product',
-      },
-    ],
     reviews: [{
       _id:{
         type: Schema.Types.ObjectId,

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import ProductTemplate from './templates/ProductTemplate.jsx';
+import ProductTemplate from '../templates/ProductTemplate.jsx';
 import axios from 'axios';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';

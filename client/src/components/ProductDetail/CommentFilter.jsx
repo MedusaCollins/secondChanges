@@ -3,7 +3,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faStar as solidStar } from '@fortawesome/free-solid-svg-icons';
 import { faStar as regularStar } from '@fortawesome/free-regular-svg-icons';
 
-import ProductInput from './templates/ProductInput';
+import ProductInput from '../templates/ProductInput';
 // import Popup from './Popup';
 import axios from 'axios';
 

@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react'
-import ProductAbout from './templates/ProductAbout.jsx'
-import ProductPrice from './templates/ProductPrice.jsx'
+import ProductAbout from '../templates/ProductAbout.jsx'
+import ProductPrice from '../templates/ProductPrice.jsx'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faStar as solidStar } from '@fortawesome/free-solid-svg-icons';
-import ProductInput from '../components/templates/ProductInput.jsx';
+import ProductInput from '../templates/ProductInput.jsx';
 import axios from 'axios'
 
 const About = ({product, rating, user, comments, setComments}) => {

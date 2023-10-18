@@ -105,7 +105,7 @@ const Header = ({handleLogin, user, islogging}) => {
               </div>
             </li>
             <li className='flex flex-col border-b-2 border-dotted items-center'>
-              <Link to="/settings" className="w-full hover:bg-gray-200 p-2 transition-all flex items-center" onClick={toggleMenu}>
+              <Link to={`/profiles/${user.username}`} className="w-full hover:bg-gray-200 p-2 transition-all flex items-center" onClick={toggleMenu}>
                 <FontAwesomeIcon icon={faUser} className="mr-2" /> Profile
               </Link>
               <Link to="/settings" className="w-full hover:bg-gray-200 p-2 transition-all flex items-center" onClick={toggleMenu}>

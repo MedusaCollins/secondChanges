@@ -192,13 +192,19 @@ app.post('/api/products', async(req,res)=>{
   }
 })
 
-app.post('/findUser', async(req,res)=>{
+app.get('/profiles/:userName', async(req,res)=>{
   try {
-    const user = await User.findbyId(req.body._id)
-    res.status(202).json(user)
-  } catch (err) {
-    console.log(err);
-    res.status(500).json({error: err});
+    const userName = req.params.userName;
+    const user = await User.findOne({username: userName})
+    if(user){
+      console.log("bulundu")
+      res.status(200).json(user)
+    }else{
+      console.log("bulunamadı")
+      res.status(500).json({error: 'User not find.'})
+    }
+  } catch (error) {
+    console.log(error);
   }
 })
 

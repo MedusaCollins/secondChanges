@@ -1,10 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useParams } from 'react-router-dom';
-import Locator from '../components/Locator';
-import Carousel from '../components/Carousel';
-import About from '../components/About';
-import Comments from '../components/Comments';
+import Carousel from '../components/ProductDetail/Carousel';
+import About from '../components/ProductDetail/About';
+import Comments from '../components/ProductDetail/Comments';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faStar as solidStar } from '@fortawesome/free-solid-svg-icons';
@@ -44,7 +43,17 @@ export default function ProductDetail({user}){
   }
   return (
   <div className='mx-auto max-w-[1200px]'>
-    <Locator product={product} />
+
+    <div className='text-slate-700 text-lg font-medium my-5'>
+        <span className='underline underline-offset-2'>Home</span>
+        <span className='text-slate-700 mx-3'>/</span>
+        <span className='underline underline-offset-2'>{product.gender}</span>
+        <span className='text-slate-700 mx-3'>/</span>
+        <span className='underline underline-offset-2'>{product.type}</span>
+        <span className='text-slate-700 mx-3'>/</span>
+        <span className='text-slate-500'>{product.name}</span> 
+    </div>
+
     <div className="flex flex-col justify-between pt-11">
       <div className='flex justify-between mb-12 px-5'>
         <Carousel slides={product.img} />

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 
-import Popup from '../Popup';
+import Popup from '../Global/Popup';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Link } from 'react-router-dom';
 import { faHeart, faCartShopping, faDollarSign } from '@fortawesome/free-solid-svg-icons';

@@ -1,7 +1,7 @@
 import {React, useEffect, useState} from 'react';
-import Filter from '../components/ProductFilter.jsx';
-import Promo from '../components/Promo.jsx';
-import Products from '../components/Products.jsx';
+import Filter from '../components/Home/ProductFilter.jsx';
+import Promo from '../components/Home/Promo.jsx';
+import Products from '../components/Home/Products.jsx';
 import axios from 'axios';
 
 const ShowProducts = (props) => {

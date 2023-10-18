@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import ProductInput from './templates/ProductInput';
+import ProductInput from '../templates/ProductInput';
 import axios from 'axios';
 
 const MultiStepForm = ({ user, handleLogin, isModalOpen }) => {

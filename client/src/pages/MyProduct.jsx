@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faFolder, faPlus, faTimes } from '@fortawesome/free-solid-svg-icons';
-import MultiStepForm from '../components/MultiStepForm.jsx';
-import Products from '../components/Products.jsx';
+import MultiStepForm from '../components/ProductEdit/MultiStepForm.jsx';
+import Products from '../components/Home/Products.jsx';
 import axios from 'axios';
 
 const MyProduct = ({ user, handleLogin }) => {
