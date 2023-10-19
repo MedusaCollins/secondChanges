@@ -12,18 +12,6 @@ const Comments = ({product, user, seller, comments}) => {
     }
   };
 
-
-  // function test(ort){
-  //   const ratings = ort.map(review => review.rating);
-  //   if (ratings.length > 0) {
-  //     const totalRating = ratings.reduce((sum, rating) => sum + rating, 0);
-  //     const averageRating = totalRating / ratings.length;
-  //     return averageRating.toFixed(1)
-  //   } else {
-  //     console.log('Henüz hiç rating yok.');
-  //   }
-  // }
-
   return (
     <>
       <div className='w-full p-3 flex bg-slate-100 rounded-lg'>

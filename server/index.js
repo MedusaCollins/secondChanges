@@ -196,6 +196,16 @@ app.get('/profiles/:userName', async(req,res)=>{
   try {
     const userName = req.params.userName;
     const user = await User.findOne({username: userName})
+    .populate({
+      path: 'reviews.userId',
+      model: 'User',
+      select: 'username img'
+    })
+    .populate({
+      path: 'reviews.productId',
+      model: 'Product',
+      select: 'img'
+    })
     if(user){
       res.status(200).json(user)
     }else{

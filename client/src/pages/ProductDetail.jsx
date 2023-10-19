@@ -63,23 +63,19 @@ export default function ProductDetail({user}){
       </div>
       {"buyers" in product?(
       <div className='flex flex-col gap-5'>
-            <div className='flex gap-3 mb-16 border p-5 rounded-xl'>
-                <img src={product.buyers._id.img} alt="comment user profile pic" className='w-12 h-12 mt-2 rounded-full'/>
-                <div className='flex flex-col'>
-                  <span className='font-semibold text-xl'>{product.buyers._id.username}</span>
-                  <div>
-                             {[...Array(5)].map((_, index) => (
-                              <FontAwesomeIcon
-                                key={index}
-                                icon={product.buyers.rating >= index + 1 ? solidStar : regularStar}
-                                className='w-min text-orange-500'
-                              />
-                            ))}
-                  <span className='text-lg flex mt-2'>{product.buyers.comment}</span>
-                    </div>
-                  </div>
-                  </div>
+        <div className='flex gap-3 mb-16 border p-5 rounded-xl'>
+          <img src={product.buyers._id.img} alt="comment user profile pic" className='w-12 h-12 mt-2 rounded-full'/>
+          <div className='flex flex-col'>
+            <span className='font-semibold text-xl'>{product.buyers._id.username}</span>
+            <div>
+               {[...Array(5)].map((_, index) => (
+               <FontAwesomeIcon key={index} icon={product.buyers.rating >= index + 1 ? solidStar : regularStar} className='w-min text-orange-500'/>
+               ))}
+              <span className='text-lg flex mt-2'>{product.buyers.comment}</span>
             </div>
+          </div>
+        </div>
+      </div>
       ):null}
       <div className='border-t-2 p-5'>
         <Comments product={product} seller={seller} user={user} comment={comments}/>
