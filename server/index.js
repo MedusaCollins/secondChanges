@@ -1,15 +1,17 @@
 import express from "express";
 import mongoose from "mongoose";
 import bodyParser from "body-parser";
+import multer from "multer";
 import cors from "cors";
 import bcrypt from "bcrypt";
 import User from "./model/users.js";
 import Product from "./model/products.js";
 
+import path from "path";
 import { config } from "dotenv";
 config();
 
-const PORT = process.env.PORT || 3002;
+const PORT = process.env.PORT || 3001;
 const app=express();
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.json());
@@ -25,6 +27,31 @@ mongoose.connect(`${process.env.DB}`, { useNewUrlParser: true, useUnifiedTopolog
     console.error(`Mongodb connection error: ${err}`);
   });
 
+
+
+  const uploadDir = path.join(path.dirname(new URL(import.meta.url).pathname), "uploads");
+
+  const storage = multer.diskStorage({
+    destination: (req, file, cb) => {
+      cb(null, uploadDir);
+    },
+    filename: (req, file, cb) => {
+      const fileName = Date.now() + "-" + file.originalname;
+      cb(null, fileName);
+    },
+  });
+  
+  const upload = multer({ storage });
+  
+app.post("/upload", async (req, res) => {
+  console.log(req.body);
+  return res.status(200).send({error: "test"})
+  // if (!req.file) {
+  //   return res.status(400).json({ error: "Dosya yüklenemedi." });
+  // }
+  // // Dosya yükleme işlemi başarılı
+  // res.json({ message: "Dosya yükleme işlemi başarılı" });
+});
 
 
 app.post("/addComment", async (req, res) => {

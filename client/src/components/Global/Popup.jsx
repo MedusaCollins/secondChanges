@@ -18,7 +18,6 @@ function Popup({ isOpen, onClose, handleLogin }) {
   function handleEmailChange(e) {
     setFormState((prevState) => ({ ...prevState, email: e.target.value }));
   }
-
   function handlePasswordChange(e) {
     setFormState((prevState) => ({ ...prevState, password: e.target.value }));
   }

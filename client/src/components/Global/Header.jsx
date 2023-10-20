@@ -4,7 +4,7 @@ import axios from 'axios';
 
 import { Link, useLocation } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faMagnifyingGlass, faBell, faHeart, faCartShopping, faGear, faUser, faMoon } from '@fortawesome/free-solid-svg-icons';
+import { faMagnifyingGlass, faBell, faHeart, faCartShopping, faUser, faMoon, faCog, faTruckFast, faBagShopping } from '@fortawesome/free-solid-svg-icons';
 
 const Header = ({handleLogin, user, islogging}) => {
   const location = useLocation()
@@ -106,13 +106,16 @@ const Header = ({handleLogin, user, islogging}) => {
             </li>
             <li className='flex flex-col border-b-2 border-dotted items-center'>
               <Link to={`/profiles/${user.username}`} className="w-full hover:bg-gray-200 p-2 transition-all flex items-center" onClick={toggleMenu}>
-                <FontAwesomeIcon icon={faUser} className="mr-2" /> Profile
+                <FontAwesomeIcon icon={faUser} className="mr-2" /> My Profile
               </Link>
               <Link to="/myproducts" className="w-full hover:bg-gray-200 p-2 transition-all flex items-center" onClick={toggleMenu}>
-                <FontAwesomeIcon icon={faUser} className="mr-2" /> Manage my products
+                <FontAwesomeIcon icon={faBagShopping} className="mr-2" /> Product Management
+              </Link>
+              <Link to="/orders" className="w-full hover:bg-gray-200 p-2 transition-all flex items-center" onClick={toggleMenu}>
+                <FontAwesomeIcon icon={faTruckFast} className="mr-2" /> My Orders
               </Link>
               <Link to="/settings" className="w-full hover:bg-gray-200 p-2 transition-all flex items-center" onClick={toggleMenu}>
-                <FontAwesomeIcon icon={faGear} className="mr-2" /> User settings
+                <FontAwesomeIcon icon={faCog} className="mr-2" /> Settings
               </Link>
             </li>
 
