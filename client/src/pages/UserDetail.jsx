@@ -18,7 +18,8 @@ const UserDetail = ({ handleLogin, pUser }) => {
         filters: null,
         isLoading: 1,
         products: [],
-        selected: "products"
+        selected: "products",
+        showPassword: 0
 
     })
     const [formData, setFormData] = useState({
@@ -30,6 +31,10 @@ const UserDetail = ({ handleLogin, pUser }) => {
         errorMessage: '',
         user: null
     })
+
+    function togglePasswordVisibility() {
+        setFilteringData((prevState) => ({ ...prevState, showPassword: !prevState.showPassword }));
+      }
 
     useEffect(() => {
         async function fetchData() {
@@ -110,7 +115,6 @@ const UserDetail = ({ handleLogin, pUser }) => {
       };
   
       async function applyChanges(e){
-        setFormData((prevState)=>({...prevState, errorMessage: ''}))
           try {
               e.preventDefault();
               const applyChanges = await axios.post(`${process.env.REACT_APP_DB}/saveUserData`, formData)
@@ -242,8 +246,9 @@ const UserDetail = ({ handleLogin, pUser }) => {
                                     <div className='mt-5 gap-2 text-center font-semibold flex flex-col'>
                                         <span>Change Password</span>
                                         <div className='flex flex-col gap-2'>
-                                            <Input text="Old Password" type="password" value={formData.oldPassword} onChange={(e)=> handleFormChange(e,"oldPassword")} formState={formData} />
-                                            <Input text="New Password" type="password" value={formData.newPassword} onChange={(e)=> handleFormChange(e,"newPassword")} formState={formData} />
+                                            {/* <Input text="Old Password" type="password" value={formData.oldPassword} onChange={(e)=> handleFormChange(e,"oldPassword")} formState={formData} /> */}
+                                            <Input text="Old Password" type={filteringData.showPassword ? "text" : "password"} value={formData.oldPassword} onChange={(e)=> handleFormChange(e,"oldPassword")}  formState={filteringData} togglePasswordVisibility={togglePasswordVisibility} />
+                                            <Input text="New Password" type={filteringData.showPassword ? "text" : "password"} value={formData.newPassword} onChange={(e)=> handleFormChange(e,"newPassword")}  formState={filteringData} />
                                         </div>
                                     </div>
                                 </div>

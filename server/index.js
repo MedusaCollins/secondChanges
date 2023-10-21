@@ -39,7 +39,7 @@ mongoose.connect(`${process.env.DB}`, { useNewUrlParser: true, useUnifiedTopolog
   
     try {
       if (!user) {
-        return res.status(404).json({ error: "Kullanıcı bulunamadı." });
+        return res.status(404).json({ error: "User not found." });
       }
   
       console.log(updatedData);
@@ -67,7 +67,10 @@ mongoose.connect(`${process.env.DB}`, { useNewUrlParser: true, useUnifiedTopolog
             user.email = updatedData.email;
           }
       }
-  
+
+      if(updatedData.oldPassword==='' && updatedData.newPassword!==''){
+        return res.status(202).json({error: "Old password cannot be empty."})
+      }
       if (updatedData.oldPassword !== '') {
         // Yeni şifreyi kontrol etmek için bcrypt.compare kullanımı
         bcrypt.compare(updatedData.oldPassword, user.password, async (err, result) => {
@@ -79,12 +82,12 @@ mongoose.connect(`${process.env.DB}`, { useNewUrlParser: true, useUnifiedTopolog
               const salt = await bcrypt.genSalt(10);
               const hashedPassword = await bcrypt.hash(updatedData.newPassword, salt);
               user.password = hashedPassword;
+              await user.save();
+              isChanged=1;
+              res.status(202).json({ message: "Success.", newPassword: updatedData.newPassword, email: updatedData.email });
             }else{
-              res.status(202).json({ error: "Password can not be empty." });
+              res.status(202).json({ error: "Password cannot be empty." });
             }
-            await user.save();
-            isChanged=1;
-            res.status(202).json({ message: "Success.", newPassword: updatedData.newPassword, email: updatedData.email });
           } else {
             res.status(202).json({ error: "Wrong password." });
           }

@@ -10,11 +10,10 @@ const Input = (props) => {
         <span className='absolute inset-y-0 right-0 flex items-center px-4 text-gray-600'>
         {props.text==="Username"&&<FontAwesomeIcon icon={faAddressCard} className="w-4 h-4"/>}
         {props.text==="Email"&&<FontAwesomeIcon icon={faEnvelope} className="w-4 h-4"/>}
-        {props.text==="Password"&&<FontAwesomeIcon icon={faLock} className="w-4 h-4"/>}
         </span>
       {props.togglePasswordVisibility&&(
         <button type="button" className="absolute inset-y-0 right-0 flex items-center px-4 text-gray-600" onMouseUp={props.togglePasswordVisibility}>
-        <FontAwesomeIcon icon={props.formState.showPassword ? faEyeSlash : faEye} className="w-4 h-4"/>
+        <FontAwesomeIcon icon={props.formState.showPassword ? faEye:faEyeSlash} className="w-4 h-4"/>
       </button>
         )}
     </div>
