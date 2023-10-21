@@ -1,21 +1,24 @@
 import express from "express";
 import mongoose from "mongoose";
 import bodyParser from "body-parser";
-import multer from "multer";
 import cors from "cors";
 import bcrypt from "bcrypt";
 import User from "./model/users.js";
 import Product from "./model/products.js";
 
-import path from "path";
+import fileUpload from "express-fileupload";
 import { config } from "dotenv";
 config();
 
 const PORT = process.env.PORT || 3001;
+const uploadDir = './uploads';
 const app=express();
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.json());
 app.use(cors());
+app.use(fileUpload());
+
+app.use('/uploads', express.static(uploadDir));
 
 mongoose.connect(`${process.env.DB}`, { useNewUrlParser: true, useUnifiedTopology: true })
   .then(() => {
@@ -29,30 +32,92 @@ mongoose.connect(`${process.env.DB}`, { useNewUrlParser: true, useUnifiedTopolog
 
 
 
-  const uploadDir = path.join(path.dirname(new URL(import.meta.url).pathname), "uploads");
-
-  const storage = multer.diskStorage({
-    destination: (req, file, cb) => {
-      cb(null, uploadDir);
-    },
-    filename: (req, file, cb) => {
-      const fileName = Date.now() + "-" + file.originalname;
-      cb(null, fileName);
-    },
+  app.post("/saveUserData", async (req, res) => {
+    let isChanged = 0;
+    const user = await User.findById(req.body.user._id);
+    const updatedData = req.body;
+  
+    try {
+      if (!user) {
+        return res.status(404).json({ error: "Kullanıcı bulunamadı." });
+      }
+  
+      console.log(updatedData);
+  
+      if(updatedData.filePath!==null){
+        user.img = updatedData.filePath
+        isChanged=1;
+      }
+      if (updatedData.username && updatedData.username!==user.username){
+          const existingUser = await User.findOne({ username: updatedData.username });
+          if (existingUser) {
+            return res.status(202).json({ error: "Username not unique." });
+          }else{
+            user.username = updatedData.username;
+            isChanged=1;
+            // return(res.status(200).json({error:''}))
+          }
+      }
+      if(updatedData.email && updatedData.email!==user.email){
+        const existingEmail = await User.findOne({ email: updatedData.email });
+          if (existingEmail) {
+            return res.status(202).json({ error: "Email not unique." });
+          }else{
+            isChanged=1;
+            user.email = updatedData.email;
+          }
+      }
+  
+      if (updatedData.oldPassword !== '') {
+        // Yeni şifreyi kontrol etmek için bcrypt.compare kullanımı
+        bcrypt.compare(updatedData.oldPassword, user.password, async (err, result) => {
+          if (err) {
+            console.log(err);
+            res.status(202).json({ error: err });
+          } else if (result) {
+            if (updatedData.newPassword!=='') {
+              const salt = await bcrypt.genSalt(10);
+              const hashedPassword = await bcrypt.hash(updatedData.newPassword, salt);
+              user.password = hashedPassword;
+            }else{
+              res.status(202).json({ error: "Password can not be empty." });
+            }
+            await user.save();
+            isChanged=1;
+            res.status(202).json({ message: "Success.", newPassword: updatedData.newPassword, email: updatedData.email });
+          } else {
+            res.status(202).json({ error: "Wrong password." });
+          }
+        });
+      } else {
+        
+        if(isChanged){
+          await user.save();
+          res.status(202).json({ message: "Success.", email: updatedData.email});
+        }else{
+          res.status(202).json({error: "Nothing changed."})
+        }
+      }
+    } catch (error) {
+      res.status(500).json({ error: error });
+    }
   });
-  
-  const upload = multer({ storage });
-  
-app.post("/upload", async (req, res) => {
-  console.log(req.body);
-  return res.status(200).send({error: "test"})
-  // if (!req.file) {
-  //   return res.status(400).json({ error: "Dosya yüklenemedi." });
-  // }
-  // // Dosya yükleme işlemi başarılı
-  // res.json({ message: "Dosya yükleme işlemi başarılı" });
-});
 
+  app.post("/upload", async (req, res) => {
+    if (!req.files || !req.files.file) {
+      return res.status(400).json({ error: "Dosya yüklenemedi." });
+    }
+  
+    const uploadedFile = req.files.file;
+    uploadedFile.mv(`${uploadDir}/${uploadedFile.name}`, (err) => {
+      if (err) {
+        return res.status(500).json({ error: "Dosya kaydedilirken bir hata oluştu." });
+      }
+      
+      // Dosya başarıyla kaydedildi
+      res.json({ filePath: `/uploads/${uploadedFile.name}` });
+    });
+  });
 
 app.post("/addComment", async (req, res) => {
   try {
@@ -159,7 +224,7 @@ app.post('/createUser', async(req,res)=>{
   console.log(req.body)
   var { username, email, password} = req.body
   if(!username || !email || !password){
-    return res.status(400).json({ error: "Username, email and password is not empty." });
+    return res.status(400).json({ error: "Username, email and password is can not be empty." });
   }else{
     User.findOne({username: username}).then((user)=>{
       if(user){
