@@ -86,7 +86,7 @@ const Header = ({handleLogin, user, islogging}) => {
       <div className='relative flex right-0 ml-auto text-gray-700'>
         <FontAwesomeIcon icon={faMagnifyingGlass} className='m-4'/>
         <FontAwesomeIcon icon={faBell} className='m-4'/>
-        <FontAwesomeIcon icon={faHeart} className='m-4'/>
+        <Link to={`/likes/${user.username}`}><FontAwesomeIcon icon={faHeart} className={`m-4 ${location.pathname ===`/likes/${user.username}` && 'text-green-500'}`}/></Link>
         <FontAwesomeIcon icon={faCartShopping} className='m-4'/>
         
         {islogging?(

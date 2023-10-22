@@ -20,10 +20,8 @@ export default function ProductDetail({user}){
   useEffect(() => {
     axios.get(`${process.env.REACT_APP_DB}/products/${productId}`)
       .then((response) => {
-        console.log(response.data.product)
         setProduct(response.data.product);
         setSeller(response.data.seller);
-        console.log(response.data.product)
         setLoading(false);
 
         

@@ -17,7 +17,6 @@ const About = ({product, rating, user, comments, setComments}) => {
 
   useEffect(() => {
     setFormData((prevData) => ({ ...prevData, userId: user._id }));
-    console.log(product)
   }, [user._id]);
 
   async function handleSendComment() {

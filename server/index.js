@@ -287,6 +287,20 @@ app.post('/api/products', async(req,res)=>{
   }
 })
 
+app.get('/likes/:userName', async(req,res)=>{
+  try {
+    const user = await User.findOne({ username: req.params.userName });
+    const products = await Product.find({likes: user._id})
+    if(user){
+      res.status(200).json(products)
+    }else{
+      res.status(500).json({error: 'User not find.'})
+    }
+  } catch (error) {
+    console.log(error);
+  }
+});
+
 app.get('/profiles/:userName', async(req,res)=>{
   try {
     const userName = req.params.userName;
@@ -355,6 +369,7 @@ app.get('/products/:productId', async (req, res) => {
       model: 'User',
       select: 'username img'
     })
+
     if (!product) {
       return res.status(404).json({ error: 'Ürün bulunamadı' });
     }
