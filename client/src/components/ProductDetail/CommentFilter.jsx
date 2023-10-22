@@ -8,7 +8,7 @@ import ProductInput from '../templates/ProductInput';
 import axios from 'axios';
 
 
-const CommentFilter = ({filter,product, pId}) => {
+const CommentFilter = ({filter,product,user,pId}) => {
   const [popUp, setPopUp] = useState(0);
   const [comments, setComments] = useState(product);
   const addReply = (newReply, askIndex) => {
@@ -28,7 +28,7 @@ const CommentFilter = ({filter,product, pId}) => {
     console.log(e)
     setPopUp(1)
     setFormData({
-      userId: e.userId._id,
+      userId: user._id,
       productId: pId,
       askIndex: i,
       filter: filter
@@ -48,7 +48,6 @@ const CommentFilter = ({filter,product, pId}) => {
       console.log(error)
     }
   };
-
   return (
     <div className='my-8'>
             <h1 className='font-semibold text-xl mb-5'>

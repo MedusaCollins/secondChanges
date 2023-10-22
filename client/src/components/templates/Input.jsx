@@ -1,6 +1,6 @@
 import React from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faEyeSlash, faEye, faAddressCard, faEnvelope, faLock } from '@fortawesome/free-solid-svg-icons';
+import { faEyeSlash, faEye, faAddressCard, faEnvelope} from '@fortawesome/free-solid-svg-icons';
 
 const Input = (props) => {
   return (

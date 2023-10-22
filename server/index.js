@@ -343,9 +343,15 @@ app.get('/products/:productId', async (req, res) => {
       model: 'User',
       select: 'username img'
     })
+    
     const seller = await User.findById(product.seller, '-password -location -phoneNumber -email -favoriteProducts -products')
     .populate({
       path: 'reviews._id',
+      model: 'User',
+      select: 'username img'
+    })
+    .populate({
+      path: 'reviews.userId',
       model: 'User',
       select: 'username img'
     })
