@@ -93,7 +93,10 @@ const Header = ({handleLogin, user, islogging}) => {
       <div className='relative flex right-0 ml-auto text-gray-700'>
         <div className='hover:cursor-pointer' onClick={()=> setIsOpen((prevState)=>({...prevState, searchbar:1}))}><FontAwesomeIcon icon={faMagnifyingGlass} className='m-4'/></div>
         <FontAwesomeIcon icon={faBell} className='m-4'/>
-        <Link to={`/likes/${user.username}`}><FontAwesomeIcon icon={faHeart} className={`m-4 ${location.pathname ===`/likes/${user.username}` && 'text-green-500'}`}/></Link>
+        {islogging&&(
+          <Link to={`/likes/${user.username}`}><FontAwesomeIcon icon={faHeart} className={`m-4 ${location.pathname ===`/likes/${user.username}` && 'text-green-500'}`}/></Link>
+        )}
+
         <FontAwesomeIcon icon={faCartShopping} className='m-4'/>
         {islogging?(
         <button onClick={()=> toggleMenu()}>{user.username}</button>

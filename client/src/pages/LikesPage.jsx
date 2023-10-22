@@ -22,7 +22,7 @@ const LikesPage = (props) => {
     }
     return (
       <div className='p-5 mx-24 gap-5 flex flex-col'>
-        <h1 className='text-xl font-semibold'>{userName.userName} likes <span className='text-gray-300'>{products.length}</span> products.</h1>
+        <h1 className='text-xl font-semibold'>{userName.userName} likes <span className='text-green-500'>{products.length}</span> products.</h1>
         
         <div className='flex flex-wrap items-start justify-center gap-5'>
       {products.map((product) => (

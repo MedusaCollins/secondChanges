@@ -21,7 +21,9 @@ const SearchPage = (props) => {
         <h1 className='text-xl font-semibold'>Searching for "<span  className='text-green-500'>{searchFor.name}</span>" <span className='text-gray-300'>({products.length})</span></h1>
         <div className='my-5'><Filter/></div>
         <div className='my-5'><Promo/></div>
-        <Products filter={searchFor} user={props.user} handleLogin={props.handleLogin}/>
+        {products.length<1?(
+        <div className='text-center mt-24 text-2xl'>No product matching your criteria was found.</div>
+        ):(<Products filter={searchFor} user={props.user} handleLogin={props.handleLogin}/>)}
       </div>
     )
   }
