@@ -12,10 +12,17 @@ const LikesPage = (props) => {
           setProducts(response.data);
         })
         .catch((error) => console.error(error));
-    }, [props]);
+    }, [props, userName]);
+    if(products.length<1){
+      return(
+        <div className='p-5 text-center text-2xl'>
+          <p>This user hasn't liked any products.</p>
+        </div>
+      )
+    }
     return (
       <div className='p-5 mx-24 gap-5 flex flex-col'>
-        <h1 className='text-xl font-semibold'>{props.name} <span className='text-gray-300'>({products.length})</span></h1>
+        <h1 className='text-xl font-semibold'>{userName.userName} likes <span className='text-gray-300'>{products.length}</span> products.</h1>
         
         <div className='flex flex-wrap items-start justify-center gap-5'>
       {products.map((product) => (
