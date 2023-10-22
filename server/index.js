@@ -277,15 +277,28 @@ app.post("/login", (req, res) => {
 
 
 
-app.post('/api/products', async(req,res)=>{
-  try{
-    const products = await Product.find(req.body);
-    res.status(202).json(products)
-  }catch(err){
-    console.log(err);
-    res.status(500).json({error: 'Veritabanından ürünler alınamıyor.'});
-  }
-})
+  app.post('/api/products', async (req, res) => {
+    try {
+      const query = {};
+      
+      if (req.body.name) {
+        const regexPattern = new RegExp(req.body.name, 'i');
+        query.name = regexPattern;
+      }
+      
+      if (req.body.gender) {
+        query.gender = req.body.gender;
+      }
+  
+      const products = await Product.find(query);
+      res.status(202).json(products);
+    } catch (err) {
+      console.log(err);
+      res.status(500).json({ error: 'Veritabanından ürünler alınamıyor.' });
+    }
+  });
+  
+  
 
 app.get('/likes/:userName', async(req,res)=>{
   try {
@@ -329,7 +342,6 @@ app.get('/products/:productId', async (req, res) => {
   try {    
     const productId = req.params.productId;
     
-    // Ürünü veritabanından çekmek için Mongoose veya başka bir veritabanı kütüphanesi kullanın
     const product = await Product.findById(productId)
     .populate('seller', 'username img reviews')
     .populate({

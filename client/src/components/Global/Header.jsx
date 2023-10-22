@@ -4,12 +4,18 @@ import axios from 'axios';
 
 import { Link, useLocation } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faMagnifyingGlass, faBell, faHeart, faCartShopping, faUser, faMoon, faCog, faTruckFast, faBagShopping } from '@fortawesome/free-solid-svg-icons';
+import { faMagnifyingGlass, faBell, faHeart, faCartShopping, faUser, faMoon, faCog, faTruckFast, faBagShopping, faCircleXmark, faSearch } from '@fortawesome/free-solid-svg-icons';
 
 const Header = ({handleLogin, user, islogging}) => {
   const location = useLocation()
   const [isPopupOpen, setPopupOpen] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [isOpen, setIsOpen] = useState({
+    searchbar: 0
+  });
+  const [value, setValue] = useState({
+    searchbar: ''
+  })
   const menuRef = useRef(null);
 
   useEffect(() => {
@@ -74,6 +80,7 @@ const Header = ({handleLogin, user, islogging}) => {
   }
     
   return (
+  <>
     <div className='flex top-0 left-0 right-0 px-5 border-b-slate-100 border-b-[2px]'>
         <Popup isOpen={isPopupOpen} onClose={closePopup} handleLogin={handleLogin} user={user}/>
       <Link to="/" className='text-green-500 font-semibold text-xl my-2'>secondChanges</Link>
@@ -84,11 +91,10 @@ const Header = ({handleLogin, user, islogging}) => {
       </div>
 
       <div className='relative flex right-0 ml-auto text-gray-700'>
-        <FontAwesomeIcon icon={faMagnifyingGlass} className='m-4'/>
+        <div className='hover:cursor-pointer' onClick={()=> setIsOpen((prevState)=>({...prevState, searchbar:1}))}><FontAwesomeIcon icon={faMagnifyingGlass} className='m-4'/></div>
         <FontAwesomeIcon icon={faBell} className='m-4'/>
         <Link to={`/likes/${user.username}`}><FontAwesomeIcon icon={faHeart} className={`m-4 ${location.pathname ===`/likes/${user.username}` && 'text-green-500'}`}/></Link>
         <FontAwesomeIcon icon={faCartShopping} className='m-4'/>
-        
         {islogging?(
         <button onClick={()=> toggleMenu()}>{user.username}</button>
         ):(
@@ -151,6 +157,34 @@ const Header = ({handleLogin, user, islogging}) => {
         )}
       </div>
     </div>
+
+    {isOpen.searchbar?(
+    <div className="fixed inset-0 z-50 flex items-center justify-center overflow-auto bg-black bg-opacity-50" onClick={()=> setIsOpen((prevState)=>({...prevState, searchbar:0}))}>
+      <div className="relative bg-white p-2 rounded-xl shadow-md" onClick={(e) => e.stopPropagation()}>
+        <div className="text-black text-center w-[500px]">
+
+            <div className="relative mx-auto flex border-b-2 p-2">
+                <p type="button" className=" inset-y-0 pt-2 left-0 items-center text-gray-600">
+                  <FontAwesomeIcon icon={faSearch} className="w-4 h-4"/>
+                </p>
+                <input type="text" placeholder="Search a products" name="deneme" value={value.searchbar} 
+                onChange={(e)=> setValue((prevState)=>({...prevState, searchbar: e.target.value}))} 
+                className="w-full p-2 text-base outline-none focus:ring-green-500 focus:ring-0 transition"
+                onKeyDown={(e) => {
+                  if (e.key === "Enter") {
+                    window.location.href = "/search/"+value.searchbar;
+                  }
+                }}/>
+                <button type="button" onClick={() => setValue((prevState)=>({...prevState, searchbar: ''}))} className="absolute inset-y-0 right-0 flex items-center px-4 text-gray-300 hover:text-gray-400 focus:ring-0">
+                  <FontAwesomeIcon icon={faCircleXmark} className="w-5 h-5"/>
+                </button>
+            </div>
+
+        </div>
+      </div>
+    </div>
+    ):null}
+  </>
   );
 };
 
