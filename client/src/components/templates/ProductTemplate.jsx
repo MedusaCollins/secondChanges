@@ -124,13 +124,13 @@ const ProductTemplate = ({ name, img,likes, brand, price, id, size,dprice, user,
           <div role="button" tabIndex={0} className="mx-auto mt-2">
               {variable.cartItem.includes(id)?(
                 <>
-                <button  onClick={(e)=> handleCartOperation(e,id,"removing")} className="bg-green-500 text-white py-2 px-4 rounded-full hover:bg-green-600">
+                <button  onClick={(e)=> handleCartOperation(e,id,"removing")} className="bg-green-600 hover:bg-green-700 text-white py-2 px-4 rounded-full">
                 <FontAwesomeIcon icon={faCartShopping} /> Remove From the Cart
                 </button>
                 </>
               ):(
                 <>
-                <button onClick={(e)=> handleCartOperation(e,id,"adding")} className="bg-green-500 text-white py-2 px-4 rounded-full hover:bg-green-600">
+                <button onClick={(e)=> handleCartOperation(e,id,"adding")} className="bg-green-500 hover:bg-green-600 text-white py-2 px-4 rounded-full ">
                 <FontAwesomeIcon icon={faCartShopping} /> Add to Cart
                 </button>
                 </>

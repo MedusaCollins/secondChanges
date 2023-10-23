@@ -8,6 +8,9 @@ import axios from 'axios'
 
 const About = ({product, rating, user, comments, setComments}) => {
   const [popUp, setPopUp] = useState(0);
+  const [variable, setVariable]=useState({
+    cartItem: []
+  })
   const [formData, setFormData] = useState({
     userId: '',
     productId: product._id,
@@ -16,6 +19,12 @@ const About = ({product, rating, user, comments, setComments}) => {
   });
 
   useEffect(() => {
+    const cartItemJSON = localStorage.getItem("cart");
+    if (cartItemJSON) {
+      const parsedCartItem = JSON.parse(cartItemJSON);
+      setVariable((prevState) => ({ ...prevState, cartItem: parsedCartItem }));
+    }
+
     setFormData((prevData) => ({ ...prevData, userId: user._id }));
   }, [user._id]);
 
@@ -29,6 +38,29 @@ const About = ({product, rating, user, comments, setComments}) => {
       setPopUp(0);
       console.log(response.data);
     }
+  }
+
+  function handleCartOperation(e,id,reqType) {
+    e.preventDefault();
+    console.log(reqType)
+    setVariable((prevState)=>({...prevState, cartItem: prevState.cartItem+id}))
+    const savedCartJSON= localStorage.getItem("cart");
+    let updatedCart=[];
+    if(savedCartJSON){
+      try {
+        updatedCart=JSON.parse(savedCartJSON);
+      } catch (error) {
+        console.log(error)
+      }
+    }
+    if(reqType==="adding"){
+      updatedCart.push(id)
+    }else{
+      updatedCart = updatedCart.filter(item => item !== id)
+    }
+    setVariable((prevState)=>({...prevState, cartItem: updatedCart}))
+    const updatedCartJSON = JSON.stringify(updatedCart)
+    localStorage.setItem("cart", updatedCartJSON)
   }
 
   return (
@@ -65,7 +97,16 @@ const About = ({product, rating, user, comments, setComments}) => {
               <div className='rounded-lg border border-gray-600 bg-gray-600 text-center text-white p-2 '>Satıldı</div>
           ):(
             <>
-            <button className='rounded-lg border border-green-600 bg-green-600 text-white p-2 '>Satın al</button>
+            {variable.cartItem.includes(product._id)?(
+              <button  onClick={(e)=> handleCartOperation(e,product._id,"removing")} className="rounded-lg bg-green-600 hover:bg-green-700 text-white p-2 ">
+                Remove From the Cart
+              </button>
+            ):(
+              <button onClick={(e)=> handleCartOperation(e,product._id,"adding")} className="rounded-lg  bg-green-500 hover:bg-green-600 text-white p-2 ">
+                Add to Cart
+              </button>
+            )}
+
             <div className='w-full justify-between flex'>
               <button className='rounded-lg border border-blue-400 text-blue-400 p-2 w-[45%]' onClick={()=> {setPopUp(1); setFormData({...formData, reqType: 'asks'})}}>Soru sor</button>
               <button className='rounded-lg border border-green-600 text-green-600 p-2 w-[45%]'onClick={()=> {setPopUp(1); setFormData({...formData, reqType: 'offers'})}}>Teklif ver</button> 
