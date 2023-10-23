@@ -280,14 +280,15 @@ app.post("/login", (req, res) => {
   app.post('/api/products', async (req, res) => {
     try {
       const query = {};
-      
       if (req.body.name) {
         const regexPattern = new RegExp(req.body.name, 'i');
         query.name = regexPattern;
       }
-      
       if (req.body.gender) {
         query.gender = req.body.gender;
+      }
+      if(req.body.seller){
+        query.seller = req.body.seller
       }
   
       const products = await Product.find(query);

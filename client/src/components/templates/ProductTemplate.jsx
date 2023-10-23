@@ -3,28 +3,35 @@ import axios from 'axios';
 
 import Popup from '../Global/Popup';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { Link } from 'react-router-dom';
+import { Link} from 'react-router-dom';
 import { faHeart, faCartShopping, faDollarSign } from '@fortawesome/free-solid-svg-icons';
 
-const ProductTemplate = ({ name, img,likes, brand, price, id, size,dprice, user, handleLogin }) => {
+const ProductTemplate = ({ name, img,likes, brand, price, id, size,dprice, user, handleLogin, ekstra }) => {
   const maxTextLength = 19;
   const [isPopupOpen, setPopupOpen] = useState(false);
   const [isHovered, setIsHovered] = useState(false);
   const [variable, setVariable] = useState({
     isHoverable: false,
-    color: '#334155'
+    color: '#334155',
+    cartItem: [],
   });
 
-  useEffect(()=>{
-    if (likes && user._id) {
-    if(likes.includes(user._id)){
-      setVariable({color: '#22c55e'});
-    }
-  }else{
-    setVariable({color: '#334155'});
-  }
-  }, [likes, user._id])
 
+  useEffect(()=>{
+    const cartItemJSON = localStorage.getItem("cart");
+    if (cartItemJSON) {
+      const parsedCartItem = JSON.parse(cartItemJSON);
+      setVariable((prevState) => ({ ...prevState, cartItem: parsedCartItem }));
+    }
+
+    if(likes.includes(user._id)){
+        setVariable((prevState)=>({...prevState, color:'#22c55e'}));
+      }
+    else{
+      setVariable((prevState)=>({...prevState, color:'#334155'}));
+    }
+
+  }, [likes, user._id])
 
   let displayName = name;
 
@@ -44,16 +51,33 @@ const ProductTemplate = ({ name, img,likes, brand, price, id, size,dprice, user,
       setPopupOpen(true);
     }
   }
-  
-  const handleCartClick = (e) => {
+  function handleCartOperation(e,id,reqType) {
     e.preventDefault();
-  };
+    console.log(reqType)
+    setVariable((prevState)=>({...prevState, cartItem: prevState.cartItem+id}))
+    const savedCartJSON= localStorage.getItem("cart");
+    let updatedCart=[];
+    if(savedCartJSON){
+      try {
+        updatedCart=JSON.parse(savedCartJSON);
+      } catch (error) {
+        console.log(error)
+      }
+    }
+    if(reqType==="adding"){
+      updatedCart.push(id)
+    }else{
+      updatedCart = updatedCart.filter(item => item !== id)
+    }
+    setVariable((prevState)=>({...prevState, cartItem: updatedCart}))
+    const updatedCartJSON = JSON.stringify(updatedCart)
+    localStorage.setItem("cart", updatedCartJSON)
+  }
 
 
   const closePopup = () => {
     setPopupOpen(false);
   };
-
 
   if (name.length > maxTextLength) {
     displayName = name.substring(0, maxTextLength) + '...';
@@ -97,12 +121,23 @@ const ProductTemplate = ({ name, img,likes, brand, price, id, size,dprice, user,
             </>}
         </div>
         {isHovered && (
-          <div role="button" tabIndex={0} href="#" onClick={handleCartClick} className='mx-auto mt-2'>
-            <button className='bg-green-500 text-white py-2 px-4 rounded-full hover:bg-green-600'>
-              <FontAwesomeIcon icon={faCartShopping} />Add to Cart
-            </button>
+          <div role="button" tabIndex={0} className="mx-auto mt-2">
+              {variable.cartItem.includes(id)?(
+                <>
+                <button  onClick={(e)=> handleCartOperation(e,id,"removing")} className="bg-green-500 text-white py-2 px-4 rounded-full hover:bg-green-600">
+                <FontAwesomeIcon icon={faCartShopping} /> Remove From the Cart
+                </button>
+                </>
+              ):(
+                <>
+                <button onClick={(e)=> handleCartOperation(e,id,"adding")} className="bg-green-500 text-white py-2 px-4 rounded-full hover:bg-green-600">
+                <FontAwesomeIcon icon={faCartShopping} /> Add to Cart
+                </button>
+                </>
+              )}                
           </div>
         )}
+
       </div>
     </Link>
     <Popup isOpen={isPopupOpen} onClose={closePopup} handleLogin={handleLogin} user={user}/>

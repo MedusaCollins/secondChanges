@@ -18,6 +18,7 @@ export default function ProductDetail({user}){
   const [comments, setComments] = useState([]);
 
   useEffect(() => {
+
     axios.get(`${process.env.REACT_APP_DB}/products/${productId}`)
       .then((response) => {
         setProduct(response.data.product);

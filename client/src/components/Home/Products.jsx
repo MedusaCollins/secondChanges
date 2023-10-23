@@ -7,6 +7,9 @@ import { faFolder } from '@fortawesome/free-solid-svg-icons';
 
 const Products = ({ filter, setIsModalOpen, handleLogin, user }) => {
   const [products, setProducts] = useState([]);
+  const [ekstra,  setVariable] = useState({
+    deneme: ['ali','ayse','ahmet']
+  })
 
   useEffect(() => {
     axios.post(`${process.env.REACT_APP_DB}/api/products`, filter)
@@ -30,6 +33,7 @@ const Products = ({ filter, setIsModalOpen, handleLogin, user }) => {
           likes={product.likes}
           user={user}
           handleLogin={handleLogin}
+          ekstra={ekstra}
         />
       ))}
       {setIsModalOpen?

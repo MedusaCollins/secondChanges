@@ -41,12 +41,12 @@ const UserDetail = ({ handleLogin, pUser }) => {
             try {
                 const userResponse = await axios.get(`${process.env.REACT_APP_DB}/profiles/${userName}`);
                 if (userResponse.status === 200) {
+                    console.log(userResponse.data)
                     setFormData((prevState)=>({
                         ...prevState,
                         user: userResponse.data,
                         username: userResponse.data.username,
                         email: userResponse.data.email}))
-                    console.log(userResponse.data);
 
                     setFilteringData((prevState)=>({
                         ...prevState,

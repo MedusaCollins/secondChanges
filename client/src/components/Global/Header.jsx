@@ -4,7 +4,7 @@ import axios from 'axios';
 
 import { Link, useLocation } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faMagnifyingGlass, faBell, faHeart, faCartShopping, faUser, faMoon, faCog, faTruckFast, faBagShopping, faCircleXmark, faSearch } from '@fortawesome/free-solid-svg-icons';
+import { faMagnifyingGlass, faHeart, faCartShopping, faUser, faMoon, faCog, faTruckFast, faBagShopping, faCircleXmark, faSearch } from '@fortawesome/free-solid-svg-icons';
 
 const Header = ({handleLogin, user, islogging}) => {
   const location = useLocation()
@@ -14,7 +14,7 @@ const Header = ({handleLogin, user, islogging}) => {
     searchbar: 0
   });
   const [value, setValue] = useState({
-    searchbar: ''
+    searchbar: '',
   })
   const menuRef = useRef(null);
 
@@ -78,7 +78,6 @@ const Header = ({handleLogin, user, islogging}) => {
   const handleCheckboxChange = () => {
     setIsChecked(!isChecked)
   }
-    
   return (
   <>
     <div className='flex top-0 left-0 right-0 px-5 border-b-slate-100 border-b-[2px]'>
@@ -92,12 +91,13 @@ const Header = ({handleLogin, user, islogging}) => {
 
       <div className='relative flex right-0 ml-auto text-gray-700'>
         <div className='hover:cursor-pointer' onClick={()=> setIsOpen((prevState)=>({...prevState, searchbar:1}))}><FontAwesomeIcon icon={faMagnifyingGlass} className='m-4'/></div>
-        <FontAwesomeIcon icon={faBell} className='m-4'/>
         {islogging&&(
           <Link to={`/likes/${user.username}`}><FontAwesomeIcon icon={faHeart} className={`m-4 ${location.pathname ===`/likes/${user.username}` && 'text-green-500'}`}/></Link>
         )}
+        <div className='relative'>
+        <Link to="/cart"><FontAwesomeIcon icon={faCartShopping} className={`m-4 ${location.pathname ===`/cart` && 'text-green-500'}`}/></Link>
+        </div>
 
-        <FontAwesomeIcon icon={faCartShopping} className='m-4'/>
         {islogging?(
         <button onClick={()=> toggleMenu()}>{user.username}</button>
         ):(
