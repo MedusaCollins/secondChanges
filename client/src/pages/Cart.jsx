@@ -58,28 +58,28 @@ const Cart = () => {
   console.log(variable.cartItem);
 
   return (
-    <div className="p-5 mx-32 gap-x-12 grid grid-cols-5">
-      <div className="text-4xl font-bold my-5 py-10 col-span-5">
+    <div className="p-5 lg:mx-32 mx-5 gap-x-12 grid grid-cols-5">
+      <div className="sm:text-4xl text-3xl font-bold my-5 py-10 col-span-5">
         <span>Shopping Cart</span>
       </div>
       {variable.cartItem.length>0?(<>
-        <div className="border-t pt-5 col-span-3">
+        <div className="border-t pt-5 lg:col-span-3 col-span-5">
         {variable.cartItem.map((product, i) => (
-          <div key={i} className="relative flex border-b p-5 gap-5">
+          <div key={i} className="relative flex sm:flex-row flex-col border-b p-5 gap-5">
             {product.img && product.img.length > 0 && (
-              <img src={product.img[0]} alt="" className="w-32 h-44" />
+              <img src={product.img[0]} alt="" className="w-32 h-44 mx-auto sm:mx-0" />
             )}
-            <div className="flex flex-col">
+            <div className="flex flex-col justify-between">
               <span className="font-medium">{product.name}</span>
 
-              <div className="flex my-2">
+              <div className="sm:flex my-2 hidden">
                 <span>{product.gender}</span>
                 <span className="border-x mx-2 px-2">{product.type}</span>
                 <span>{product.brand}</span>
               </div>
 
-              <span className="font-medium">
-                <FontAwesomeIcon icon={faDollarSign} />{" "}
+              <span className="font-medium sm:block flex gap-1 justify-end items-center">
+                <FontAwesomeIcon icon={faDollarSign} />
                 {product.dprice > 0
                   ? `${product.dprice},00`
                   : `${product.price},00`}
@@ -95,7 +95,7 @@ const Cart = () => {
         ))}
       </div>
 
-      <div className='col-span-2'>
+      <div className='lg:col-span-2 col-span-5'>
         <div className='bg-gray-100 rounded-xl p-5'>
           <p className='text-xl font-semibold mb-5'>Order summary</p>
 
