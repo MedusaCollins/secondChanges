@@ -17,7 +17,7 @@ const SearchPage = (props) => {
         .catch((error) => console.error(error));
     }, [searchFor]);
     return (
-      <div className='p-5 mx-24 gap-4'>
+      <div className='p-5 sm:mx-24 mx-2 gap-4'>
         <h1 className='text-xl font-semibold'>Searching for "<span  className='text-green-500'>{searchFor.name}</span>" <span className='text-gray-300'>({products.length})</span></h1>
         <div className='my-5'><Filter/></div>
         <div className='my-5'><Promo/></div>
