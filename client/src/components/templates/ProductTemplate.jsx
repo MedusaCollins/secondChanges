@@ -53,7 +53,6 @@ const ProductTemplate = ({ name, img,likes, brand, price, id, size,dprice, user,
   }
   function handleCartOperation(e,id,reqType) {
     e.preventDefault();
-    console.log(reqType)
     setVariable((prevState)=>({...prevState, cartItem: prevState.cartItem+id}))
     const savedCartJSON= localStorage.getItem("cart");
     let updatedCart=[];

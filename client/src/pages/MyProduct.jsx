@@ -46,9 +46,6 @@ const MyProduct = ({ user, handleLogin }) => {
   
     autoLogin();
   }, [filters, handleLogin]);
-  useEffect(() => {
-    console.log(products);
-  }, [products]);
 
   if (isLoading) {
     return <div>Yükleniyor...</div>;

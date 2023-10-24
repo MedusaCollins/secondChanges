@@ -4,14 +4,15 @@ import axios from 'axios';
 
 import { Link, useLocation } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faMagnifyingGlass, faHeart, faCartShopping, faUser, faMoon, faCog, faTruckFast, faBagShopping, faCircleXmark, faSearch } from '@fortawesome/free-solid-svg-icons';
+import { faMagnifyingGlass, faHeart, faCartShopping, faUser, faMoon, faCog, faTruckFast, faBagShopping, faCircleXmark, faSearch, faBars } from '@fortawesome/free-solid-svg-icons';
 
 const Header = ({handleLogin, user, islogging}) => {
   const location = useLocation()
   const [isPopupOpen, setPopupOpen] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isOpen, setIsOpen] = useState({
-    searchbar: 0
+    searchbar: 0,
+    navbar: 0,
   });
   const [value, setValue] = useState({
     searchbar: '',
@@ -72,6 +73,9 @@ const Header = ({handleLogin, user, islogging}) => {
     setIsMenuOpen(!isMenuOpen);
   };
 
+  function openNavbar(){
+    setIsOpen((prevState)=>({...prevState, navbar:1}))
+  }
 
   const [isChecked, setIsChecked] = useState(false)
   
@@ -82,12 +86,13 @@ const Header = ({handleLogin, user, islogging}) => {
   <>
     <div className='flex top-0 left-0 right-0 px-5 border-b-slate-100 border-b-[2px]'>
         <Popup isOpen={isPopupOpen} onClose={closePopup} handleLogin={handleLogin} user={user}/>
-      <Link to="/" className='text-green-500 font-semibold text-xl my-2'>secondChanges</Link>
-      <div className='ml-12 items-center flex text-gray-700 font-medium'>
+      <Link to="/" className='text-green-500 font-semibold text-xl my-2 max-sm:hidden'>secondChanges</Link>
+      <div className='ml-12 items-center flex text-gray-700 font-medium max-sm:ml-0 max-[470px]:hidden'>
         <Link to="/" className={`mx-3 ${location.pathname ==='/'&& 'text-green-500'}`}>Home</Link>
         <Link to="/man" className={`mx-3 ${location.pathname ==='/man'&& 'text-green-500'}`}>Man</Link>
         <Link to="/woman" className={`mx-3 ${location.pathname ==='/woman'&& 'text-green-500'}`}>Woman</Link>
       </div>
+      <div className='items-center text-gray-700 font-medium hidden max-[470px]:flex' onClick={()=> setIsOpen((prevState)=>({...prevState, navbar:1}))}><FontAwesomeIcon icon={faBars}/></div>
 
       <div className='relative flex right-0 ml-auto text-gray-700'>
         <div className='hover:cursor-pointer' onClick={()=> setIsOpen((prevState)=>({...prevState, searchbar:1}))}><FontAwesomeIcon icon={faMagnifyingGlass} className='m-4'/></div>
@@ -164,7 +169,7 @@ const Header = ({handleLogin, user, islogging}) => {
     {isOpen.searchbar?(
     <div className="fixed inset-0 z-50 flex items-center justify-center overflow-auto bg-black bg-opacity-50" onClick={()=> setIsOpen((prevState)=>({...prevState, searchbar:0}))}>
       <div className="relative bg-white p-2 rounded-xl shadow-md" onClick={(e) => e.stopPropagation()}>
-        <div className="text-black text-center w-[500px]">
+        <div className="text-black text-center max-sm:w-64 w-[500px]">
 
             <div className="relative mx-auto flex border-b-2 p-2">
                 <p type="button" className=" inset-y-0 pt-2 left-0 items-center text-gray-600">
@@ -183,6 +188,17 @@ const Header = ({handleLogin, user, islogging}) => {
                 </button>
             </div>
 
+        </div>
+      </div>
+    </div>
+    ):null}
+    {isOpen.navbar?(
+    <div className="fixed inset-0 z-50 flex items-center justify-center overflow-auto bg-black bg-opacity-50" onClick={()=> setIsOpen((prevState)=>({...prevState, navbar:0}))}>
+      <div className="relative bg-white p-2 rounded-xl shadow-md" onClick={(e) => e.stopPropagation()}>
+        <div className="text-black text-center w-[200px] flex flex-col">
+        <Link to="/" className='w-full p-2'>Home</Link>
+        <Link to="/man" className='w-full p-2'>Man</Link>
+        <Link to="/woman" className='w-full p-2'>Woman</Link>
         </div>
       </div>
     </div>

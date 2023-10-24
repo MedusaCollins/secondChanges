@@ -257,23 +257,30 @@ app.post('/createUser', async(req,res)=>{
 })
 
 app.post("/login", (req, res) => {
-  User.findOne({ email: req.body.email }).then((user) => {
-    if (user) {
+  User.findOne({ $or: [{ email: req.body.emailorusername }, { username: req.body.emailorusername }] })
+    .then((user) => {
+      if (!user) {
+        return res.status(202).json({ error: "Böyle bir hesap bulunamadı." });
+      }
+
       bcrypt.compare(req.body.password, user.password, (err, result) => {
         if (err) {
           console.log(err);
-        } else if (result) {
-          res.status(200).json(user);
-        } else {
-          res.status(202).json({ error:"Şifre yanlış."})
+          return res.status(500).json({ error: err });
         }
-      })} 
-    else {
-    res.status(202).json({ error:"Böyle bir hesap bulunamadı."})
-    }
-  }).catch((err) => {
-    res.status(500).json({ error: err })});
-  });
+        if (result) {
+          return res.status(200).json(user);
+        } else {
+          return res.status(202).json({ error: "Şifre yanlış." });
+        }
+      });
+    })
+    .catch((err) => {
+      console.log(err);
+      res.status(500).json({ error: err });
+    });
+});
+
 
 
 

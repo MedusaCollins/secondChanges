@@ -8,18 +8,13 @@ function Popup({ isOpen, onClose, handleLogin }) {
     errorMessage: '',
     username: '',
     email: '',
+    emailorusername:'',
     password: '',
     showPassword: false,
   });
 
-  function handleUsernameChange(e) {
-    setFormState((prevState) => ({ ...prevState, username: e.target.value }));
-  }
-  function handleEmailChange(e) {
-    setFormState((prevState) => ({ ...prevState, email: e.target.value }));
-  }
-  function handlePasswordChange(e) {
-    setFormState((prevState) => ({ ...prevState, password: e.target.value }));
+  function handleFormChange(e,type) {
+    setFormState((prevState) => ({ ...prevState, [type]: e.target.value }));
   }
 
   function toggleLogin() {
@@ -29,6 +24,7 @@ function Popup({ isOpen, onClose, handleLogin }) {
       errorMessage: '',
       username: '',
       email: '',
+      emailorusername:'',
       password: '',
       showPassword: false,
     }));
@@ -43,7 +39,7 @@ function Popup({ isOpen, onClose, handleLogin }) {
     if(formState.login){
       try {
         const response = await axios.post(`${process.env.REACT_APP_DB}/login`, {
-          email: formState.email,
+          emailorusername: formState.emailorusername,
           password: formState.password,
         });
         if (response.data.error) {
@@ -99,6 +95,7 @@ function Popup({ isOpen, onClose, handleLogin }) {
       errorMessage: '',
       username: '',
       email: '',
+      emailorusername:'',
       password: '',
       showPassword: false,
     }));
@@ -121,9 +118,10 @@ function Popup({ isOpen, onClose, handleLogin }) {
             </div>
 
             <div className='flex flex-col gap-4 mt-5'>
-            {!formState.login&&<Input text="Username" type="text" value={formState.username} onChange={handleUsernameChange} formState={formState} />}
-            <Input text="Email" type="text" value={formState.email} onChange={handleEmailChange} formState={formState} />
-            <Input text="Password" type={formState.showPassword ? "text" : "password"} value={formState.password} onChange={handlePasswordChange} formState={formState} togglePasswordVisibility={togglePasswordVisibility} />
+            {!formState.login?
+            (<><Input text="Username" type="text" value={formState.username} onChange={(e)=> handleFormChange(e,"username")} formState={formState} />
+            <Input text="Email" type="text" value={formState.email} onChange={(e)=> handleFormChange(e,"email")} formState={formState} /></>):<Input text="Email/Username" type="text" value={formState.emailorusername} onChange={(e)=> handleFormChange(e,"emailorusername")} formState={formState} />}
+            <Input text="Password" type={formState.showPassword ? "text" : "password"} value={formState.password} onChange={(e)=> handleFormChange(e,"password")} formState={formState} togglePasswordVisibility={togglePasswordVisibility} />
             <p className='text-red-500 text-right'>{formState.errorMessage}</p>
             <button type="submit" className='bg-green-600 hover:bg-green-700 text-white p-1.5 rounded-2xl transition mt-4'>
               {!formState.login ?'Create an account':'Log in'}
