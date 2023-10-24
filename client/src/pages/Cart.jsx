@@ -69,7 +69,7 @@ const Cart = () => {
             {product.img && product.img.length > 0 && (
               <img src={product.img[0]} alt="" className="w-32 h-44 mx-auto sm:mx-0" />
             )}
-            <div className="flex flex-col justify-between">
+            <div className="flex flex-col sm:justify-normal justify-between">
               <span className="font-medium">{product.name}</span>
 
               <div className="sm:flex my-2 hidden">

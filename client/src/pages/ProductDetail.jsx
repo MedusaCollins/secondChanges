@@ -69,7 +69,7 @@ export default function ProductDetail({user}){
         <About product={product} rating={rating} user={user} comments={comments} setComments={setComments}/>
       </div>
       {"buyers" in product?(
-      <div className='flex flex-col gap-5'>
+      <div className='flex flex-col gap-5 m-5 sm:m-0'>
         <div className='flex gap-3 mb-16 border p-5 rounded-xl'>
           <img src={product.buyers._id.img} alt="comment user profile pic" className='w-12 h-12 mt-2 rounded-full'/>
           <div className='flex flex-col'>

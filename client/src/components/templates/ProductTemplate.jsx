@@ -6,7 +6,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Link} from 'react-router-dom';
 import { faHeart, faCartShopping, faDollarSign } from '@fortawesome/free-solid-svg-icons';
 
-const ProductTemplate = ({ name, img,likes, brand, price, id, size,dprice, user, handleLogin, ekstra }) => {
+const ProductTemplate = ({ name, img,likes, brand, price, id, size,dprice, user, handleLogin }) => {
   const maxTextLength = 19;
   const [isPopupOpen, setPopupOpen] = useState(false);
   const [isHovered, setIsHovered] = useState(false);
@@ -85,7 +85,7 @@ const ProductTemplate = ({ name, img,likes, brand, price, id, size,dprice, user,
     <>
     <Link
       key={id}
-      className={`rounded-xl w-[18rem] h-[20rem] bg-cover bg-center relative cursor-pointer hover:border hover:border-separate border-slate-500`}
+      className={`rounded-xl sm:w-[18rem] w-[14rem] h-[20rem] bg-cover bg-center relative cursor-pointer hover:border hover:border-separate border-slate-500`}
       style={{ backgroundImage: `url(${img})` }}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}

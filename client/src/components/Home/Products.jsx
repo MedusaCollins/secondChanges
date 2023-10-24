@@ -7,9 +7,6 @@ import { faFolder } from '@fortawesome/free-solid-svg-icons';
 
 const Products = ({ filter, setIsModalOpen, handleLogin, user }) => {
   const [products, setProducts] = useState([]);
-  const [ekstra,  setVariable] = useState({
-    deneme: ['ali','ayse','ahmet']
-  })
 
   useEffect(() => {
     axios.post(`${process.env.REACT_APP_DB}/api/products`, filter)
@@ -33,12 +30,11 @@ const Products = ({ filter, setIsModalOpen, handleLogin, user }) => {
           likes={product.likes}
           user={user}
           handleLogin={handleLogin}
-          ekstra={ekstra}
         />
       ))}
       {setIsModalOpen?
       (
-        <button onClick={()=> setIsModalOpen(true)} className={`rounded-xl w-[18rem] h-[20rem] bg-cover bg-center relative bg-gray-600 hover:bg-gray-800 hover:text-white transition cursor-pointer hover:border hover:border-separate border-slate-500 flex flex-col justify-center items-center`}>
+        <button onClick={()=> setIsModalOpen(true)} className={`rounded-xl sm:w-[18rem] w-[14rem] h-[20rem] bg-cover bg-center relative bg-gray-600 hover:bg-gray-800 hover:text-white transition cursor-pointer hover:border hover:border-separate border-slate-500 flex flex-col justify-center items-center`}>
         <div className='relative'>
           <FontAwesomeIcon icon={faFolder} className="w-16 h-16 text-green-500 " />
           <p className="text-xl">Add Product</p>

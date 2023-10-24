@@ -148,9 +148,9 @@ const UserDetail = ({ handleLogin, pUser }) => {
     }
     return (
         <div>
-            <div className='p-5 mx-24 grid grid-cols-5'>
-                <div className='row-span-1 col-span-1 text-center text-blue-400 sticky border-2 top-16 mx-5 p-5 h-min rounded-xl'>
-                    <img src={formData.user.img} alt="Seller" className='rounded-full w-52 h-52 mx-auto border-2 sticky mb-5' />
+            <div className='p-2 lg:mx-12 mx-2 grid lg:grid-cols-5 gap-2 lg:gap-5 lg:p-5'>
+                <div className='row-span-1 sm:col-span-1 text-center text-blue-400 lg:sticky border-2 top-16 p-5 h-min rounded-xl'>
+                    <img src={formData.user.img} alt="Seller" className='rounded-full lg:w-32 lg:h-32 w-44 h-44 mx-auto border-2 sticky mb-5' />
                     <span className='text-2xl font-normal'>{formData.user.username}</span>
                     {formData.user.username === pUser.username && (
                         <div onClick={() => setFilteringData((prevState)=>({...prevState,popUp: 1}))} className='text-white bg-blue-400 hover:bg-blue-500 p-2 my-5 rounded-lg hover:cursor-pointer'>
@@ -166,11 +166,11 @@ const UserDetail = ({ handleLogin, pUser }) => {
                     </div>
                 </div>
 
-                <div className='row-span-1 col-span-4 justify-center'>
+                <div className='row-span-1 lg:col-span-4 justify-center'>
                     <div className='flex flex-row justify-around'>
-                        <div className={`${formData.user.reviews.length > 0 ? "rounded-tl-xl" : "rounded-t-xl"} w-full text-center p-5 text-xl border-t-2 ${formData.user.reviews.length > 0 ? "border-l-2" : "border-x-2"} hover:cursor-pointer`} onClick={() => setFilteringData((prevState)=>({...prevState,selected: "products"}))} style={filteringData.selected === "reviews" ? { backgroundColor: '#E5E7EB' } : null}><FontAwesomeIcon icon={faShop} className='' /> Products</div>
+                        <div className={`${formData.user.reviews.length > 0 ? "rounded-tl-xl" : "rounded-t-xl"} w-full text-center p-5 lg:text-xl text-2xl border-t-2 ${formData.user.reviews.length > 0 ? "border-l-2" : "border-x-2"} hover:cursor-pointer`} onClick={() => setFilteringData((prevState)=>({...prevState,selected: "products"}))} style={filteringData.selected === "reviews" ? { backgroundColor: '#E5E7EB' } : null}><FontAwesomeIcon icon={faShop} className='' /> Products</div>
                         {formData.user.reviews.length > 0 &&
-                            <div className='rounded-tr-xl w-full text-center p-5 text-xl border-t-2 border-r-2 hover:cursor-pointer' onClick={() => setFilteringData((prevState)=>({...prevState,selected: "reviews"}))} style={filteringData.selected === "products" ? { backgroundColor: '#E5E7EB' } : null}><FontAwesomeIcon icon={faComments} /> Reviews <span className='text-red-500 font-medium'>{formData.user.reviews.length}</span></div>}
+                            <div className='rounded-tr-xl w-full text-center p-5 lg:text-xl text-2xl border-t-2 border-r-2 hover:cursor-pointer' onClick={() => setFilteringData((prevState)=>({...prevState,selected: "reviews"}))} style={filteringData.selected === "products" ? { backgroundColor: '#E5E7EB' } : null}><FontAwesomeIcon icon={faComments} /> Reviews <span className='text-red-500 font-medium'>{formData.user.reviews.length}</span></div>}
                     </div>
 
                     <div className='border-x-2 border-b-2 rounded-b-xl px-5 pb-5'>
@@ -194,9 +194,9 @@ const UserDetail = ({ handleLogin, pUser }) => {
                         ) : (
                             <>
                                 {formData.user.reviews.map((review, i) => (
-                                    <div className='flex flex-col gap-5' key={i}>
-                                        <div className='flex gap-3 my-3 mt-5 border p-5 rounded-xl'>
-                                            <img src={review.userId.img} alt="comment user profile pic" className='w-12 h-12 mt-2 rounded-full' />
+                                    <div className='flex flex-col' key={i}>
+                                        <div className='flex gap-3 my-5 lg:border lg:p-5 rounded-xl'>
+                                            <img src={review.userId.img} alt="comment user profile pic" className='w-12 h-12 mt-2 rounded-full lg:block hidden' />
                                             <div className='flex justify-between w-full'>
                                                 <div className='flex flex-col gap-2'>
                                                     <span className='font-semibold text-xl'>{review.userId.username}</span>
@@ -224,7 +224,7 @@ const UserDetail = ({ handleLogin, pUser }) => {
             {filteringData.popUp? (
                 <div className="fixed inset-0 z-50 flex items-center justify-center backdrop-blur-md">
                     <div className='fixed inset-0 bg-black opacity-50' onClick={() => setFilteringData((prevState)=>({...prevState,popUp: 0}))}></div>
-                        <div className="relative bg-white w-96 rounded-lg p-4">
+                        <div className="relative bg-white w-96 rounded-lg p-4 mx-5">
                             <form onSubmit={applyChanges}>
                                 <div className="my-2 flex items-center justify-between">
                                     {formData.filePath===null?(

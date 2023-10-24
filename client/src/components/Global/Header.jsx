@@ -73,10 +73,6 @@ const Header = ({handleLogin, user, islogging}) => {
     setIsMenuOpen(!isMenuOpen);
   };
 
-  function openNavbar(){
-    setIsOpen((prevState)=>({...prevState, navbar:1}))
-  }
-
   const [isChecked, setIsChecked] = useState(false)
   
   const handleCheckboxChange = () => {
