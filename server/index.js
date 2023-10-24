@@ -229,9 +229,9 @@ app.post('/createUser', async(req,res)=>{
   if(!username || !email || !password){
     return res.status(400).json({ error: "Username, email and password is can not be empty." });
   }else{
-    User.findOne({username: username}).then((user)=>{
+    User.findOne({ $or: [{ email: email }, { username: username }] }).then((user)=>{
       if(user){
-        return res.status(202).json({ error: "The username is already associated with an existing account."})
+        return res.status(202).json({ error: "The username/email is already associated with an existing account."})
       }else{
         bcrypt.hash(password, 10, (err,hash)=>{
           if(err){

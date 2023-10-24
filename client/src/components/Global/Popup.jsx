@@ -48,7 +48,7 @@ function Popup({ isOpen, onClose, handleLogin }) {
             errorMessage: response.data.error,
           }));
         } else {
-          localStorage.setItem('email', formState.email);
+          localStorage.setItem('emailorusername', formState.emailorusername);
           localStorage.setItem('password', formState.password);
           handleLogin(true, response.data);
           handleCloseClick();
@@ -77,7 +77,7 @@ function Popup({ isOpen, onClose, handleLogin }) {
           } else {
             handleLogin(true, response.data);
             handleCloseClick();
-            localStorage.setItem('email', formState.email);
+            localStorage.setItem('emailorusername', formState.username);
             localStorage.setItem('password', formState.password);
           }
         } catch (error) {

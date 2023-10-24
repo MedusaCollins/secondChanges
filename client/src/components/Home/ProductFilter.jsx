@@ -18,6 +18,7 @@ const Filter = () => {
   return (
     <>
       <div className='w-full p-3 flex bg-slate-100 rounded-lg'>
+        <div className='hidden sm:flex'>
         <button onClick={() => toggleDiv('Price')}>
           <FilterTemplate name="Price"/>
         </button>
@@ -30,9 +31,10 @@ const Filter = () => {
         <button onClick={() => toggleDiv('ProductType')}>
           <FilterTemplate name="Product Type" />
         </button>
-        <div className='relative flex right-0 ml-auto'>
+        </div>
+        <div className='sm:hidden flex'>
           <button onClick={() => toggleDiv('MoreFilter')}>
-            <FilterTemplate name="More Filter" />
+            <FilterTemplate name="Filter" />
           </button>
         </div>
       </div>

@@ -33,13 +33,13 @@ const Header = ({handleLogin, user, islogging}) => {
 
   useEffect(()=>{
     async function autoLogin() {
-      const storedEmail = localStorage.getItem('email');
+      const storedEmailorusername = localStorage.getItem('emailorusername');
       const storedPassword = localStorage.getItem('password');
 
-      if (storedEmail && storedPassword) {
+      if (storedEmailorusername && storedPassword) {
         try {
           const response = await axios.post(`${process.env.REACT_APP_DB}/login`, {
-            email: storedEmail,
+            emailorusername: storedEmailorusername,
             password: storedPassword,
           });
           if (!response.data.error) {
@@ -55,7 +55,7 @@ const Header = ({handleLogin, user, islogging}) => {
     autoLogin()
   }, [handleLogin])
   const logOut = ()=>{
-    localStorage.removeItem('username');
+    localStorage.removeItem('emailorusername');
     localStorage.removeItem('password');
     setIsMenuOpen(!isMenuOpen);
     handleLogin(false, {})
@@ -196,9 +196,9 @@ const Header = ({handleLogin, user, islogging}) => {
     <div className="fixed inset-0 z-50 flex items-center justify-center overflow-auto bg-black bg-opacity-50" onClick={()=> setIsOpen((prevState)=>({...prevState, navbar:0}))}>
       <div className="relative bg-white p-2 rounded-xl shadow-md" onClick={(e) => e.stopPropagation()}>
         <div className="text-black text-center w-[200px] flex flex-col">
-        <Link to="/" className='w-full p-2'>Home</Link>
-        <Link to="/man" className='w-full p-2'>Man</Link>
-        <Link to="/woman" className='w-full p-2'>Woman</Link>
+        <Link to="/" className='w-full p-2' onClick={()=> setIsOpen((prevState)=>({...prevState, navbar:0}))}>Home</Link>
+        <Link to="/man" className='w-full p-2' onClick={()=> setIsOpen((prevState)=>({...prevState, navbar:0}))}>Man</Link>
+        <Link to="/woman" className='w-full p-2' onClick={()=> setIsOpen((prevState)=>({...prevState, navbar:0}))}>Woman</Link>
         </div>
       </div>
     </div>
