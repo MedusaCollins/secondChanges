@@ -105,10 +105,10 @@ function Popup({ isOpen, onClose, handleLogin }) {
   }
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center overflow-auto bg-black bg-opacity-50" onClick={handleCloseClick}>
-      <div className="relative bg-white p-4 rounded-xl shadow-md" onClick={(e) => e.stopPropagation()}>
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50" onClick={handleCloseClick}>
+      <div className="relative bg-white p-4 rounded-xl shadow-md mx-5" onClick={(e) => e.stopPropagation()}>
 
-        <div className="p-4 text-black text-center w-96">
+        <div className="p-4 text-black text-center sm:w-96">
           <form onSubmit={handleSubmit}>
             <p className='text-2xl text-green-500 font-semibold mb-12'>secondChanges</p>
             <p className='text-2xl text-slate-800 font-bold text-left mb-2'>{formState.login ?'Begin Your Journey':'Sign in to your account'}</p>
@@ -117,7 +117,7 @@ function Popup({ isOpen, onClose, handleLogin }) {
               <button type="button" className='text-green-500 hover:text-green-700 font-semibold text-md transition' onClick={() => toggleLogin()}>{formState.login ?'Create an Account':'Log in'}</button>
             </div>
 
-            <div className='flex flex-col gap-4 mt-5'>
+            <div className='flex flex-col sm:gap-4 gap-2 mt-5'>
             {!formState.login?
             (<><Input text="Username" type="text" value={formState.username} onChange={(e)=> handleFormChange(e,"username")} formState={formState} />
             <Input text="Email" type="text" value={formState.email} onChange={(e)=> handleFormChange(e,"email")} formState={formState} /></>):<Input text="Email/Username" type="text" value={formState.emailorusername} onChange={(e)=> handleFormChange(e,"emailorusername")} formState={formState} />}
