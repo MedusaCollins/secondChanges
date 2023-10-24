@@ -53,7 +53,7 @@ export default function ProductDetail({user}){
   return (
   <div className='mx-auto max-w-[1200px]'>
 
-    <div className='text-slate-700 text-lg font-medium my-5'>
+    <div className='text-slate-700 text-lg font-medium m-5 sm:block hidden'>
         <span className='underline underline-offset-2'>Home</span>
         <span className='text-slate-700 mx-3'>/</span>
         <span className='underline underline-offset-2'>{product.gender}</span>
@@ -64,7 +64,7 @@ export default function ProductDetail({user}){
     </div>
 
     <div className="flex flex-col justify-between pt-11">
-      <div className='flex justify-between mb-12 px-5'>
+      <div className='flex lg:flex-row flex-col  gap-5 justify-between mb-12 px-5'>
         <Carousel slides={product.img} />
         <About product={product} rating={rating} user={user} comments={comments} setComments={setComments}/>
       </div>
