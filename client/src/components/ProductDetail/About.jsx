@@ -75,15 +75,15 @@ const About = ({product, rating, user, comments, setComments}) => {
           <ProductAbout text="Brand" value={product.brand}/>
         </div>
 
-        <div className='flex flex-col rounded-xl border p-5 min-w-[200px]'>
+        <div className='flex flex-col rounded-xl border dark:border-[#495057] p-5 min-w-[200px]'>
           <div className='m-auto'>
-          <img src={product.seller.img} alt="seller" className='w-16 h-16 rounded-full mb-1 border mx-auto border-gray-300'/>
+          <img src={product.seller.img} alt="seller" className='w-16 h-16 rounded-full mb-1 border dark:border-[#495057] mx-auto border-gray-300'/>
           {product.seller.username}
           </div>
           <div className='p-2 text-center'>
             {product.seller.reviews.length>0?(
               <>
-              <FontAwesomeIcon icon={solidStar} className='text-orange-500 text-left'/> {rating}<span className='text-gray-500'>/5 ({product.seller.reviews.length} reviews)</span>
+              <FontAwesomeIcon icon={solidStar} className='text-orange-500 text-left'/> {rating}<span className='text-gray-500 dark:text-gray-400'>/5 ({product.seller.reviews.length} reviews)</span>
               </>
             ):<span className='text-gray-500'>{product.seller.reviews.length} reviews</span>}
           </div>
@@ -94,7 +94,7 @@ const About = ({product, rating, user, comments, setComments}) => {
         <ProductPrice price={product.price} dprice={product.dprice}/>
         <div className='flex flex-col text-xl gap-5 mt-16 font-semibold'>
           {"buyers" in product?(
-              <div className='rounded-lg border border-gray-600 bg-gray-600 text-center text-white p-2 '>Satıldı</div>
+              <div className='rounded-lg border border-gray-600 bg-gray-600  text-center text-white p-2 '>Satıldı</div>
           ):(
             <>
             {variable.cartItem.includes(product._id)?(
@@ -108,8 +108,8 @@ const About = ({product, rating, user, comments, setComments}) => {
             )}
 
             <div className='w-full justify-between flex'>
-              <button className='rounded-lg border border-blue-400 text-blue-400 p-2 w-[45%]' onClick={()=> {setPopUp(1); setFormData({...formData, reqType: 'asks'})}}>Soru sor</button>
-              <button className='rounded-lg border border-green-600 text-green-600 p-2 w-[45%]'onClick={()=> {setPopUp(1); setFormData({...formData, reqType: 'offers'})}}>Teklif ver</button> 
+              <button className='rounded-lg border border-blue-400 text-blue-400 hover:border-blue-500 hover:text-blue-500 p-2 w-[45%]' onClick={()=> {setPopUp(1); setFormData({...formData, reqType: 'asks'})}}>Soru sor</button>
+              <button className='rounded-lg border border-green-600 text-green-600 hover:border-green-700 hover:text-green-700 p-2 w-[45%]'onClick={()=> {setPopUp(1); setFormData({...formData, reqType: 'offers'})}}>Teklif ver</button> 
             </div>
             </>
           )}
@@ -118,7 +118,7 @@ const About = ({product, rating, user, comments, setComments}) => {
         {popUp? (
                 <div className="fixed inset-0 z-50 flex items-center justify-center backdrop-blur-md p-5">
                   <div className='fixed inset-0 bg-black opacity-50 transition' onClick={()=>setPopUp(0)}></div>
-                  <div className="relative bg-white w-96 min-h-[13rem] rounded-lg p-4">
+                  <div className="relative bg-white dark:bg-[#212529] w-96 min-h-[13rem] rounded-lg p-4">
                     <ProductInput name={formData.reqType==='asks'?"Your Question":"Your Offer"}type="textarea" placeholder={formData.reqType==='asks'?"You can ask anything that comes to your mind about the product.":"You can make an offer for the product."} onChange={(e) => setFormData({ ...formData, comment: e.target.value })} />
                     <button onClick={()=>handleSendComment()} className="bg-blue-500 hover:bg-blue-700 text-white p-2 text-sm rounded-lg transition absolute bottom-0 right-0 m-2">{formData.reqType==='asks'?"Ask a Question":"Submit an Offer"}</button>
                   </div>

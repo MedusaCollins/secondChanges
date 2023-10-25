@@ -14,16 +14,16 @@ const Comments = ({product, user, seller, comments}) => {
 
   return (
     <>
-      <div className='w-full p-3 flex bg-slate-100 rounded-lg'>
+      <div className='w-full p-3 flex bg-slate-100 dark:bg-[#343a40] rounded-lg'>
         <button onClick={() => toggleDiv('Asks')}>
-          <FilterTemplate name="Asks" openTab={openDiv}/>
+          <FilterTemplate name="Asks" openDiv={openDiv}/>
         </button>
         <button onClick={() => toggleDiv('Offers')}>
-          <FilterTemplate name="Offers" openTab={openDiv}/>
+          <FilterTemplate name="Offers" openDiv={openDiv}/>
         </button>
         <div className='relative flex ml-auto'>
           <button onClick={() => toggleDiv('Seller Comments')}>
-            <FilterTemplate name="Seller Comments" openTab={openDiv}/>
+            <FilterTemplate name="Seller Comments" openDiv={openDiv}/>
           </button>
         </div>
       </div>

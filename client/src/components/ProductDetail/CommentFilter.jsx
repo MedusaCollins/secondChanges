@@ -94,7 +94,7 @@ const CommentFilter = ({filter,product,user,pId}) => {
             {popUp? (
               <div className="fixed inset-0 z-50 flex items-center justify-center backdrop-blur-md">
                 <div className='fixed inset-0 bg-black opacity-50 transition' onClick={()=>setPopUp(0)}></div>
-                <div className="relative bg-white w-96 h-48 rounded-lg p-4">
+                <div className="relative bg-white dark:bg-[#212529] w-96 h-48 rounded-lg p-4">
                   <ProductInput type="textarea" placeholder="Add a reply." onChange={(e) => setFormData({ ...formData, comment: e.target.value })} 
                   />
                   <button className="bg-blue-500 hover:bg-blue-700 text-white p-2 text-sm rounded-lg transition absolute bottom-3 right-5" onClick={()=>sendReplies()}>Send Reply</button>

@@ -41,11 +41,11 @@ export default function ProductDetail({user}){
   }, [productId, comments]);
   if (loading && !product) {
     return (
-<div className="absolute bottom-[40%] left-0 right-0 items-center justify-center bg-white px-6">
+<div className="absolute bottom-[40%] left-0 right-0 items-center justify-center px-6">
     <div className="flex flex-col items-center">
         <p className="text-6xl font-semibold text-green-500">404</p>
-        <h1 className="mt-4 text-3xl font-bold tracking-tight text-gray-900 sm:text-5xl">Page not found</h1>
-        <p className="mt-6 text-base leading-7 text-gray-600">Sorry, we couldn’t find the page you’re looking for.</p>
+        <h1 className="mt-4 text-3xl font-bold tracking-tight text-gray-900 dark:text-white sm:text-5xl">Page not found</h1>
+        <p className="mt-6 text-base leading-7 text-gray-600 dark:text-gray-400">Sorry, we couldn’t find the page you’re looking for.</p>
     </div>
 </div>
   )}
@@ -53,24 +53,24 @@ export default function ProductDetail({user}){
   return (
   <div className='mx-auto max-w-[1200px]'>
 
-    <div className='text-slate-700 text-lg font-medium m-5 sm:block hidden'>
+    <div className='text-slate-700 dark:text-gray-400 text-lg font-medium m-5 sm:block hidden'>
         <span className='underline underline-offset-2'>Home</span>
-        <span className='text-slate-700 mx-3'>/</span>
+        <span className='text-slate-700 dark:text-slate-400 mx-3'>/</span>
         <span className='underline underline-offset-2'>{product.gender}</span>
-        <span className='text-slate-700 mx-3'>/</span>
+        <span className='text-slate-700 dark:text-slate-400 mx-3'>/</span>
         <span className='underline underline-offset-2'>{product.type}</span>
-        <span className='text-slate-700 mx-3'>/</span>
-        <span className='text-slate-500'>{product.name}</span> 
+        <span className='text-slate-700 dark:text-slate-400 mx-3'>/</span>
+        <span className='text-slate-500 dark:text-gray-300'>{product.name}</span> 
     </div>
 
     <div className="flex flex-col justify-between pt-11">
-      <div className='flex lg:flex-row flex-col  gap-5 justify-between mb-12 px-5'>
+      <div className='flex lg:flex-row flex-col gap-5 justify-between mb-12 px-5'>
         <Carousel slides={product.img} />
         <About product={product} rating={rating} user={user} comments={comments} setComments={setComments}/>
       </div>
       {"buyers" in product?(
       <div className='flex flex-col gap-5 m-5 sm:m-0'>
-        <div className='flex gap-3 mb-16 border p-5 rounded-xl'>
+        <div className='flex gap-3 mb-16 border dark:border-[#495057] p-5 rounded-xl'>
           <img src={product.buyers._id.img} alt="comment user profile pic" className='w-12 h-12 mt-2 rounded-full'/>
           <div className='flex flex-col'>
             <span className='font-semibold text-xl'>{product.buyers._id.username}</span>
@@ -84,7 +84,7 @@ export default function ProductDetail({user}){
         </div>
       </div>
       ):null}
-      <div className='border-t-2 p-5'>
+      <div className='border-t-2 dark:border-[#495057] p-5'>
         <Comments product={product} seller={seller} user={user} comment={comments}/>
       </div>
     </div>
