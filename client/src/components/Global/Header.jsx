@@ -4,9 +4,9 @@ import axios from 'axios';
 
 import { Link, useLocation } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faMagnifyingGlass, faHeart, faCartShopping, faUser, faMoon, faCog, faTruckFast, faBagShopping, faCircleXmark, faSearch, faBars } from '@fortawesome/free-solid-svg-icons';
+import { faMagnifyingGlass, faHeart, faCartShopping, faUser, faMoon, faCog, faTruckFast, faBagShopping, faCircleXmark, faSearch, faBars, faSun } from '@fortawesome/free-solid-svg-icons';
 
-const Header = ({handleLogin, user, islogging}) => {
+const Header = ({handleLogin, user, islogging, globalVariable, setGlobalVariable}) => {
   const location = useLocation()
   const [isPopupOpen, setPopupOpen] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -53,6 +53,8 @@ const Header = ({handleLogin, user, islogging}) => {
       }
     }
     autoLogin()
+
+
   }, [handleLogin])
   const logOut = ()=>{
     localStorage.removeItem('emailorusername');
@@ -73,24 +75,19 @@ const Header = ({handleLogin, user, islogging}) => {
     setIsMenuOpen(!isMenuOpen);
   };
 
-  const [isChecked, setIsChecked] = useState(false)
-  
-  const handleCheckboxChange = () => {
-    setIsChecked(!isChecked)
-  }
   return (
   <>
-    <div className='flex top-0 left-0 right-0 px-5 border-b-slate-100 border-b-[2px]'>
+    <div className='flex top-0 left-0 right-0 px-5  border-b-slate-100 dark:border-[#495057] border-b-[2px]'>
         <Popup isOpen={isPopupOpen} onClose={closePopup} handleLogin={handleLogin} user={user}/>
-      <Link to="/" className='text-green-500 font-semibold text-xl my-2 max-sm:hidden'>secondChanges</Link>
-      <div className='ml-12 items-center flex text-gray-700 font-medium max-sm:ml-0 max-[470px]:hidden'>
+        <Link to="/" className='text-green-500 font-semibold text-xl my-2 max-sm:hidden'>secondChanges</Link>
+      <div className='ml-12 items-center flex text-gray-700 dark:text-[#dee2e6] font-medium max-sm:ml-0 max-[470px]:hidden'>
         <Link to="/" className={`mx-3 ${location.pathname ==='/'&& 'text-green-500'}`}>Home</Link>
         <Link to="/man" className={`mx-3 ${location.pathname ==='/man'&& 'text-green-500'}`}>Man</Link>
         <Link to="/woman" className={`mx-3 ${location.pathname ==='/woman'&& 'text-green-500'}`}>Woman</Link>
       </div>
-      <div className='items-center text-gray-700 font-medium hidden max-[470px]:flex' onClick={()=> setIsOpen((prevState)=>({...prevState, navbar:1}))}><FontAwesomeIcon icon={faBars}/></div>
+      <div className='items-center text-gray-700 dark:text-[#dee2e6] font-medium hidden max-[470px]:flex' onClick={()=> setIsOpen((prevState)=>({...prevState, navbar:1}))}><FontAwesomeIcon icon={faBars}/></div>
 
-      <div className='relative flex right-0 ml-auto text-gray-700'>
+      <div className='relative flex right-0 ml-auto text-gray-700 dark:text-[#dee2e6]'>
         <div className='hover:cursor-pointer' onClick={()=> setIsOpen((prevState)=>({...prevState, searchbar:1}))}><FontAwesomeIcon icon={faMagnifyingGlass} className='m-4'/></div>
         {islogging&&(
           <Link to={`/likes/${user.username}`}><FontAwesomeIcon icon={faHeart} className={`m-4 ${location.pathname ===`/likes/${user.username}` && 'text-green-500'}`}/></Link>
@@ -102,61 +99,53 @@ const Header = ({handleLogin, user, islogging}) => {
         {islogging?(
         <button onClick={()=> toggleMenu()}>{user.username}</button>
         ):(
-        <button className='border rounded-lg w-16 m-2 px-auto' onClick={openPopup}>Login</button>
+        <button className='border dark:border-[#495057] rounded-lg w-16 m-2 px-auto' onClick={openPopup}>Login</button>
         )}
         {isMenuOpen && (
-          <div className="absolute -right-0 mt-12 min-w-[16rem] bg-white text-center border rounded-md shadow-lg flex-col-reverse z-30" ref={menuRef}>
+          <div className="absolute -right-0 mt-12 min-w-[16rem] bg-white dark:bg-[#212529] text-center border dark:border-[#495057] rounded-md shadow-lg flex-col-reverse z-30" ref={menuRef}>
           <ul>
-            <li className="p-2 flex gap-2 border-b-2 border-dotted items-center">
+            <li className="p-2 flex gap-2 dark:border-[#495057] border-b-2 border-dotted items-center">
               <img src={user.img} alt="" className="w-8 h-8 rounded-full" />
               <div className="text-left">
                 <p className="font-semibold">{user.username}</p>
                 <p className="text-gray-500 text-sm">{user.email}</p>
               </div>
             </li>
-            <li className='flex flex-col border-b-2 border-dotted items-center'>
-              <Link to={`/profiles/${user.username}`} className="w-full hover:bg-gray-200 p-2 transition-all flex items-center" onClick={toggleMenu}>
+            <li className='flex flex-col dark:border-[#495057] border-b-2 border-dotted items-center'>
+              <Link to={`/profiles/${user.username}`} className="w-full hover:bg-gray-200 dark:hover:bg-[#343a40] p-2 transition-all flex items-center" onClick={toggleMenu}>
                 <FontAwesomeIcon icon={faUser} className="mr-2" /> My Profile
               </Link>
-              <Link to="/myproducts" className="w-full hover:bg-gray-200 p-2 transition-all flex items-center" onClick={toggleMenu}>
+              <Link to="/myproducts" className="w-full hover:bg-gray-200 dark:hover:bg-[#343a40] p-2 transition-all flex items-center" onClick={toggleMenu}>
                 <FontAwesomeIcon icon={faBagShopping} className="mr-2" /> Product Management
               </Link>
-              <Link to="/orders" className="w-full hover:bg-gray-200 p-2 transition-all flex items-center" onClick={toggleMenu}>
+              <Link to="/orders" className="w-full hover:bg-gray-200 dark:hover:bg-[#343a40] p-2 transition-all flex items-center" onClick={toggleMenu}>
                 <FontAwesomeIcon icon={faTruckFast} className="mr-2" /> My Orders
               </Link>
-              <Link to="/settings" className="w-full hover:bg-gray-200 p-2 transition-all flex items-center" onClick={toggleMenu}>
+              <Link to="/settings" className="w-full hover:bg-gray-200 dark:hover:bg-[#343a40] p-2 transition-all flex items-center" onClick={toggleMenu}>
                 <FontAwesomeIcon icon={faCog} className="mr-2" /> Settings
               </Link>
             </li>
 
-            <li className='flex gap-2 border-b-2 border-dotted items-center'>
-              <div className='flex w-full hover:bg-gray-200'>
-                <Link className="w-full p-2 transition-all flex items-center">
-                  <FontAwesomeIcon icon={faMoon} className="mr-2" /> Dark Mode
-                </Link>
-                <label className='flex cursor-pointer select-none items-center'>
-                  <div className='relative'>
-                    <input
-                      type='checkbox'
-                      checked={isChecked}
-                      onChange={handleCheckboxChange}
-                      className='sr-only'
-                    />
-                    <div
-                      className={`box block h-5 w-9 mx-5 rounded-full ${isChecked ? 'bg-gray-500' : 'bg-gray-500'}`}
-                    ></div>
-                    
-                    <div
-                      className={`absolute right-10 top-[2px] flex h-4 w-4 items-center justify-center rounded-full bg-white transition ${
-                        isChecked ? 'translate-x-[10%] ' : 'translate-x-[115%]'
-                      }`}
-                    ></div>
-                  </div>
-                </label>
+            <li className='flex gap-2 dark:border-[#495057] border-b-2 border-dotted items-center'>
+              <div className='flex w-full hover:bg-gray-200 dark:hover:bg-[#343a40]'>
+              <button className="w-full p-2 transition-all flex items-center" onClick={() => {
+                localStorage.setItem('darkmode', !globalVariable.darkmode);
+                setGlobalVariable({ darkmode: !globalVariable.darkmode });
+              }}>                  
+                    {globalVariable.darkmode?(
+                    <>
+                    <FontAwesomeIcon icon={faSun} className="mr-2" /> Light Mode
+                    </>
+                    ):
+                    <>
+                    <FontAwesomeIcon icon={faMoon} className="mr-2" /> Dark Mode
+                    </>
+                  }
+                </button>
               </div>
             </li>
           </ul>
-          <button onClick={logOut} className="block w-full text-left hover:bg-gray-200 p-2 transition-all">Log out</button>
+          <button onClick={logOut} className="block w-full text-left hover:bg-gray-200 dark:hover:bg-[#343a40] p-2 transition-all">Log out</button>
         </div>    
         )}
       </div>
@@ -190,11 +179,11 @@ const Header = ({handleLogin, user, islogging}) => {
     ):null}
     {isOpen.navbar?(
     <div className="fixed inset-0 z-50 flex items-center justify-center overflow-auto bg-black bg-opacity-50" onClick={()=> setIsOpen((prevState)=>({...prevState, navbar:0}))}>
-      <div className="relative bg-white p-2 rounded-xl shadow-md" onClick={(e) => e.stopPropagation()}>
-        <div className="text-black text-center w-[200px] flex flex-col">
-        <Link to="/" className='w-full p-2' onClick={()=> setIsOpen((prevState)=>({...prevState, navbar:0}))}>Home</Link>
-        <Link to="/man" className='w-full p-2' onClick={()=> setIsOpen((prevState)=>({...prevState, navbar:0}))}>Man</Link>
-        <Link to="/woman" className='w-full p-2' onClick={()=> setIsOpen((prevState)=>({...prevState, navbar:0}))}>Woman</Link>
+      <div className="relative bg-white dark:bg-[#212529] p-2 rounded-xl shadow-md" onClick={(e) => e.stopPropagation()}>
+        <div className="text-black dark:text-[#dee2e6] text-center w-[200px] flex flex-col">
+        <Link to="/" className={`w-full p-2 ${location.pathname ==='/'&& 'text-green-500'}`} onClick={()=> setIsOpen((prevState)=>({...prevState, navbar:0}))}>Home</Link>
+        <Link to="/man" className={`w-full p-2 ${location.pathname ==='/man'&& 'text-green-500'}`} onClick={()=> setIsOpen((prevState)=>({...prevState, navbar:0}))}>Man</Link>
+        <Link to="/woman" className={`w-full p-2 ${location.pathname ==='/woman'&& 'text-green-500'}`} onClick={()=> setIsOpen((prevState)=>({...prevState, navbar:0}))}>Woman</Link>
         </div>
       </div>
     </div>

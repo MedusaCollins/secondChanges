@@ -18,7 +18,7 @@ const ShowProducts = (props) => {
         .catch((error) => console.error(error));
     }, [filters]);
     return (
-      <div className='p-5 sm:mx-24 mx-2 gap-4'>
+      <div className='p-5 sm:mx-24 mx-8 gap-4'>
         <h1 className='text-xl font-semibold'>{props.name} <span className='text-gray-300'>({products.length})</span></h1>
         <div className='my-5'><Filter/></div>
         <div className='my-5'><Promo/></div>

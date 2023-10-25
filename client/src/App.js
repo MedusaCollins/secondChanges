@@ -1,4 +1,4 @@
-import React, {useCallback, useState} from "react";
+import React, {useCallback, useEffect, useState} from "react";
 import { Routes, Route } from "react-router-dom";
 
 import Header from "./components/Global/Header.jsx";
@@ -13,13 +13,31 @@ import Cart from "./pages/Cart.jsx";
 function App() {
   const [user, setUser] = useState({})
   const [isLogging, setIsLogging] = useState(false);
+  const [globalVariable, setGlobalVariable] = useState({
+    darkmode: null,
+
+  })
+  useEffect(() => {
+    const local = localStorage.getItem('darkmode');
+    const isDarkMode=local==='true';
+    setGlobalVariable({darkmode:isDarkMode});
+  }, []);
+
+  useEffect(()=>{
+    if(globalVariable.darkmode){
+      document.documentElement.classList.add("dark");
+    }else{
+      document.documentElement.classList.remove("dark");
+    }
+  }, [globalVariable.darkmode])
+
   const handleLogin = useCallback((loggedIn, userData) => {
     setIsLogging(loggedIn);
     setUser(userData)
   }, []);
   return (
-    <>
-      <Header handleLogin={handleLogin} user={user} islogging={isLogging}/>
+    <div className={`min-h-screen dark:bg-[#212529] dark:text-[#dee2e6] transition-all`}>
+      <Header handleLogin={handleLogin} user={user} islogging={isLogging} globalVariable={globalVariable} setGlobalVariable={setGlobalVariable}/>
       <Routes>
           <Route path="/" element={<HomePage user={user} name="Home" handleLogin={handleLogin}/>}/>
           <Route path="/man" element={<HomePage user={user} filter={{gender: 'Man'}} name="Man" handleLogin={handleLogin}/>}/>
@@ -33,7 +51,7 @@ function App() {
           
           {Object.keys(user).length === 0?(<Route path="/myproducts/" element={<HomePage user={user} name="Home" handleLogin={handleLogin}/>}/>):(<Route path="/myproducts/" element={<MyProduct user={user} islogging={isLogging} handleLogin={handleLogin}/>} />)}
       </Routes>
-    </>
+    </div>
 )}
 
 export default App;
