@@ -17,24 +17,24 @@ const Filter = () => {
 
   return (
     <>
-      <div className='w-full p-3 flex bg-slate-100 rounded-lg'>
+      <div className='w-full p-3 flex bg-slate-100 dark:bg-[#343a40] rounded-lg'>
         <div className='hidden sm:flex'>
         <button onClick={() => toggleDiv('Price')}>
-          <FilterTemplate name="Price"/>
+          <FilterTemplate name="Price" openDiv={openDiv}/>
         </button>
         <button onClick={() => toggleDiv('Size')}>
-          <FilterTemplate name="Size" />
+          <FilterTemplate name="Size" openDiv={openDiv}/>
         </button>
         <button onClick={() => toggleDiv('Sale')}>
-          <FilterTemplate name="Sale" />
+          <FilterTemplate name="Sale" openDiv={openDiv}/>
         </button>
-        <button onClick={() => toggleDiv('ProductType')}>
-          <FilterTemplate name="Product Type" />
+        <button onClick={() => toggleDiv('Product Type')}>
+          <FilterTemplate name="Product Type" openDiv={openDiv}/>
         </button>
         </div>
         <div className='sm:hidden flex'>
-          <button onClick={() => toggleDiv('MoreFilter')}>
-            <FilterTemplate name="Filter" />
+          <button onClick={() => toggleDiv('Filter')}>
+            <FilterTemplate name="Filter" openDiv={openDiv}/>
           </button>
         </div>
       </div>

@@ -3,7 +3,7 @@ import React from 'react'
 const DetailFilter = ({openDiv}) => {
   return (
     <div>
-        {openDiv === 'MoreFilter' && (
+        {openDiv === 'More Filter' && (
           <div>
             <p>Ekstra filtreler burada görüntülenebilir.</p>
           </div>
@@ -23,7 +23,7 @@ const DetailFilter = ({openDiv}) => {
             <p>Sale</p>
           </div>
         )}
-        {openDiv === 'ProductType' && (
+        {openDiv === 'Product Type' && (
           <div>
             <p>ProductType</p>
           </div>
