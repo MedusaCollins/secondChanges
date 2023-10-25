@@ -34,7 +34,7 @@ const Products = ({ filter, setIsModalOpen, handleLogin, user }) => {
       ))}
       {setIsModalOpen?
       (
-        <button onClick={()=> setIsModalOpen(true)} className={`rounded-xl sm:w-[18rem] w-[14rem] h-[20rem] bg-cover bg-center relative bg-gray-600 hover:bg-gray-800 hover:text-white transition cursor-pointer hover:border hover:border-separate border-slate-500 flex flex-col justify-center items-center`}>
+        <button onClick={()=> setIsModalOpen(true)} className={`rounded-xl sm:w-[18rem] w-[14rem] h-[20rem] bg-cover bg-center relative bg-gray-600 hover:bg-gray-800 dark:bg-[#343a40] dark:hover:bg-[#24282c] hover:text-white transition cursor-pointer hover:border hover:border-separate border-slate-500 dark:border-[#495057] flex flex-col justify-center items-center`}>
         <div className='relative'>
           <FontAwesomeIcon icon={faFolder} className="w-16 h-16 text-green-500 " />
           <p className="text-xl">Add Product</p>

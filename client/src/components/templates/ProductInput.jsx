@@ -3,7 +3,7 @@ import React from 'react'
 const ProductInput = (props) => {
   return (
     <div>
-        <label htmlFor="first-name" className="block text-sm font-medium leading-6 text-gray-900  dark:text-white">
+        <label htmlFor="first-name" className="block text-sm font-medium leading-6 text-gray-900  dark:text-gray-400">
             {props.name}
         </label>
         <div className="my-2">

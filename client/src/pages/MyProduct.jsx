@@ -71,12 +71,12 @@ const MyProduct = ({ user, handleLogin }) => {
       {isModalOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center backdrop-blur-md">
           <div className='fixed inset-0 bg-black opacity-50' onClick={()=>setModalOpen(false)}></div>
-          <div className="relative bg-white w-96 rounded-lg p-4">
+          <div className="relative bg-white dark:bg-[#212529] w-96 rounded-lg p-4">
             <div className="absolute top-2 right-2 cursor-pointer" onClick={()=>setModalOpen(false)}>
               <FontAwesomeIcon icon={faTimes} className="text-gray-500" />
             </div>
 
-            <h2 className="text-base font-semibold leading-7 text-gray-900">New Product</h2>
+            <h2 className="text-base font-semibold leading-7 text-gray-900 dark:text-[#dee2e6]">New Product</h2>
             <MultiStepForm user={user} filters={filters} handleLogin={handleLogin} isModalOpen={setModalOpen} />
           </div>
         </div>
