@@ -153,22 +153,22 @@ const Header = ({handleLogin, user, islogging, globalVariable, setGlobalVariable
 
     {isOpen.searchbar?(
     <div className="fixed inset-0 z-50 flex items-center justify-center overflow-auto bg-black bg-opacity-50" onClick={()=> setIsOpen((prevState)=>({...prevState, searchbar:0}))}>
-      <div className="relative bg-white p-2 rounded-xl shadow-md" onClick={(e) => e.stopPropagation()}>
-        <div className="text-black text-center max-sm:w-64 w-[500px]">
+      <div className="relative bg-white dark:bg-[#212529] p-2 rounded-xl shadow-md" onClick={(e) => e.stopPropagation()}>
+        <div className="text-black dark:text-[#dee2e6] text-center max-sm:w-64 w-[500px]">
 
-            <div className="relative mx-auto flex border-b-2 p-2">
-                <p type="button" className=" inset-y-0 pt-2 left-0 items-center text-gray-600">
+            <div className="relative mx-auto flex border-b-2 dark:border-[#495057]  p-2">
+                <p type="button" className=" inset-y-0 pt-2 left-0 items-center text-gray-600 dark:text-gray-500">
                   <FontAwesomeIcon icon={faSearch} className="w-4 h-4"/>
                 </p>
-                <input type="text" placeholder="Search a products" name="deneme" value={value.searchbar} 
+                <input type="text" placeholder="Search a products" name="search" value={value.searchbar} 
                 onChange={(e)=> setValue((prevState)=>({...prevState, searchbar: e.target.value}))} 
-                className="w-full p-2 text-base outline-none focus:ring-green-500 focus:ring-0 transition"
+                className="w-full p-2 text-base outline-none dark:bg-[#212529] focus:ring-green-500 focus:ring-0 transition"
                 onKeyDown={(e) => {
                   if (e.key === "Enter") {
                     window.location.href = "/search/"+value.searchbar;
                   }
                 }}/>
-                <button type="button" onClick={() => setValue((prevState)=>({...prevState, searchbar: ''}))} className="absolute inset-y-0 right-0 flex items-center px-4 text-gray-300 hover:text-gray-400 focus:ring-0">
+                <button type="button" onClick={() => setValue((prevState)=>({...prevState, searchbar: ''}))} className="absolute inset-y-0 right-0 flex items-center px-4 text-gray-300 hover:text-gray-400 dark:text-gray-500 dark:hover:text-gray-400 focus:ring-0">
                   <FontAwesomeIcon icon={faCircleXmark} className="w-5 h-5"/>
                 </button>
             </div>

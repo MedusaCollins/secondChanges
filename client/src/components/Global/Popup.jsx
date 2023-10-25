@@ -106,14 +106,14 @@ function Popup({ isOpen, onClose, handleLogin }) {
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50" onClick={handleCloseClick}>
-      <div className="relative bg-white p-4 rounded-xl shadow-md mx-5" onClick={(e) => e.stopPropagation()}>
+      <div className="relative bg-white dark:bg-[#212529] p-4 rounded-xl shadow-md mx-5" onClick={(e) => e.stopPropagation()}>
 
-        <div className="p-4 text-black text-center sm:w-96">
+        <div className="p-4 text-black dark:text-[#dee2e6] text-center sm:w-96">
           <form onSubmit={handleSubmit}>
             <p className='text-2xl text-green-500 font-semibold mb-12'>secondChanges</p>
-            <p className='text-2xl text-slate-800 font-bold text-left mb-2'>{formState.login ?'Begin Your Journey':'Sign in to your account'}</p>
+            <p className='text-2xl text-slate-800 dark:text-white font-bold text-left mb-2'>{formState.login ?'Begin Your Journey':'Sign in to your account'}</p>
             <div className='flex gap-2 text-left'>
-              <p className='text-gray-400'>{formState.login ?'Not a member?':'Already a member?'}</p>
+              <p className='text-gray-400 dark:text-gray-300'>{formState.login ?'Not a member?':'Already a member?'}</p>
               <button type="button" className='text-green-500 hover:text-green-700 font-semibold text-md transition' onClick={() => toggleLogin()}>{formState.login ?'Create an Account':'Log in'}</button>
             </div>
 
