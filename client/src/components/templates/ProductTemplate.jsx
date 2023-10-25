@@ -12,7 +12,7 @@ const ProductTemplate = ({ name, img,likes, brand, price, id, size,dprice, user,
   const [isHovered, setIsHovered] = useState(false);
   const [variable, setVariable] = useState({
     isHoverable: false,
-    color: '#334155',
+    color: 'text-slate-700 dark:text-[#dee2e6]',
     cartItem: [],
   });
 
@@ -25,11 +25,8 @@ const ProductTemplate = ({ name, img,likes, brand, price, id, size,dprice, user,
     }
 
     if(likes.includes(user._id)){
-        setVariable((prevState)=>({...prevState, color:'#22c55e'}));
+        setVariable((prevState)=>({...prevState, color:'text-green-500'}));
       }
-    else{
-      setVariable((prevState)=>({...prevState, color:'#334155'}));
-    }
 
   }, [likes, user._id])
 
@@ -40,9 +37,9 @@ const ProductTemplate = ({ name, img,likes, brand, price, id, size,dprice, user,
     if(user._id){
       setVariable((prevState) => ({
         ...prevState,
-        color: prevState.color === '#22c55e' ? '#334155' : '#22c55e',
+        color: prevState.color === 'text-slate-700 dark:text-[#dee2e6]' ? 'text-green-500' : 'text-slate-700 dark:text-[#dee2e6]',
       }));
-      if(variable.color!=="#22c55e"){
+      if(variable.color!=="text-green-500"){
         await axios.post(`${process.env.REACT_APP_DB}/like`, {productId: id, userId: user._id, reqType: 1})
       }else{
         await axios.post(`${process.env.REACT_APP_DB}/like`, {productId: id, userId: user._id, reqType: 0})
@@ -91,17 +88,17 @@ const ProductTemplate = ({ name, img,likes, brand, price, id, size,dprice, user,
       onMouseLeave={() => setIsHovered(false)}
       to={`/products/${id}`}>
         
-      <div role="button" tabIndex={0} className='absolute top-0 right-0 m-5 p-2 w-8 h-8 bg-white hover:bg-gray-100 rounded-full'>
+      <div role="button" tabIndex={0} className='absolute top-0 right-0 m-5 p-2 w-8 h-8 bg-white dark:bg-[#212529] hover:bg-gray-100 rounded-full'>
         <div onClick={handleHeartClick}>
-          <FontAwesomeIcon icon={faHeart} className='text-slate-700 transform -translate-y-[0.15rem]' style={{ color: variable.color }} />
+          <FontAwesomeIcon icon={faHeart} className={` ${variable.color} transform -translate-y-[0.15rem]`}/>
         </div>
       </div>
 
-      <div className="absolute bottom-0 left-0 right-0 m-5 p-3 flex flex-col bg-white text-slate-700 font-semibold rounded-lg">
+      <div className="absolute bottom-0 left-0 right-0 m-5 p-3 flex flex-col bg-white dark:bg-[#212529] text-slate-700 dark:text-[#dee2e6] font-semibold rounded-lg">
         <h2 className="text-xl">
           {displayName}
         </h2>
-        <p className='text-gray-500 text-l'>{brand}{' '}(<span className='text-slate-400'>{size}</span>)</p>
+        <p className='text-gray-500 dark:text-gray-400 text-l'>{brand}{' '}(<span className='text-slate-400 dark:text-slate-500'>{size}</span>)</p>
         <div className="relative justify-between inline-flex items-center rounded-xl p-2">
           {dprice!==""?<>
             <span className=" font-semibold pr-2">
