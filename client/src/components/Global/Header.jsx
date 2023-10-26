@@ -4,7 +4,7 @@ import axios from 'axios';
 
 import { Link, useLocation } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faMagnifyingGlass, faHeart, faCartShopping, faUser, faMoon, faCog, faTruckFast, faBagShopping, faCircleXmark, faSearch, faBars, faSun } from '@fortawesome/free-solid-svg-icons';
+import { faMagnifyingGlass, faHeart, faCartShopping, faUser, faMoon, faCog, faTruckFast, faBagShopping, faCircleXmark, faSearch, faBars, faSun, faXmark } from '@fortawesome/free-solid-svg-icons';
 
 const Header = ({handleLogin, user, islogging, globalVariable, setGlobalVariable}) => {
   const location = useLocation()
@@ -16,10 +16,14 @@ const Header = ({handleLogin, user, islogging, globalVariable, setGlobalVariable
   });
   const [value, setValue] = useState({
     searchbar: '',
+    search:[]
   })
   const menuRef = useRef(null);
 
   useEffect(() => {
+    const searchJSON = localStorage.getItem('search')
+    const search = JSON.parse(searchJSON)
+    setValue((prevState)=>({...prevState, search: search}))
     function handleClickOutside(event) {
       if (menuRef.current && !menuRef.current.contains(event.target)) {
         setIsMenuOpen(false);
@@ -63,8 +67,6 @@ const Header = ({handleLogin, user, islogging, globalVariable, setGlobalVariable
     handleLogin(false, {})
   }
   
-
-
   const openPopup = () => {
     setPopupOpen(true);
   };
@@ -74,6 +76,25 @@ const Header = ({handleLogin, user, islogging, globalVariable, setGlobalVariable
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
   };
+
+
+  function handleSaveSearch(search, reqType) {
+    let updatedSearch = [...value.search]; // Declare updatedSearch here to ensure it's accessible later
+  
+    if (reqType === "adding") {
+      updatedSearch.push(search);
+    } else if(reqType ==="deleteall"){
+      updatedSearch = []
+    }
+     else {
+      updatedSearch = updatedSearch.filter((item) => item !== search);
+    }
+  
+    setValue((prevState) => ({ ...prevState, search: updatedSearch }));
+  
+    const updatedSearchJSON = JSON.stringify(updatedSearch);
+    localStorage.setItem("search", updatedSearchJSON);
+  }
 
   return (
   <>
@@ -155,7 +176,6 @@ const Header = ({handleLogin, user, islogging, globalVariable, setGlobalVariable
     <div className="fixed inset-0 z-50 flex items-center justify-center overflow-auto bg-black bg-opacity-50" onClick={()=> setIsOpen((prevState)=>({...prevState, searchbar:0}))}>
       <div className="relative bg-white dark:bg-[#212529] p-2 rounded-xl shadow-md" onClick={(e) => e.stopPropagation()}>
         <div className="text-black dark:text-[#dee2e6] text-center max-sm:w-64 w-[500px]">
-
             <div className="relative mx-auto flex border-b-2 dark:border-[#495057]  p-2">
                 <p type="button" className=" inset-y-0 pt-2 left-0 items-center text-gray-600 dark:text-gray-500">
                   <FontAwesomeIcon icon={faSearch} className="w-4 h-4"/>
@@ -165,6 +185,7 @@ const Header = ({handleLogin, user, islogging, globalVariable, setGlobalVariable
                 className="w-full p-2 text-base outline-none dark:bg-[#212529] focus:ring-green-500 focus:ring-0 transition"
                 onKeyDown={(e) => {
                   if (e.key === "Enter") {
+                    handleSaveSearch(value.searchbar,"adding");
                     window.location.href = "/search/"+value.searchbar;
                   }
                 }}/>
@@ -172,7 +193,23 @@ const Header = ({handleLogin, user, islogging, globalVariable, setGlobalVariable
                   <FontAwesomeIcon icon={faCircleXmark} className="w-5 h-5"/>
                 </button>
             </div>
-
+            {value.search&&value.search.length>0&&(
+            <div className="mt-4 text-sm px-4 pb-4">
+              <div className='flex justify-between mb-3'>
+              <p className="text-gray-600 dark:text-gray-400 text-base font-medium">Recent searches</p>
+              <button className='text-green-500 hover:text-green-600 font-medium underline' onClick={()=>handleSaveSearch(value.search,"deleteall")}>Clear all</button>
+              </div>
+              <ul className="text-gray-700 dark:text-gray-400 flex flex-wrap gap-2">
+                {value.search.map((search,i)=>(
+                  <div key={i} className='border-2 hover:border-gray-300 dark:border-[#495057] dark:hover:border-[#707880] rounded-lg px-2 py-1 hover:cursor-pointer flex gap-2'>
+                    <div onClick={()=> window.location.href = "/search/"+search}>{search}</div>
+                    <button className='text-slate-500 hover:text-slate-800 dark:text-gray-500 dark:hover:text-gray-300' onClick={(e) => {  e.preventDefault();  handleSaveSearch(search, "delete");}}>  
+                    <FontAwesomeIcon icon={faXmark}/>
+                    </button>
+                  </div>)).reverse()}
+              </ul>
+            </div>
+        )}
         </div>
       </div>
     </div>

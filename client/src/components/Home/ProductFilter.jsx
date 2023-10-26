@@ -15,7 +15,7 @@ const Filter = () => {
 
   return (
     <>
-      <div className='w-full p-3 flex bg-slate-100 dark:bg-[#343a40] rounded-lg'>
+      {/* <div className='w-full p-3 flex bg-slate-100 dark:bg-[#343a40] rounded-lg'>
         <div className='hidden sm:flex'>
         <button onClick={() => toggleDiv('Price')}>
           <FilterTemplate name="Price" openDiv={openDiv}/>
@@ -37,7 +37,7 @@ const Filter = () => {
         </div>
       </div>
 
-      <DetailFilter openDiv={openDiv}/>
+      <DetailFilter openDiv={openDiv}/> */}
     </>
   );
 };
