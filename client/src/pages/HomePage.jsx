@@ -8,8 +8,6 @@ const ShowProducts = (props) => {
     const [products, setProducts] = useState([]);
     const filters = props.filter;
 
-
-
     useEffect(() => {
       axios.post(`${process.env.REACT_APP_DB}/api/products`, filters)
         .then((response) => {

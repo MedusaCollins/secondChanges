@@ -116,7 +116,7 @@ mongoose.connect(`${process.env.DB}`, { useNewUrlParser: true, useUnifiedTopolog
       if (err) {
         return res.status(500).json({ error: "Dosya kaydedilirken bir hata oluştu." });
       }
-      
+  
       // Dosya başarıyla kaydedildi
       res.json({ filePath: `/uploads/${uploadedFile.name}` });
     });
@@ -224,7 +224,6 @@ app.post("/createProduct", async(req,res)=>{
 });
 
 app.post('/createUser', async(req,res)=>{
-  console.log(req.body)
   var { username, email, password} = req.body
   if(!username || !email || !password){
     return res.status(400).json({ error: "Username, email and password is can not be empty." });

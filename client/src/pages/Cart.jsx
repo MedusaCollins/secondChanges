@@ -63,9 +63,9 @@ const Cart = () => {
         <span>Shopping Cart</span>
       </div>
       {variable.cartItem.length>0?(<>
-        <div className="border-t pt-5 lg:col-span-3 col-span-5">
+        <div className="border-t dark:border-[#495057] pt-5 lg:col-span-3 col-span-5">
         {variable.cartItem.map((product, i) => (
-          <div key={i} className="relative flex sm:flex-row flex-col border-b p-5 gap-5">
+          <div key={i} className="relative flex sm:flex-row flex-col border-b dark:border-[#495057] p-5 gap-5">
             {product.img && product.img.length > 0 && (
               <img src={product.img[0]} alt="" className="w-32 h-44 mx-auto sm:mx-0" />
             )}
@@ -74,7 +74,7 @@ const Cart = () => {
 
               <div className="sm:flex my-2 hidden">
                 <span>{product.gender}</span>
-                <span className="border-x mx-2 px-2">{product.type}</span>
+                <span className="border-x dark:border-[#495057] mx-2 px-2">{product.type}</span>
                 <span>{product.brand}</span>
               </div>
 
@@ -96,25 +96,25 @@ const Cart = () => {
       </div>
 
       <div className='lg:col-span-2 col-span-5'>
-        <div className='bg-gray-100 rounded-xl p-5'>
+        <div className='bg-gray-100 dark:bg-[#343a40] dark:border-[#495057] rounded-xl p-5'>
           <p className='text-xl font-semibold mb-5'>Order summary</p>
 
-          <div className='flex justify-between  border-b py-3'>
+          <div className='flex justify-between  border-b dark:border-[#495057] py-3'>
             <span>Subtotal</span>
-            <span className='text-slate-700 font-semibold'><FontAwesomeIcon icon={faDollarSign} />{" "}{calculateTotalPrice(variable.cartItem).toFixed(2)}</span>
+            <span className='text-slate-700 dark:text-white font-semibold'><FontAwesomeIcon icon={faDollarSign} />{" "}{calculateTotalPrice(variable.cartItem).toFixed(2)}</span>
           </div>
 
-          <div className='flex justify-between  border-b py-3'>
+          <div className='flex justify-between  border-b dark:border-[#495057] py-3'>
             <span>Shipping estimate</span>
-            <span className='text-slate-700 font-semibold'><FontAwesomeIcon icon={faDollarSign} />{" "}{variable.shippingEstimate}</span>
+            <span className='text-slate-700 dark:text-white font-semibold'><FontAwesomeIcon icon={faDollarSign} />{" "}{variable.shippingEstimate}</span>
           </div>
 
-          <div className='flex justify-between  border-b py-3'>
+          <div className='flex justify-between  border-b dark:border-[#495057] py-3'>
             <span>Tax estimate</span>
-            <span className='text-slate-700 font-semibold'><FontAwesomeIcon icon={faDollarSign} />{" "}{variable.taxEstimate}</span>
+            <span className='text-slate-700 dark:text-white font-semibold'><FontAwesomeIcon icon={faDollarSign} />{" "}{variable.taxEstimate}</span>
           </div>
 
-          <div className='flex justify-between py-5 text-slate-700 text-xl font-medium'>
+          <div className='flex justify-between py-5 text-slate-700 dark:text-white text-xl font-medium'>
             <span>Order total</span>
             <span><FontAwesomeIcon icon={faDollarSign} />{" "}{(calculateTotalPrice(variable.cartItem)+parseFloat(variable.taxEstimate)+parseFloat(variable.shippingEstimate)).toFixed(2)}</span>
           </div>

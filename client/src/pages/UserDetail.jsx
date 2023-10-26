@@ -246,7 +246,6 @@ const UserDetail = ({ handleLogin, pUser }) => {
                                     <div className='mt-5 gap-2 text-center font-semibold flex flex-col'>
                                         <span>Change Password</span>
                                         <div className='flex flex-col gap-2'>
-                                            {/* <Input text="Old Password" type="password" value={formData.oldPassword} onChange={(e)=> handleFormChange(e,"oldPassword")} formState={formData} /> */}
                                             <Input text="Old Password" type={filteringData.showPassword ? "text" : "password"} value={formData.oldPassword} onChange={(e)=> handleFormChange(e,"oldPassword")}  formState={filteringData} togglePasswordVisibility={togglePasswordVisibility} />
                                             <Input text="New Password" type={filteringData.showPassword ? "text" : "password"} value={formData.newPassword} onChange={(e)=> handleFormChange(e,"newPassword")}  formState={filteringData} />
                                         </div>

@@ -14,27 +14,26 @@ function App() {
   const [user, setUser] = useState({})
   const [isLogging, setIsLogging] = useState(false);
   const [globalVariable, setGlobalVariable] = useState({
-    darkmode: null,
-
+    darkmode: null
   })
+  
+  const handleLogin = useCallback((loggedIn, userData) => {
+    setIsLogging(loggedIn);
+    setUser(userData)
+  }, []);
+
   useEffect(() => {
     const local = localStorage.getItem('darkmode');
     const isDarkMode=local==='true';
     setGlobalVariable({darkmode:isDarkMode});
-  }, []);
 
-  useEffect(()=>{
     if(globalVariable.darkmode){
       document.documentElement.classList.add("dark");
     }else{
       document.documentElement.classList.remove("dark");
     }
-  }, [globalVariable.darkmode])
+  }, [globalVariable.darkmode]);
 
-  const handleLogin = useCallback((loggedIn, userData) => {
-    setIsLogging(loggedIn);
-    setUser(userData)
-  }, []);
   return (
     <div className={`min-h-screen dark:bg-[#212529] dark:text-[#dee2e6] transition-all`}>
       <Header handleLogin={handleLogin} user={user} islogging={isLogging} globalVariable={globalVariable} setGlobalVariable={setGlobalVariable}/>
