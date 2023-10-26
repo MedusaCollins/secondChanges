@@ -23,7 +23,7 @@ const SearchPage = (props) => {
         <div className='my-5'><Promo/></div>
         {products.length<1?(
         <div className='text-center mt-24 text-2xl'>No product matching your criteria was found.</div>
-        ):(<Products filter={searchFor} user={props.user} handleLogin={props.handleLogin}/>)}
+        ):(<Products filter={searchFor} user={props.user} pUser={props.user} handleLogin={props.handleLogin}/>)}
       </div>
     )
   }

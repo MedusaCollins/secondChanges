@@ -207,6 +207,28 @@ app.post("/like", async (req, res) => {
     res.status(500).json({ error: 'Internal server error.' });
   }
 });
+
+app.post("/editProduct",async(req,res)=>{
+  try {
+    const productId = req.body.productId;
+    const product = await Product.findById(productId);
+    if (!product) {
+      return res.status(404).json({ error: "Ürün bulunamadı." });
+    }
+    product.name = req.body.name;
+    product.description = req.body.description;
+    product.img = req.body.img;
+    product.price = req.body.price;
+    product.dprice = req.body.dprice;
+    product.gender = req.body.gender;
+
+    await product.save();
+    res.status(200).json({ message: "Ürün başarıyla güncellendi." });
+  } catch (error) {
+    res.status(500).json({ error: "Ürün güncellenirken bir hata oluştu." });
+  }
+
+})
 app.post("/createProduct", async(req,res)=>{
   try {
     const newProduct = new Product(req.body);

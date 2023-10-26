@@ -2,19 +2,24 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 
 import Popup from '../Global/Popup';
+import EditProduct from '../Global/EditProduct';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Link} from 'react-router-dom';
-import { faHeart, faCartShopping, faDollarSign } from '@fortawesome/free-solid-svg-icons';
+import { faHeart, faCartShopping, faDollarSign, faPenToSquare } from '@fortawesome/free-solid-svg-icons';
 
-const ProductTemplate = ({ name, img,likes, brand, price, id, size,dprice, user, handleLogin }) => {
+  const ProductTemplate = (props) => {
   const maxTextLength = 19;
   const [isPopupOpen, setPopupOpen] = useState(false);
+  const [isEditOpen, setEditOpen]= useState(false);
   const [isHovered, setIsHovered] = useState(false);
   const [variable, setVariable] = useState({
     isHoverable: false,
     color: 'text-slate-700 dark:text-[#dee2e6]',
     cartItem: [],
   });
+
+
+
 
 
   useEffect(()=>{
@@ -24,25 +29,25 @@ const ProductTemplate = ({ name, img,likes, brand, price, id, size,dprice, user,
       setVariable((prevState) => ({ ...prevState, cartItem: parsedCartItem }));
     }
 
-    if(likes.includes(user._id)){
+    if(props.product.likes.includes(props.user._id)){
         setVariable((prevState)=>({...prevState, color:'text-green-500'}));
       }
 
-  }, [likes, user._id])
+  }, [props.product.likes, props.user._id])
 
-  let displayName = name;
+  let displayName = props.product.name;
 
   async function handleHeartClick(e) {
     e.preventDefault();
-    if(user._id){
+    if(props.user._id){
       setVariable((prevState) => ({
         ...prevState,
         color: prevState.color === 'text-slate-700 dark:text-[#dee2e6]' ? 'text-green-500' : 'text-slate-700 dark:text-[#dee2e6]',
       }));
       if(variable.color!=="text-green-500"){
-        await axios.post(`${process.env.REACT_APP_DB}/like`, {productId: id, userId: user._id, reqType: 1})
+        await axios.post(`${process.env.REACT_APP_DB}/like`, {productId: props.product._id, userId: props.user._id, reqType: 1})
       }else{
-        await axios.post(`${process.env.REACT_APP_DB}/like`, {productId: id, userId: user._id, reqType: 0})
+        await axios.post(`${process.env.REACT_APP_DB}/like`, {productId: props.product._id, userId: props.user._id, reqType: 0})
       }
     }else{
       setPopupOpen(true);
@@ -75,18 +80,18 @@ const ProductTemplate = ({ name, img,likes, brand, price, id, size,dprice, user,
     setPopupOpen(false);
   };
 
-  if (name.length > maxTextLength) {
-    displayName = name.substring(0, maxTextLength) + '...';
+  if (props.product.name.length > maxTextLength) {
+    displayName = props.product.name.substring(0, maxTextLength) + '...';
   }
   return (
     <>
     <Link
-      key={id}
+      key={props.product._id}
       className={`rounded-xl sm:w-[18rem] w-[14rem] h-[20rem] bg-cover bg-center relative cursor-pointer hover:border hover:border-separate border-slate-500`}
-      style={{ backgroundImage: `url(${img})` }}
+      style={{ backgroundImage: `url(${props.product.img[0]})` }}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
-      to={`/products/${id}`}>
+      to={`/products/${props.product._id}`}>
         
       <div role="button" tabIndex={0} className='absolute top-0 right-0 m-5 p-2 w-8 h-8 bg-white dark:bg-[#212529] hover:bg-gray-100 rounded-full'>
         <div onClick={handleHeartClick}>
@@ -98,47 +103,66 @@ const ProductTemplate = ({ name, img,likes, brand, price, id, size,dprice, user,
         <h2 className="text-xl">
           {displayName}
         </h2>
-        <p className='text-gray-500 dark:text-gray-400 text-l'>{brand}{' '}(<span className='text-slate-400 dark:text-slate-500'>{size}</span>)</p>
+        <p className='text-gray-500 dark:text-gray-400 text-l'>{props.product.brand}{' '}(<span className='text-slate-400 dark:text-slate-500'>{props.product.size}</span>)</p>
         <div className="relative justify-between inline-flex items-center rounded-xl p-2">
-          {dprice!==""?<>
+          {props.product.dprice!==""?<>
             <span className=" font-semibold pr-2">
               <FontAwesomeIcon icon={faDollarSign} />
-              {dprice},00
+              {props.product.dprice},00
             </span>
             <span className="text-red-500 px-2 line-through align-bottom">
               <FontAwesomeIcon icon={faDollarSign} />
-              {price},00
+              {props.product.price},00
             </span>
             </>:
             <><span className=" font-semibold pr-2">
               <FontAwesomeIcon icon={faDollarSign} />
-              {price},00
+              {props.product.price},00
             </span>
             </>}
         </div>
         {isHovered && (
           <div role="button" tabIndex={0} className="mx-auto mt-2">
-              {variable.cartItem.includes(id)?(
+            {props.product.seller===props.pUser._id?(
+              <>
+                <button onClick={(e)=> {e.preventDefault();setEditOpen(1)}} className="bg-blue-600 hover:bg-blue-700 text-white py-2 px-4 rounded-full">
+                <FontAwesomeIcon icon={faPenToSquare} /> Edit Product
+                </button>
+              </>
+            ):
+            (<>
+              {variable.cartItem.includes(props.product._id)?(
                 <>
-                <button  onClick={(e)=> handleCartOperation(e,id,"removing")} className="bg-green-600 hover:bg-green-700 text-white py-2 px-4 rounded-full">
+                <button  onClick={(e)=> handleCartOperation(e,props.product._id,"removing")} className="bg-green-600 hover:bg-green-700 text-white py-2 px-4 rounded-full">
                 <FontAwesomeIcon icon={faCartShopping} /> Remove From the Cart
                 </button>
                 </>
               ):(
                 <>
-                <button onClick={(e)=> handleCartOperation(e,id,"adding")} className="bg-green-500 hover:bg-green-600 text-white py-2 px-4 rounded-full ">
+                <button onClick={(e)=> handleCartOperation(e,props.product._id,"adding")} className="bg-green-500 hover:bg-green-600 text-white py-2 px-4 rounded-full ">
                 <FontAwesomeIcon icon={faCartShopping} /> Add to Cart
                 </button>
                 </>
-              )}                
+              )}  
+            </>
+            )}  
+
           </div>
         )}
 
       </div>
     </Link>
-    <Popup isOpen={isPopupOpen} onClose={closePopup} handleLogin={handleLogin} user={user}/>
+    <Popup isOpen={isPopupOpen} onClose={closePopup} handleLogin={props.handleLogin} user={props.user}/>
+    {isEditOpen&&
+    <div className="fixed inset-0 z-50 flex items-center justify-center backdrop-blur-md">
+      <div className='fixed inset-0 bg-black opacity-50' onClick={()=>setEditOpen(false)}></div>
+        <div className="relative bg-white dark:bg-[#212529] w-96 rounded-lg p-4">
+
+          <h2 className="text-base font-semibold leading-7 text-gray-900 dark:text-[#dee2e6]">Edit Product</h2>
+          <EditProduct isModalOpen={setEditOpen} product={props.product}/>
+        </div>
+      </div>}
     </>
   );
 };
-
 export default ProductTemplate;

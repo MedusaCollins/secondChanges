@@ -182,7 +182,7 @@ const UserDetail = ({ handleLogin, pUser }) => {
                                             <h1 className='text-xl font-semibold py-5'>{formData.user.username} <span className='text-gray-300'>({filteringData.products.length})</span></h1>
                                         </div>
                                         <div>
-                                            <Products filter={filteringData.filters} user={formData.user} handleLogin={handleLogin} />
+                                            <Products filter={filteringData.filters} user={formData.user} pUser={pUser} handleLogin={handleLogin} />
                                         </div>
                                     </>
                                 ) : (

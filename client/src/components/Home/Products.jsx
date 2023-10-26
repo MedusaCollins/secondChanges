@@ -5,9 +5,8 @@ import axios from 'axios';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faFolder } from '@fortawesome/free-solid-svg-icons';
 
-const Products = ({ filter, setIsModalOpen, handleLogin, user }) => {
+const Products = ({ filter, setIsModalOpen, handleLogin, user, pUser }) => {
   const [products, setProducts] = useState([]);
-
   useEffect(() => {
     axios.post(`${process.env.REACT_APP_DB}/api/products`, filter)
       .then((response) => {
@@ -19,16 +18,10 @@ const Products = ({ filter, setIsModalOpen, handleLogin, user }) => {
     <div className='flex flex-wrap items-start justify-center gap-5'>
       {products.map((product) => (
         <ProductTemplate
+          product={product}
           key={product._id}
-          name={product.name}
-          id={product._id}
-          size={product.size}
-          brand={product.brand}
-          price={product.price}
-          dprice={product.dprice}
-          img={product.img[0]}
-          likes={product.likes}
           user={user}
+          pUser={pUser}
           handleLogin={handleLogin}
         />
       ))}

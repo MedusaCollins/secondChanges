@@ -1,13 +1,15 @@
 import React, { useState, useEffect } from 'react'
 import ProductAbout from '../templates/ProductAbout.jsx'
 import ProductPrice from '../templates/ProductPrice.jsx'
+import EditProduct from '../Global/EditProduct';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faStar as solidStar } from '@fortawesome/free-solid-svg-icons';
+import { faCartShopping, faPenToSquare, faStar as solidStar } from '@fortawesome/free-solid-svg-icons';
 import ProductInput from '../templates/ProductInput.jsx';
 import axios from 'axios'
 
 const About = ({product, rating, user, comments, setComments}) => {
   const [popUp, setPopUp] = useState(0);
+  const [isEditOpen, setEditOpen]= useState(false);
   const [variable, setVariable]=useState({
     cartItem: []
   })
@@ -97,23 +99,34 @@ const About = ({product, rating, user, comments, setComments}) => {
               <div className='rounded-lg border border-gray-600 bg-gray-600  text-center text-white p-2 '>Satıldı</div>
           ):(
             <>
-            {variable.cartItem.includes(product._id)?(
-              <button  onClick={(e)=> handleCartOperation(e,product._id,"removing")} className="rounded-lg bg-green-600 hover:bg-green-700 text-white p-2 ">
-                Remove From the Cart
-              </button>
+            {product.seller._id===user._id?
+            (
+              <>
+                <button  onClick={(e)=> {e.preventDefault();setEditOpen(1)}} className="rounded-lg bg-blue-600 hover:bg-blue-700 text-white p-2 ">
+                  <FontAwesomeIcon icon={faPenToSquare}/> Edit Product
+                </button>
+              </>
             ):(
-              <button onClick={(e)=> handleCartOperation(e,product._id,"adding")} className="rounded-lg  bg-green-500 hover:bg-green-600 text-white p-2 ">
-                Add to Cart
-              </button>
+              <>
+            
+                  {variable.cartItem.includes(product._id)?(
+                    <button  onClick={(e)=> handleCartOperation(e,product._id,"removing")} className="rounded-lg bg-green-600 hover:bg-green-700 text-white p-2 ">
+                      <FontAwesomeIcon icon={faCartShopping} /> Remove From the Cart
+                    </button>
+                  ):(
+                    <button onClick={(e)=> handleCartOperation(e,product._id,"adding")} className="rounded-lg  bg-green-500 hover:bg-green-600 text-white p-2 ">
+                      <FontAwesomeIcon icon={faCartShopping} /> Add to Cart
+                    </button>
+                  )}
+
+                  <div className='w-full justify-between flex'>
+                    <button className='rounded-lg border border-blue-400 text-blue-400 hover:border-blue-500 hover:text-blue-500 p-2 w-[45%]' onClick={()=> {setPopUp(1); setFormData({...formData, reqType: 'asks'})}}>Soru sor</button>
+                    <button className='rounded-lg border border-green-600 text-green-600 hover:border-green-700 hover:text-green-700 p-2 w-[45%]'onClick={()=> {setPopUp(1); setFormData({...formData, reqType: 'offers'})}}>Teklif ver</button> 
+                  </div>
+                  </>
+                  )}
+              </>
             )}
-
-            <div className='w-full justify-between flex'>
-              <button className='rounded-lg border border-blue-400 text-blue-400 hover:border-blue-500 hover:text-blue-500 p-2 w-[45%]' onClick={()=> {setPopUp(1); setFormData({...formData, reqType: 'asks'})}}>Soru sor</button>
-              <button className='rounded-lg border border-green-600 text-green-600 hover:border-green-700 hover:text-green-700 p-2 w-[45%]'onClick={()=> {setPopUp(1); setFormData({...formData, reqType: 'offers'})}}>Teklif ver</button> 
-            </div>
-            </>
-          )}
-
           </div>
         {popUp? (
                 <div className="fixed inset-0 z-50 flex items-center justify-center backdrop-blur-md p-5">
@@ -124,6 +137,15 @@ const About = ({product, rating, user, comments, setComments}) => {
                   </div>
                 </div>
               ):null}
+          {isEditOpen&&
+          <div className="fixed inset-0 z-50 flex items-center justify-center backdrop-blur-md">
+            <div className='fixed inset-0 bg-black opacity-50' onClick={()=>setEditOpen(false)}></div>
+              <div className="relative bg-white dark:bg-[#212529] w-96 rounded-lg p-4">
+
+                <h2 className="text-base font-semibold leading-7 text-gray-900 dark:text-[#dee2e6]">Edit Product</h2>
+                <EditProduct isModalOpen={setEditOpen} product={product}/>
+              </div>
+            </div>}
     </div>
   )
 }

@@ -27,18 +27,12 @@ const LikesPage = (props) => {
         <div className='flex flex-wrap items-start justify-center gap-5'>
       {products.map((product) => (
         <ProductTemplate
-          key={product._id}
-          name={product.name}
-          id={product._id}
-          size={product.size}
-          brand={product.brand}
-          price={product.price}
-          dprice={product.dprice}
-          img={product.img[0]}
-          likes={product.likes}
-          user={props.user}
-          handleLogin={props.handleLogin}
-        />
+        product={product}
+        key={product._id}
+        user={props.user}
+        pUser={props.user}
+        handleLogin={props.handleLogin}
+      />
       ))}
     </div>
 

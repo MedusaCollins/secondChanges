@@ -3,14 +3,12 @@ import FilterTemplate from '../templates/FilterTemplate';
 import DetailFilter from './DetailFilter.jsx'
 
 const Filter = () => {
-  const [openDiv, setOpenDiv] = useState(''); // State, hangi div açık olduğunu takip eder
+  const [openDiv, setOpenDiv] = useState('');
 
   const toggleDiv = (divName) => {
-    // Eğer tıklanan div zaten açıksa, kapat
     if (openDiv === divName) {
       setOpenDiv('');
     } else {
-      // Değilse, tıklanan div'i aç
       setOpenDiv(divName);
     }
   };

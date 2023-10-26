@@ -55,7 +55,7 @@ const MyProduct = ({ user, handleLogin }) => {
     <>
       {products.length > 0? (
         <div className='flex gap-5 justify-center mt-12'>
-          <Products filter={filters} setIsModalOpen={setModalOpen} user={user} handleLogin={handleLogin}/>
+          <Products filter={filters} setIsModalOpen={setModalOpen} user={user} pUser={user} handleLogin={handleLogin}/>
         </div>
       ) : (
         <div>
@@ -77,7 +77,7 @@ const MyProduct = ({ user, handleLogin }) => {
             </div>
 
             <h2 className="text-base font-semibold leading-7 text-gray-900 dark:text-[#dee2e6]">New Product</h2>
-            <MultiStepForm user={user} filters={filters} handleLogin={handleLogin} isModalOpen={setModalOpen} />
+            <MultiStepForm user={user} handleLogin={handleLogin} isModalOpen={setModalOpen} />
           </div>
         </div>
       )}
