@@ -3,14 +3,23 @@ import axios from 'axios';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {faDollarSign, faTimes } from '@fortawesome/free-solid-svg-icons';
+import Input from '../components/templates/Input';
 
 const Cart = () => {
   const [variable, setVariable] = useState({
     cartItem: [],
     taxEstimate: 8.32,
     shippingEstimate: 5.52,
-    check:1
+    check:1,
+    checkout:0
   });
+  const [formState, setFormState]=useState({
+    cardHolderName:'',
+    cardNumber:'',
+    expireYear:'',
+    expireMonth:'',
+    cvc:''
+  })
 
   useEffect(() => {
     const cartItemJSON = localStorage.getItem("cart");
@@ -46,6 +55,10 @@ const Cart = () => {
     }
   }
 
+  function handleFormChange(e,type) {
+    setFormState((prevState) => ({ ...prevState, [type]: e.target.value }));
+  }
+
 
   function calculateTotalPrice(cartItems) {
     let totalPrice = 0;
@@ -55,7 +68,22 @@ const Cart = () => {
     return totalPrice;
   }
 
-  console.log(variable.cartItem);
+
+  async function handlePayment(){
+    const response = await axios.post(`${process.env.REACT_APP_DB}/payment`, {
+      cardHolderName: formState.cardHolderName,
+      cardNumber: formState.cardNumber,
+      expireYear: formState.expireYear,
+      expireMonth: formState.expireMonth,
+      cvc: formState.cvc,
+      cardItem: variable.cartItem
+    })
+    if(response.error){
+      console.log(response.error)
+    }else{
+      console.log(response.data)
+    }
+  }
 
   return (
     <div className="p-5 lg:mx-32 mx-5 gap-x-12 grid grid-cols-5">
@@ -119,14 +147,31 @@ const Cart = () => {
             <span><FontAwesomeIcon icon={faDollarSign} />{" "}{(calculateTotalPrice(variable.cartItem)+parseFloat(variable.taxEstimate)+parseFloat(variable.shippingEstimate)).toFixed(2)}</span>
           </div>
 
-          <button className='bg-green-500 hover:bg-green-600 text-white font-semibold text-xl w-full p-3 rounded-xl'>Checkout</button>
+          <button className='bg-green-500 hover:bg-green-600 text-white font-semibold text-xl w-full p-3 rounded-xl' onClick={()=> setVariable((prevState)=>({...prevState, checkout:1}))}>Checkout</button>
         </div>
       </div>
       </>):(      
       <div className="col-span-5 text-center">
         <p>Your shopping cart is empty.</p>
       </div>)}
+      {variable.checkout?(
+    <div className="fixed inset-0 z-50 flex items-center justify-center overflow-auto bg-black bg-opacity-50" onClick={()=> setVariable((prevState)=>({...prevState, checkout:0}))}>
+      <div className="relative bg-white dark:bg-[#212529] p-2 rounded-xl shadow-md" onClick={(e) => e.stopPropagation()}>
+        <div className="text-black dark:text-[#dee2e6] text-center w-[200px] flex flex-col gap-5">
+          <h1>Payment</h1>
+          <Input text="Card Holder Name" type="text" value={formState.cardHolderName} onChange={(e)=> handleFormChange(e,"cardHolderName")} formState={formState} />
+          <Input text="Card Number" type="text" value={formState.cardNumber} onChange={(e)=> handleFormChange(e,"cardNumber")} formState={formState} />
+          <Input text="Expire Month" type="text" value={formState.expireMonth} onChange={(e)=> handleFormChange(e,"expireMonth")} formState={formState} />
+          <Input text="Expire Year" type="text" value={formState.expireYear} onChange={(e)=> handleFormChange(e,"expireYear")} formState={formState} />
+          <Input text="CVC" type="text" value={formState.cvc} onChange={(e)=> handleFormChange(e,"cvc")} formState={formState} />
+        </div>
+      <button onClick={()=> handlePayment()}>test</button>
+      </div>
     </div>
+    ):null}
+
+    </div>
+    
   );
 };
 

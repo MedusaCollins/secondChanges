@@ -3,8 +3,10 @@ import mongoose from "mongoose";
 import bodyParser from "body-parser";
 import cors from "cors";
 import bcrypt from "bcrypt";
+import Iyzipay from "iyzipay";
 import User from "./model/users.js";
 import Product from "./model/products.js";
+import { v4 as uuidv4 } from 'uuid';
 
 import fileUpload from "express-fileupload";
 import { config } from "dotenv";
@@ -410,7 +412,6 @@ app.get('/products/:productId', async (req, res) => {
       model: 'User',
       select: 'username img'
     })
-
     if (!product) {
       return res.status(404).json({ error: 'Ürün bulunamadı' });
     }
@@ -420,3 +421,105 @@ app.get('/products/:productId', async (req, res) => {
     res.status(500).json({ error: 'Ürün getirilirken bir hata oluştu.' });
   }
 });
+
+
+app.post("/payment",(req,res)=>{
+  const {cardHolderName,cardNumber,expireMonth,expireYear,cvc} = req.body
+  const id= uuidv4();
+  let totalPrice = 0;
+  let basketItems = [];
+
+  for (let i = 0; i < req.body.cardItem.length; i++) {
+    const cardItem = req.body.cardItem[i];
+    const itemPrice = cardItem.dprice > 0 ? parseFloat(cardItem.dprice) : parseFloat(cardItem.price);
+    totalPrice += itemPrice;
+  }
+  // console.log(cardHolderName)
+  // console.log(cardNumber)
+  // console.log(expireMonth)
+  // console.log(expireYear)
+  // console.log(cvc)
+  // console.log(req.body.cardItem)
+  // console.log(totalPrice)
+
+
+  for(let i=0; i<req.body.cardItem.length;i++){
+    const cardItem = req.body.cardItem[i];
+      basketItems.push({
+        id: cardItem._id,
+        name: cardItem.name,
+        category1: cardItem.gender,
+        category2: cardItem.type,
+        itemType: Iyzipay.BASKET_ITEM_TYPE.PHYSICAL,
+        price: cardItem.dprice>0? cardItem.dprice : cardItem.price
+    });
+  }
+  req.body.cardItem.map((product)=>{
+      let totalPrice = 0;
+        totalPrice += product.dprice > 0 ? parseFloat(product.dprice) : parseFloat(product.price);
+      return console.log(totalPrice + " " + product.name);
+  })
+
+  res.status(200).send("success.")
+
+  const iyzipay = new Iyzipay({
+    apiKey: process.env.IYZI_API_KEY,
+    secretKey: process.env.IYZI_SEC_KEY,
+    uri: process.env.IYZI_BASEURL
+  });
+
+
+  const request = {
+    locale: Iyzipay.LOCALE.TR,
+    conversationId: uuidv4(),
+    price: totalPrice,
+    paidPrice: totalPrice,
+    currency: Iyzipay.CURRENCY.TRY,
+    installment: '1',
+    basketId: 'B67832',
+    paymentChannel: Iyzipay.PAYMENT_CHANNEL.WEB,
+    paymentGroup: Iyzipay.PAYMENT_GROUP.PRODUCT,
+    paymentCard: {
+        cardHolderName: cardHolderName,
+        cardNumber: '5528790000000008',
+        expireMonth: '12',
+        expireYear: '2030',
+        cvc: '123',
+        registerCard: '0'
+    },
+    buyer: {
+        id: 'BY789',
+        name: 'John',
+        surname: 'Doe',
+        gsmNumber: '+905350000000',
+        email: 'email@email.com',
+        identityNumber: '74300864791',
+        lastLoginDate: '2015-10-05 12:43:35',
+        registrationDate: '2013-04-21 15:12:09',
+        registrationAddress: 'Nidakule Göztepe, Merdivenköy Mah. Bora Sok. No:1',
+        ip: '85.34.78.112',
+        city: 'Istanbul',
+        country: 'Turkey',
+        zipCode: '34732'
+    },
+    shippingAddress: {
+        contactName: 'Jane Doe',
+        city: 'Istanbul',
+        country: 'Turkey',
+        address: 'Nidakule Göztepe, Merdivenköy Mah. Bora Sok. No:1',
+        zipCode: '34742'
+    },
+    billingAddress: {
+        contactName: 'Jane Doe',
+        city: 'Istanbul',
+        country: 'Turkey',
+        address: 'Nidakule Göztepe, Merdivenköy Mah. Bora Sok. No:1',
+        zipCode: '34742'
+    },
+    basketItems: basketItems
+};
+
+iyzipay.payment.create(request, function (err, result) {
+    console.log(err, result);
+});
+})
