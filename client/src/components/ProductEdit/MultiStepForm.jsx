@@ -21,7 +21,8 @@ const MultiStepForm = ({ user, handleLogin, isModalOpen }) => {
     gender: '',
     seller: user._id,
     asks: [],
-    offers: []
+    offers: [],
+    buyers: {}
   });
 
   const [currentStep, setCurrentStep] = useState(0);
@@ -77,7 +78,7 @@ const MultiStepForm = ({ user, handleLogin, isModalOpen }) => {
         formDataWithImages.append(key, formData[key]);
       }
 
-      console.log(formData.img)
+      console.log(formData)
       const response = await axios.post(`${process.env.REACT_APP_DB}/createProduct`, formData);
       if (response.data.error) {
         console.log(response.data.error);

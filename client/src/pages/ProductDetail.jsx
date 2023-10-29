@@ -24,7 +24,7 @@ export default function ProductDetail({user}){
         setProduct(response.data.product);
         setSeller(response.data.seller);
         setLoading(false);
-
+        console.log(response.data.product)
         
         const ratings = response.data.product.seller.reviews.map(review => review.rating);
           if (ratings.length > 0) {

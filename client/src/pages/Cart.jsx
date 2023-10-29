@@ -2,24 +2,47 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import {faDollarSign, faTimes } from '@fortawesome/free-solid-svg-icons';
+import {faCreditCard, faDollarSign, faTimes } from '@fortawesome/free-solid-svg-icons';
 import Input from '../components/templates/Input';
+import Popup from '../components/Global/Popup';
 
-const Cart = () => {
+const Cart = (props) => {
+  const [errorMessage, setErrorMessage]=useState('')
   const [variable, setVariable] = useState({
     cartItem: [],
     taxEstimate: 8.32,
     shippingEstimate: 5.52,
     check:1,
-    checkout:0
+    checkout:0,
+    popUp:0
   });
   const [formState, setFormState]=useState({
     cardHolderName:'',
     cardNumber:'',
     expireYear:'',
     expireMonth:'',
-    cvc:''
+    cvc:'',
+
+    contactName:'',
+    phoneNumber:'',
+    city:'',
+    country:'',
+    address:'',
+    state:'',
+    zipCode:'',
+
+    user: '',
   })
+
+
+
+  const [currentStep, setCurrentStep] = useState(0);
+  const steps = [
+    "Shipping Detail",
+    "Card Detail"
+  ];
+
+
 
   useEffect(() => {
     const cartItemJSON = localStorage.getItem("cart");
@@ -70,20 +93,139 @@ const Cart = () => {
 
 
   async function handlePayment(){
-    const response = await axios.post(`${process.env.REACT_APP_DB}/payment`, {
-      cardHolderName: formState.cardHolderName,
-      cardNumber: formState.cardNumber,
-      expireYear: formState.expireYear,
-      expireMonth: formState.expireMonth,
-      cvc: formState.cvc,
-      cardItem: variable.cartItem
-    })
-    if(response.error){
-      console.log(response.error)
-    }else{
-      console.log(response.data)
-    }
+    // const response = await axios.post(`${process.env.REACT_APP_DB}/payment`, {
+    //   cardHolderName:formState.cardHolderName,
+    //   cardNumber: formState.cardNumber,
+    //   expireYear: formState.expireYear,
+    //   expireMonth: formState.expireMonth,
+    //   cvc: formState.cvc,
+  
+    //   contactName: formState.contactName,
+    //   phoneNumber: formState.phoneNumber,
+    //   city: formState.city,
+    //   country: formState.country,
+    //   address: formState.address,
+    //   state: formState.state,
+    //   zipCode: formState.zipCode,
+  
+    //   user: props.user,
+    //   cardItem: variable.cartItem
+    // })
+    // if(response.data.status==='failure'){
+    //   setErrorMessage(response.data.errorMessage)
+    // }else{
+      const response2 = await axios.post(`${process.env.REACT_APP_DB}/paymentConfirm`, {
+        cardItems: variable.cartItem,
+        user: props.user
+      })
+      console.log(response2.data)
+    // }
   }
+
+
+
+  const checkRequiredFields = () => {
+    switch (steps[currentStep]) {
+      case "Shipping Adress":
+        return true;
+      case "Card Detail":
+        return formState.cardHolderName && formState.cardNumber && formState.expireYear && formState.expireMonth && formState.cvc;
+      default:
+        return true;
+    }
+  };
+
+  const handleNext = () => {
+    if (checkRequiredFields()) {
+      setErrorMessage("");
+      setCurrentStep(currentStep + 1);
+      setFormState(prevState => ({ ...prevState, user: props.user }));
+    } else {
+      setErrorMessage("Lütfen gerekli alanları doldurun.");
+    }
+  };
+  
+  const handlePrevious = () => {
+    if (currentStep > 0) {
+      setCurrentStep(currentStep - 1);
+    }
+  };
+
+  const renderStep = (stepTitle) => {
+    switch (stepTitle) {
+      case "Shipping Detail":
+        return (
+      <>
+        <div className="text-black dark:text-[#dee2e6] text-center flex flex-col gap-5">
+          <h1 className='text-2xl text-left'>Address</h1>
+          <div className='flex gap-5'>
+            <Input text="Full Name" type="text" value={formState.contactName} onChange={(e)=> handleFormChange(e,"contactName")} formState={formState} />
+            <Input text="Phone Number" type="text" value={formState.phoneNumber} onChange={(e)=> handleFormChange(e,"phoneNumber")} formState={formState} />
+          </div>
+
+          <Input text="Address Line" type="text" value={formState.address} onChange={(e)=> handleFormChange(e,"address")} formState={formState} />
+          
+          <div className='flex gap-5'>
+            <Input text="Country" type="text" value={formState.country} onChange={(e)=> handleFormChange(e,"country")} formState={formState} />
+            <Input text="State" type="text" value={formState.state} onChange={(e)=> handleFormChange(e,"state")} formState={formState} />
+          </div>
+
+          <div className='flex gap-5'>
+            <Input text="City" type="text" value={formState.city} onChange={(e)=> handleFormChange(e,"city")} formState={formState} />
+            <Input text="Zip Code" type="text" value={formState.zipCode} onChange={(e)=> handleFormChange(e,"zipCode")} formState={formState} />
+          </div>
+
+        </div>
+        <button
+  type="submit"
+  className='bg-green-600 hover:bg-green-700 text-white p-1.5 w-full rounded-2xl transition mt-4'
+  onClick={() => handleNext()}>
+        Next
+      </button>
+      </>);
+      case "Card Detail":
+        return (
+          <>
+        <div className="text-black dark:text-[#dee2e6] text-center flex flex-col gap-5">
+          <div className='flex justify-between'>
+            <div className='flex gap-x-2 mt-1'>
+              <input type="radio" className='mb-1' defaultChecked/> <h1>Pay by debit / Credit Card</h1>
+            </div>
+            <div className='text-2xl text-slate-700'>
+            <FontAwesomeIcon icon={faCreditCard}/>
+            </div>
+          </div>
+          <Input text="Card Holder Name" type="text" value={formState.cardHolderName} onChange={(e)=> handleFormChange(e,"cardHolderName")} formState={formState} />
+          <Input text="Card Number" type="text" value={formState.cardNumber} onChange={(e)=> handleFormChange(e,"cardNumber")} formState={formState} />
+          <div className='flex gap-5'>
+            <Input text="Expire Month" type="text" value={formState.expireMonth} onChange={(e)=> handleFormChange(e,"expireMonth")} formState={formState} />
+            <Input text="Expire Year" type="text" value={formState.expireYear} onChange={(e)=> handleFormChange(e,"expireYear")} formState={formState} />
+          </div>
+          <Input text="CVC" type="text" value={formState.cvc} onChange={(e)=> handleFormChange(e,"cvc")} formState={formState} />
+        </div>
+          <p className='text-red-500 text-right my-2 mb-0'>{errorMessage}</p>
+        <div className='flex gap-5'>
+        <button
+  type="submit"
+  className='bg-red-600 hover:bg-red-700 text-white p-1.5 w-1/2 rounded-2xl transition mt-4'
+  onClick={() => handlePrevious()}>
+        back
+      </button>
+      <button
+  type="submit"
+  className='bg-green-600 hover:bg-green-700 text-white p-1.5 w-full rounded-2xl transition mt-4'
+  onClick={() => handlePayment()}>
+        Pay Now
+      </button>
+      </div>
+
+      </>);
+      default:
+        return null;
+    }
+  };
+
+
 
   return (
     <div className="p-5 lg:mx-32 mx-5 gap-x-12 grid grid-cols-5">
@@ -147,7 +289,7 @@ const Cart = () => {
             <span><FontAwesomeIcon icon={faDollarSign} />{" "}{(calculateTotalPrice(variable.cartItem)+parseFloat(variable.taxEstimate)+parseFloat(variable.shippingEstimate)).toFixed(2)}</span>
           </div>
 
-          <button className='bg-green-500 hover:bg-green-600 text-white font-semibold text-xl w-full p-3 rounded-xl' onClick={()=> setVariable((prevState)=>({...prevState, checkout:1}))}>Checkout</button>
+          <button className='bg-green-500 hover:bg-green-600 text-white font-semibold text-xl w-full p-3 rounded-xl' onClick={()=> {  if (props.islogging){setVariable((prevState)=>({...prevState, checkout:1}))}else{setVariable((prevState)=>({...prevState, popUp:1}))}}}>Checkout</button>
         </div>
       </div>
       </>):(      
@@ -156,20 +298,12 @@ const Cart = () => {
       </div>)}
       {variable.checkout?(
     <div className="fixed inset-0 z-50 flex items-center justify-center overflow-auto bg-black bg-opacity-50" onClick={()=> setVariable((prevState)=>({...prevState, checkout:0}))}>
-      <div className="relative bg-white dark:bg-[#212529] p-2 rounded-xl shadow-md" onClick={(e) => e.stopPropagation()}>
-        <div className="text-black dark:text-[#dee2e6] text-center w-[200px] flex flex-col gap-5">
-          <h1>Payment</h1>
-          <Input text="Card Holder Name" type="text" value={formState.cardHolderName} onChange={(e)=> handleFormChange(e,"cardHolderName")} formState={formState} />
-          <Input text="Card Number" type="text" value={formState.cardNumber} onChange={(e)=> handleFormChange(e,"cardNumber")} formState={formState} />
-          <Input text="Expire Month" type="text" value={formState.expireMonth} onChange={(e)=> handleFormChange(e,"expireMonth")} formState={formState} />
-          <Input text="Expire Year" type="text" value={formState.expireYear} onChange={(e)=> handleFormChange(e,"expireYear")} formState={formState} />
-          <Input text="CVC" type="text" value={formState.cvc} onChange={(e)=> handleFormChange(e,"cvc")} formState={formState} />
-        </div>
-      <button onClick={()=> handlePayment()}>test</button>
+      <div className="relative bg-white dark:bg-[#212529] p-5 rounded-xl shadow-md mx-5" onClick={(e) => e.stopPropagation()}>
+      {renderStep(steps[currentStep])}
       </div>
     </div>
     ):null}
-
+<Popup isOpen={variable.popUp} onClose={() => setVariable((prevState)=> ({...prevState, popUp: 0}))} handleLogin={props.handleLogin} user={props.user}/>
     </div>
     
   );

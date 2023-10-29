@@ -51,20 +51,24 @@ const productsSchema={
         }
       ],
       buyers: {
-        _id:{
+        _id: {
           type: mongoose.Schema.Types.ObjectId,
           ref: 'User',
-          required: false,
+          required: false
         },
-        rating:{
+        status: {
+          type: String,
+          required: false
+        },
+        rating: {
           type: Number,
-          required: false,
+          required: false
         },
-        comment:{
-          type:String,
-          required:false
+        comment: {
+          type: String,
+          required: false
         }
-        },
+    },
       asks: [{
         userId: {
           type: mongoose.Schema.Types.ObjectId,

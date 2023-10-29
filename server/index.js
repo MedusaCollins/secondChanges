@@ -422,45 +422,94 @@ app.get('/products/:productId', async (req, res) => {
   }
 });
 
+app.post('/paymentConfirm', async (req, res) => {
+  // const { cardItems, user } = req.body;
+
+  // try {
+  //   const product = await Product.findById('652ee539b63906e5c5353bea');
+  //   if (!product) {
+  //     return res.status(404).json({ error: 'Product not found.' });
+  //   }
+
+  //   const newUser = await User.findById(user._id);
+  //   if (newUser) {
+  //     console.log("Kullanıcı bulundu.");
+  //     const newBuyer = {
+  //       _id: user,
+  //       status: "Ürün hazırlanıyor.",
+  //     };
+  //     console.log(newBuyer)
+  //     product.buyers.push(newBuyer);
+  //     console.log(product)
+  //     await product.save();
+  //     res.status(200).json(newBuyer);
+  //   } else {
+  //     res.status(404).json({ error: 'User not found.' });
+  //   }
+  // } catch (error) {
+  //   res.status(500).json(error);
+  // }
+
+  try {
+    const productId = "652ee539b63906e5c5353bea"; // Ürünün _id değerini girin
+  
+    const product = await Product.findById(productId);
+  
+    if (!product) {
+      return res.status(404).json({ error: 'Product not found.' });
+    }
+  
+    // Hard code ile eklemek istediğiniz alıcı verisini oluşturun
+    const newBuyer = {
+      _id: "65268b1d5d258f6f2e494e2b", // Kullanıcının _id değeri
+      status: "Ürün hazırlanıyor.",
+      rating: 5, // Kullanıcının verdiği derecelendirme (isteğe bağlı)
+      comment: "Ürünü beğendim." // Kullanıcının yorumu (isteğe bağlı)
+    };
+  
+    product.buyers = newBuyer; // Alıcı bilgisini atama
+  
+    await product.save();
+  
+    res.status(200).json(newBuyer);
+  } catch (error) {
+    res.status(500).json(error);
+  }
+
+});
+  
+  // console.log(user);
+  // try {
+  //   for (let i = 0; i < cardItems.length; i++) {
+  //     const cardItem = cardItems[i];
+  //     const product = await Product.findById(cardItem._id);
+  //     console.log(product)
+      
+  //     const buyer ={
+  //       _id: user._id
+  //     };
+  //     product.buyers.push(buyer)
+
+  //     await product.save();
+  //   }
+
+    // res.status(200).send("Satın alım başarılı.");
+  // } catch (error) {
+  //   console.error(error);
+  //   res.status(500).send("Bir hata oluştu.");
+  // }
+// });
+
+
+
+
+
 
 app.post("/payment",(req,res)=>{
-  const {cardHolderName,cardNumber,expireMonth,expireYear,cvc} = req.body
+  const {cardHolderName,cardNumber,expireMonth,expireYear,cvc,contactName,phoneNumber,city,country,address,state,zipCode,user,cardItem} = req.body
   const id= uuidv4();
   let totalPrice = 0;
   let basketItems = [];
-
-  for (let i = 0; i < req.body.cardItem.length; i++) {
-    const cardItem = req.body.cardItem[i];
-    const itemPrice = cardItem.dprice > 0 ? parseFloat(cardItem.dprice) : parseFloat(cardItem.price);
-    totalPrice += itemPrice;
-  }
-  // console.log(cardHolderName)
-  // console.log(cardNumber)
-  // console.log(expireMonth)
-  // console.log(expireYear)
-  // console.log(cvc)
-  // console.log(req.body.cardItem)
-  // console.log(totalPrice)
-
-
-  for(let i=0; i<req.body.cardItem.length;i++){
-    const cardItem = req.body.cardItem[i];
-      basketItems.push({
-        id: cardItem._id,
-        name: cardItem.name,
-        category1: cardItem.gender,
-        category2: cardItem.type,
-        itemType: Iyzipay.BASKET_ITEM_TYPE.PHYSICAL,
-        price: cardItem.dprice>0? cardItem.dprice : cardItem.price
-    });
-  }
-  req.body.cardItem.map((product)=>{
-      let totalPrice = 0;
-        totalPrice += product.dprice > 0 ? parseFloat(product.dprice) : parseFloat(product.price);
-      return console.log(totalPrice + " " + product.name);
-  })
-
-  res.status(200).send("success.")
 
   const iyzipay = new Iyzipay({
     apiKey: process.env.IYZI_API_KEY,
@@ -468,58 +517,81 @@ app.post("/payment",(req,res)=>{
     uri: process.env.IYZI_BASEURL
   });
 
+  for (let i = 0; i < cardItem.length; i++) {
+    const cardItem1 = cardItem[i];
+    const itemPrice = cardItem1.dprice > 0 ? parseFloat(cardItem1.dprice) : parseFloat(cardItem1.price);
+    totalPrice += itemPrice;
+
+    basketItems.push({
+      id: cardItem1._id,
+      name: cardItem1.name,
+      category1: cardItem1.gender,
+      category2: cardItem1.type,
+      itemType: Iyzipay.BASKET_ITEM_TYPE.PHYSICAL,
+      price: cardItem1.dprice>0? cardItem1.dprice : cardItem1.price
+  });
+  }
+
+  cardItem.map((product)=>{
+      let totalPrice = 0;
+        totalPrice += product.dprice > 0 ? parseFloat(product.dprice) : parseFloat(product.price);
+  })
+
 
   const request = {
     locale: Iyzipay.LOCALE.TR,
     conversationId: uuidv4(),
     price: totalPrice,
     paidPrice: totalPrice,
-    currency: Iyzipay.CURRENCY.TRY,
+    currency: Iyzipay.CURRENCY.USD,
     installment: '1',
     basketId: 'B67832',
     paymentChannel: Iyzipay.PAYMENT_CHANNEL.WEB,
     paymentGroup: Iyzipay.PAYMENT_GROUP.PRODUCT,
     paymentCard: {
         cardHolderName: cardHolderName,
-        cardNumber: '5528790000000008',
-        expireMonth: '12',
-        expireYear: '2030',
-        cvc: '123',
+        cardNumber: cardNumber,
+        expireMonth: expireMonth,
+        expireYear: expireYear,
+        cvc: cvc,
         registerCard: '0'
     },
     buyer: {
-        id: 'BY789',
-        name: 'John',
-        surname: 'Doe',
-        gsmNumber: '+905350000000',
-        email: 'email@email.com',
-        identityNumber: '74300864791',
-        lastLoginDate: '2015-10-05 12:43:35',
-        registrationDate: '2013-04-21 15:12:09',
-        registrationAddress: 'Nidakule Göztepe, Merdivenköy Mah. Bora Sok. No:1',
-        ip: '85.34.78.112',
-        city: 'Istanbul',
-        country: 'Turkey',
-        zipCode: '34732'
+        id: user._id,
+        name: user.username,
+        surname: user.username,
+        gsmNumber: phoneNumber,
+        email: user.email,
+        identityNumber: user.username,
+        lastLoginDate: ' ',
+        registrationDate: '',
+        registrationAddress: address,
+        ip: '',
+        city,
+        country,
+        zipCode
     },
     shippingAddress: {
-        contactName: 'Jane Doe',
-        city: 'Istanbul',
-        country: 'Turkey',
-        address: 'Nidakule Göztepe, Merdivenköy Mah. Bora Sok. No:1',
-        zipCode: '34742'
+        contactName,
+        city,
+        country,
+        address,
+        zipCode
     },
     billingAddress: {
-        contactName: 'Jane Doe',
-        city: 'Istanbul',
-        country: 'Turkey',
-        address: 'Nidakule Göztepe, Merdivenköy Mah. Bora Sok. No:1',
-        zipCode: '34742'
+      contactName,
+      city,
+      country,
+      address,
+      zipCode
     },
     basketItems: basketItems
 };
-
 iyzipay.payment.create(request, function (err, result) {
-    console.log(err, result);
+  if (err) {
+    res.status(200).send("Hata: ", err);
+  } else {
+    res.status(200).send(result)
+  }
 });
 })
