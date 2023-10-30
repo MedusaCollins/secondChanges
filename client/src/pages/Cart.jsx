@@ -94,27 +94,27 @@ const Cart = (props) => {
 
 
   async function handlePayment(){
-    // const response = await axios.post(`${process.env.REACT_APP_DB}/payment`, {
-    //   cardHolderName:formState.cardHolderName,
-    //   cardNumber: formState.cardNumber,
-    //   expireYear: formState.expireYear,
-    //   expireMonth: formState.expireMonth,
-    //   cvc: formState.cvc,
+    const response = await axios.post(`${process.env.REACT_APP_DB}/payment`, {
+      cardHolderName:formState.cardHolderName,
+      cardNumber: formState.cardNumber,
+      expireYear: formState.expireYear,
+      expireMonth: formState.expireMonth,
+      cvc: formState.cvc,
   
-    //   contactName: formState.contactName,
-    //   phoneNumber: formState.phoneNumber,
-    //   city: formState.city,
-    //   country: formState.country,
-    //   address: formState.address,
-    //   state: formState.state,
-    //   zipCode: formState.zipCode,
+      contactName: formState.contactName,
+      phoneNumber: formState.phoneNumber,
+      city: formState.city,
+      country: formState.country,
+      address: formState.address,
+      state: formState.state,
+      zipCode: formState.zipCode,
   
-    //   user: props.user,
-    //   cardItem: variable.cartItem
-    // })
-    // if(response.data.status==='failure'){
-    //   setErrorMessage(response.data.errorMessage)
-    // }else{
+      user: props.user,
+      cardItem: variable.cartItem
+    })
+    if(response.data.status==='failure'){
+      setErrorMessage(response.data.errorMessage)
+    }else{
       await axios.post(`${process.env.REACT_APP_DB}/productStatusChange`, {
         updateItems: variable.cartItem,
         updateBuyer: {
@@ -124,7 +124,7 @@ const Cart = (props) => {
       })
       localStorage.removeItem('cart');
       window.location.href = '/orders';
-    // }
+    }
   }
 
 
