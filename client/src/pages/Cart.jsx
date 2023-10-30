@@ -114,11 +114,15 @@ const Cart = (props) => {
     // if(response.data.status==='failure'){
     //   setErrorMessage(response.data.errorMessage)
     // }else{
-      const response2 = await axios.post(`${process.env.REACT_APP_DB}/paymentConfirm`, {
-        cardItems: variable.cartItem,
-        user: props.user
+      await axios.post(`${process.env.REACT_APP_DB}/productStatusChange`, {
+        updateItems: variable.cartItem,
+        updateBuyer: {
+          _id: props.user._id,
+          status:"Ürün hazırlanıyor.",
+        }
       })
-      console.log(response2.data)
+      localStorage.removeItem('cart');
+      window.location.href = '/orders';
     // }
   }
 

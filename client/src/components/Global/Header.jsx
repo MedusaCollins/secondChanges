@@ -4,7 +4,7 @@ import axios from 'axios';
 
 import { Link, useLocation } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faMagnifyingGlass, faHeart, faCartShopping, faUser, faMoon, faCog, faTruckFast, faBagShopping, faCircleXmark, faSearch, faBars, faSun, faXmark } from '@fortawesome/free-solid-svg-icons';
+import { faMagnifyingGlass, faHeart, faCartShopping, faUser, faMoon, faTruckFast, faBagShopping, faCircleXmark, faSearch, faBars, faSun, faXmark } from '@fortawesome/free-solid-svg-icons';
 
 const Header = ({handleLogin, user, islogging, globalVariable, setGlobalVariable}) => {
   const location = useLocation()
@@ -140,10 +140,7 @@ const Header = ({handleLogin, user, islogging, globalVariable, setGlobalVariable
                 <FontAwesomeIcon icon={faBagShopping} className="mr-2" /> Product Management
               </Link>
               <Link to="/orders" className="w-full hover:bg-gray-200 dark:hover:bg-[#343a40] p-2 transition-all flex items-center" onClick={toggleMenu}>
-                <FontAwesomeIcon icon={faTruckFast} className="mr-2" /> My Orders
-              </Link>
-              <Link to="/settings" className="w-full hover:bg-gray-200 dark:hover:bg-[#343a40] p-2 transition-all flex items-center" onClick={toggleMenu}>
-                <FontAwesomeIcon icon={faCog} className="mr-2" /> Settings
+                <FontAwesomeIcon icon={faTruckFast} className="mr-2" /> Orders
               </Link>
             </li>
 

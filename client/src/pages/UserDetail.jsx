@@ -41,7 +41,7 @@ const UserDetail = ({ handleLogin, pUser }) => {
             try {
                 const userResponse = await axios.get(`${process.env.REACT_APP_DB}/profiles/${userName}`);
                 if (userResponse.status === 200) {
-                    console.log(userResponse.data)
+                    console.log(userResponse.data._id)
                     setFormData((prevState)=>({
                         ...prevState,
                         user: userResponse.data,
@@ -92,6 +92,7 @@ const UserDetail = ({ handleLogin, pUser }) => {
                     ...prevState,
                     products: response.data
                 }))
+                console.log(response.data)
             })
             .catch((error) => console.error(error));
     }, [filteringData.filters]);
@@ -170,7 +171,7 @@ const UserDetail = ({ handleLogin, pUser }) => {
                     <div className='flex flex-row justify-around'>
                         <div className={`${formData.user.reviews.length>0?"rounded-tl-xl border-l-2":"rounded-t-xl border-x-2"} ${filteringData.selected==="reviews"&&'bg-[#E5E7EB] dark:bg-[#495057]'}  w-full text-center p-5 lg:text-xl text-2xl dark:border-[#495057] border-t-2 hover:cursor-pointer`} onClick={() => setFilteringData((prevState)=>({...prevState,selected: "products"}))}><FontAwesomeIcon icon={faShop} className='' /> Products</div>
                         {formData.user.reviews.length > 0 &&
-                            <div className={`${filteringData.selected==="products"&&'bg-[#E5E7EB] dark:bg-[#495057]'} rounded-tr-xl w-full text-center p-5 lg:text-xl text-2xl border-t-2 dark:border-[#495057] border-r-2 hover:cursor-pointer`} onClick={() => setFilteringData((prevState)=>({...prevState,selected: "reviews"}))}><FontAwesomeIcon icon={faComments} /> Reviews <span className='text-red-500 font-medium'>{formData.user.reviews.length}</span></div>}
+                        <div className={`${filteringData.selected==="products"&&'bg-[#E5E7EB] dark:bg-[#495057]'} rounded-tr-xl w-full text-center p-5 lg:text-xl text-2xl border-t-2 dark:border-[#495057] border-r-2 hover:cursor-pointer`} onClick={() => setFilteringData((prevState)=>({...prevState,selected: "reviews"}))}><FontAwesomeIcon icon={faComments} /> Reviews <span className='text-red-500 font-medium'>{formData.user.reviews.length}</span></div>}
                     </div>
 
                     <div className='border-x-2 border-b-2 dark:border-[#495057] rounded-b-xl px-5 pb-5'>

@@ -9,6 +9,7 @@ import UserDetail from "./pages/UserDetail.jsx";
 import LikesPage from "./pages/LikesPage.jsx";
 import SearchPage  from  "./pages/SearchPage.jsx";
 import Cart from "./pages/Cart.jsx";
+import Orders from "./pages/Orders.jsx";
 
 function App() {
   const [user, setUser] = useState({})
@@ -43,6 +44,7 @@ function App() {
           <Route path="/woman" element={<HomePage user={user} filter={{gender: 'Women'}} name="Women" handleLogin={handleLogin}/>}/>
           <Route path="/cart" element={<Cart user={user} handleLogin={handleLogin} islogging={isLogging}/>}/>
           <Route path="/products/:productId" element={<ProductDetail user={user}/>} />
+          <Route path="/orders" element={<Orders user={user} islogging={isLogging}/>} />
           <Route path="/profiles/:userName" element={<UserDetail handleLogin={handleLogin} pUser={user}/>} />
           <Route path="/search/:name" element={<SearchPage user={user} handleLogin={handleLogin}/>}/>
           <Route path="/likes/:userName" element={<LikesPage user={user} handleLogin={handleLogin}/>}/>

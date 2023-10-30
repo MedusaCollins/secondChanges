@@ -44,8 +44,6 @@ mongoose.connect(`${process.env.DB}`, { useNewUrlParser: true, useUnifiedTopolog
         return res.status(404).json({ error: "User not found." });
       }
   
-      console.log(updatedData);
-  
       if(updatedData.filePath!==null){
         user.img = updatedData.filePath
         isChanged=1;
@@ -77,7 +75,6 @@ mongoose.connect(`${process.env.DB}`, { useNewUrlParser: true, useUnifiedTopolog
         // Yeni şifreyi kontrol etmek için bcrypt.compare kullanımı
         bcrypt.compare(updatedData.oldPassword, user.password, async (err, result) => {
           if (err) {
-            console.log(err);
             res.status(202).json({ error: err });
           } else if (result) {
             if (updatedData.newPassword!=='') {
@@ -134,7 +131,6 @@ app.post("/addComment", async (req, res) => {
     const userId = req.body.userId;
     const user = await User.findById(userId, 'username img');
 
-    console.log(user)
     if (user) {
       const newComment = {
         userId: user,
@@ -158,7 +154,6 @@ app.post("/addComment", async (req, res) => {
 });
 
 app.post("/addReplies", async (req, res) => {
-  console.log(req.body)
   try {
     const product = await Product.findById(req.body.productId)
     const user = await User.findById(req.body.userId)
@@ -307,27 +302,37 @@ app.post("/login", (req, res) => {
 
 
 
-  app.post('/api/products', async (req, res) => {
-    try {
+app.post('/api/products', async (req, res) => {
+  console.log(req.body)
+  try {
       const query = {};
+
       if (req.body.name) {
-        const regexPattern = new RegExp(req.body.name, 'i');
-        query.name = regexPattern;
+          const regexPattern = new RegExp(req.body.name, 'i');
+          query.name = regexPattern;
       }
       if (req.body.gender) {
-        query.gender = req.body.gender;
+          query.gender = req.body.gender;
       }
-      if(req.body.seller){
-        query.seller = req.body.seller
+      if (req.body.seller) {
+          query.seller = req.body.seller;
       }
-  
+      if (req.body.buyers) {
+          query['buyers._id'] = req.body.buyers;
+      }
+      if (req.body.card) {
+          query.seller = req.body.seller;
+          query['buyers._id'] = { $exists: true };
+      }
+
       const products = await Product.find(query);
+
       res.status(202).json(products);
-    } catch (err) {
+  } catch (err) {
       console.log(err);
       res.status(500).json({ error: 'Veritabanından ürünler alınamıyor.' });
-    }
-  });
+  }
+});
   
   
 
@@ -422,87 +427,43 @@ app.get('/products/:productId', async (req, res) => {
   }
 });
 
-app.post('/paymentConfirm', async (req, res) => {
-  // const { cardItems, user } = req.body;
-
-  // try {
-  //   const product = await Product.findById('652ee539b63906e5c5353bea');
-  //   if (!product) {
-  //     return res.status(404).json({ error: 'Product not found.' });
-  //   }
-
-  //   const newUser = await User.findById(user._id);
-  //   if (newUser) {
-  //     console.log("Kullanıcı bulundu.");
-  //     const newBuyer = {
-  //       _id: user,
-  //       status: "Ürün hazırlanıyor.",
-  //     };
-  //     console.log(newBuyer)
-  //     product.buyers.push(newBuyer);
-  //     console.log(product)
-  //     await product.save();
-  //     res.status(200).json(newBuyer);
-  //   } else {
-  //     res.status(404).json({ error: 'User not found.' });
-  //   }
-  // } catch (error) {
-  //   res.status(500).json(error);
-  // }
-
+app.post('/productStatusChange', async (req, res) => {
+  const { updateItems, updateBuyer } = req.body;
   try {
-    const productId = "652ee539b63906e5c5353bea"; // Ürünün _id değerini girin
+    for (let i = 0; i < updateItems.length; i++) {
+      const updateItem = updateItems[i];
+
+      const product = await Product.findById(updateItem._id);
   
-    const product = await Product.findById(productId);
+      if (!product) {
+        console.log("ürün bulunamadı")
+        return res.status(404).json({ error: 'Product not found.' });
+      }
   
-    if (!product) {
-      return res.status(404).json({ error: 'Product not found.' });
+      if ("comment" in updateBuyer) {
+        const user = await User.findById(product.seller);
+        
+        user.reviews.push({
+          userId: updateBuyer._id,
+          productId: product._id,
+          rating: updateBuyer.rating,
+          comment: updateBuyer.comment
+        });
+        
+        await user.save();
+      }
+      
+      const newBuyer = updateBuyer;
+      product.buyers = newBuyer;
+      await product.save();
+      
+      console.log("başarılı")
     }
-  
-    // Hard code ile eklemek istediğiniz alıcı verisini oluşturun
-    const newBuyer = {
-      _id: "65268b1d5d258f6f2e494e2b", // Kullanıcının _id değeri
-      status: "Ürün hazırlanıyor.",
-      rating: 5, // Kullanıcının verdiği derecelendirme (isteğe bağlı)
-      comment: "Ürünü beğendim." // Kullanıcının yorumu (isteğe bağlı)
-    };
-  
-    product.buyers = newBuyer; // Alıcı bilgisini atama
-  
-    await product.save();
-  
-    res.status(200).json(newBuyer);
+    res.status(200).json("Başarılı");
   } catch (error) {
     res.status(500).json(error);
   }
-
 });
-  
-  // console.log(user);
-  // try {
-  //   for (let i = 0; i < cardItems.length; i++) {
-  //     const cardItem = cardItems[i];
-  //     const product = await Product.findById(cardItem._id);
-  //     console.log(product)
-      
-  //     const buyer ={
-  //       _id: user._id
-  //     };
-  //     product.buyers.push(buyer)
-
-  //     await product.save();
-  //   }
-
-    // res.status(200).send("Satın alım başarılı.");
-  // } catch (error) {
-  //   console.error(error);
-  //   res.status(500).send("Bir hata oluştu.");
-  // }
-// });
-
-
-
-
 
 
 app.post("/payment",(req,res)=>{

@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import FilterTemplate from '../templates/FilterTemplate';
 import CommentFilter from './CommentFilter';
 
-const Comments = ({product, user, seller, comments}) => {
+const Comments = ({product, user, seller}) => {
   const [openDiv, setOpenDiv] = useState('Asks'); 
   const toggleDiv = (divName) => {
     if (openDiv === divName) {
