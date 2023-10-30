@@ -86,7 +86,7 @@ const Orders = (props) => {
               <div key={i} className="relative flex flex-col lg:flex-row border-x border-b dark:border-[#495057] p-5 gap-5">
                 {product.img && product.img.length > 0 && (
                   <Link to={`/products/${product._id}`}>
-                  <img src={product.img[0]} alt="" className="w-32 h-44 mx-auto lg:mx-0" />
+                    <img src={product.img[0]} alt="" className="w-32 h-44 mx-auto lg:mx-0" />
                   </Link>
                 )}
                 <div className="flex flex-col sm:justify-normal justify-between">
@@ -105,13 +105,13 @@ const Orders = (props) => {
                 </div>
                 <div className="lg:absolute right-0 relative text-center lg:text-left flex flex-col px-5">
                   <div>
-                    Sipariş Durumu:
+                    Order Status:
                   </div>
                   <div className='font-semibold lg:font-medium lg:text-xl flex flex-col gap-5'>
                   {product.buyers.status}
-                  {(product.buyers.status==="Ürün teslim edildi.") && (!product.buyers.comment)?(
+                  {(product.buyers.status==="Your product has been delivered.") && (!product.buyers.comment)?(
                   <div>
-                    <button className='bg-blue-500 hover:bg-blue-600 text-white w-full max-w-xs p-2 rounded-xl transition-colors' onClick={() =>  setReviewBox((prevState)=>({...prevState, show:1, product: product}))}>Yorum yaz</button>
+                    <button className='bg-blue-500 hover:bg-blue-600 text-white w-full max-w-xs p-2 rounded-xl transition-colors' onClick={() =>  setReviewBox((prevState)=>({...prevState, show:1, product: product}))}>Write a review.</button>
                   </div>):null}
                   </div>
                 </div>
@@ -129,7 +129,9 @@ const Orders = (props) => {
             {Sold.map((product, i) => (
               <div key={i} className="relative flex flex-col lg:flex-row border dark:border-[#495057] p-5 gap-5">
                 {product.img && product.img.length > 0 && (
-                  <img src={product.img[0]} alt="" className="w-32 h-44 mx-auto lg:mx-0" />
+                  <Link to={`/products/${product._id}`}>
+                    <img src={product.img[0]} alt="" className="w-32 h-44 mx-auto lg:mx-0" />
+                  </Link>
                 )}
                 <div className="flex flex-col sm:justify-normal justify-between">
                   <span className="font-medium">{product.name}</span>
@@ -147,11 +149,11 @@ const Orders = (props) => {
                 </div>
                 <div className="lg:absolute right-0 relative text-center lg:text-left flex flex-col px-5">
                   <div>
-                    Sipariş Durumu:
+                  Order Status:
                   </div>
                   <div className='font-semibold lg:font-medium lg:text-xl'>
-                    {selectValues[product._id]==="Ürün teslim edildi."?(selectValues[product._id]):(<ProductSelect
-                      options={['Ürününüz hazırlanıyor.', 'Ürün kargoya verildi.', 'Ürün teslim edildi.']}
+                    {selectValues[product._id]==="Your product has been delivered."?(selectValues[product._id]):(<ProductSelect
+                      options={['Your product is being prepared.', 'Your product has been shipped.', 'Your product has been delivered.']}
                       value={selectValues[product._id]}
                       onChange={(e) => handleSelectChange(product._id,product, e.target.value)}
                     />)}

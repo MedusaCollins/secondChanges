@@ -2,6 +2,7 @@ import React, {useState} from 'react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faStar as solidStar } from '@fortawesome/free-solid-svg-icons';
 import { faStar as regularStar } from '@fortawesome/free-regular-svg-icons';
+import { Link } from 'react-router-dom';
 
 import ProductInput from '../templates/ProductInput';
 // import Popup from './Popup';
@@ -51,13 +52,15 @@ const CommentFilter = ({filter,product,user,pId}) => {
   return (
     <div className='my-8'>
             <h1 className='font-semibold text-xl mb-5'>
-                {filter==="asks"&&'Kullanıcılar tarafından satıcıya sorulan sorular'}
-                {filter==="offers"&&'Kullanıcıların bu ürüne yapmış olduğu teklifler'}
-                {filter==="Seller Comments"&&'Satıcının sattığı başka ürünlere gelen yorumlar'}
+                {filter==="asks"&&'Questions asked by users to the seller'}
+                {filter==="offers"&&'Offers made by users for this product'}
+                {filter==="Seller Comments"&&'Reviews for other products sold by the seller'}
             </h1>
             {product.slice().map((e, i)=>(
               <div key={i} className='flex gap-3 my-12'>
+                <Link to={`/profiles/${e.userId.username}`}>
                 <img src={e.userId.img} alt="comment user profile pic" className='w-12 h-12 mt-2 rounded-full'/>
+                </Link>
                 <div className='flex flex-col'>
                   <span className='font-semibold text-xl'>{e.userId.username}</span>
                   {filter==="Seller Comments"?(
@@ -74,7 +77,9 @@ const CommentFilter = ({filter,product,user,pId}) => {
                   <div className='border-l-2 pl-2 border-green-500 flex flex-col'>
                     {e.replies.map((e, i) => (
                         <div key={i} className='flex gap-3 ml-5'>
+                          <Link to={`/profiles/${e.userId.username}`}>
                           <img src={e.userId.img} alt='comment user profile pic' className='w-12 h-12 mt-2 rounded-full' />
+                          </Link>
                           <div className='flex flex-col'>
                             <span className='font-semibold text-xl'>{e.userId.username}</span>
                             <span className='text-lg'>{e.comment}</span>

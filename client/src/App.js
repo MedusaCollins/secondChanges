@@ -43,7 +43,7 @@ function App() {
           <Route path="/man" element={<HomePage user={user} filter={{gender: 'Man'}} name="Man" handleLogin={handleLogin}/>}/>
           <Route path="/woman" element={<HomePage user={user} filter={{gender: 'Women'}} name="Women" handleLogin={handleLogin}/>}/>
           <Route path="/cart" element={<Cart user={user} handleLogin={handleLogin} islogging={isLogging}/>}/>
-          <Route path="/products/:productId" element={<ProductDetail user={user}/>} />
+          <Route path="/products/:productId" element={<ProductDetail user={user} islogging={isLogging} handleLogin={handleLogin}/>} />
           <Route path="/orders" element={<Orders user={user} islogging={isLogging}/>} />
           <Route path="/profiles/:userName" element={<UserDetail handleLogin={handleLogin} pUser={user}/>} />
           <Route path="/search/:name" element={<SearchPage user={user} handleLogin={handleLogin}/>}/>

@@ -5,6 +5,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {faCreditCard, faDollarSign, faTimes } from '@fortawesome/free-solid-svg-icons';
 import Input from '../components/templates/Input';
 import Popup from '../components/Global/Popup';
+import { Link } from 'react-router-dom';
 
 const Cart = (props) => {
   const [errorMessage, setErrorMessage]=useState('')
@@ -118,7 +119,7 @@ const Cart = (props) => {
         updateItems: variable.cartItem,
         updateBuyer: {
           _id: props.user._id,
-          status:"Ürün hazırlanıyor.",
+          status:"Your product is being prepared.",
         }
       })
       localStorage.removeItem('cart');
@@ -240,9 +241,11 @@ const Cart = (props) => {
         <div className="border-t dark:border-[#495057] pt-5 lg:col-span-3 col-span-5">
         {variable.cartItem.map((product, i) => (
           <div key={i} className="relative flex sm:flex-row flex-col border-b dark:border-[#495057] p-5 gap-5">
+            <Link to={`/products/${product._id}`}>
             {product.img && product.img.length > 0 && (
               <img src={product.img[0]} alt="" className="w-32 h-44 mx-auto sm:mx-0" />
-            )}
+              )}
+            </Link>
             <div className="flex flex-col sm:justify-normal justify-between">
               <span className="font-medium">{product.name}</span>
 

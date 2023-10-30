@@ -131,19 +131,26 @@ import { faHeart, faCartShopping, faDollarSign, faPenToSquare } from '@fortaweso
               </>
             ):
             (<>
-              {variable.cartItem.includes(props.product._id)?(
-                <>
-                <button  onClick={(e)=> handleCartOperation(e,props.product._id,"removing")} className="bg-green-600 hover:bg-green-700 text-white py-2 px-4 rounded-full">
-                <FontAwesomeIcon icon={faCartShopping} /> Remove From the Cart
+              {"buyers" in props.product?(
+                <button className="bg-gray-600 hover:bg-gray-700 text-white py-2 px-4 rounded-full">
+                  Sold Out
                 </button>
-                </>
-              ):(
-                <>
-                <button onClick={(e)=> handleCartOperation(e,props.product._id,"adding")} className="bg-green-500 hover:bg-green-600 text-white py-2 px-4 rounded-full ">
-                <FontAwesomeIcon icon={faCartShopping} /> Add to Cart
-                </button>
-                </>
-              )}  
+              ):
+              (<>              
+                {variable.cartItem.includes(props.product._id)?(
+                  <>
+                  <button  onClick={(e)=> handleCartOperation(e,props.product._id,"removing")} className="bg-green-600 hover:bg-green-700 text-white py-2 px-4 rounded-full">
+                  <FontAwesomeIcon icon={faCartShopping} /> Remove From the Cart
+                  </button>
+                  </>
+                ):(
+                  <>
+                  <button onClick={(e)=> handleCartOperation(e,props.product._id,"adding")} className="bg-green-500 hover:bg-green-600 text-white py-2 px-4 rounded-full ">
+                  <FontAwesomeIcon icon={faCartShopping} /> Add to Cart
+                  </button>
+                  </>
+                )}  
+              </>)}
             </>
             )}  
 
