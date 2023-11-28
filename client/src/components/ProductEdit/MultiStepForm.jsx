@@ -53,7 +53,7 @@ const MultiStepForm = ({ user, handleLogin, isModalOpen }) => {
       setErrorMessage("");
       setCurrentStep(currentStep + 1);
     } else {
-      setErrorMessage("Lütfen gerekli alanları doldurun.");
+      setErrorMessage("Please fill in the required fields.");
     }
   };
   
@@ -88,7 +88,7 @@ const MultiStepForm = ({ user, handleLogin, isModalOpen }) => {
         window.top.location.reload(true);
       }
     } catch (error) {
-      console.error('Hata oluştu: ', error);
+      console.error('An error occurred: ', error);
     }
   }
 

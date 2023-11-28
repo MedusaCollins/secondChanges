@@ -267,7 +267,7 @@ app.post('/createUser', async(req,res)=>{
             })
             .catch(err => {
               console.log(err);
-              res.status(500).json({ error: "Kullanıcı kaydetme hatası." });
+              res.status(500).json({ error: "User registration error." });
             });
           }});
       }});
@@ -278,7 +278,7 @@ app.post("/login", (req, res) => {
   User.findOne({ $or: [{ email: req.body.emailorusername }, { username: req.body.emailorusername }] })
     .then((user) => {
       if (!user) {
-        return res.status(202).json({ error: "Böyle bir hesap bulunamadı." });
+        return res.status(202).json({ error: "No such account was found." });
       }
 
       bcrypt.compare(req.body.password, user.password, (err, result) => {
@@ -289,7 +289,7 @@ app.post("/login", (req, res) => {
         if (result) {
           return res.status(200).json(user);
         } else {
-          return res.status(202).json({ error: "Şifre yanlış." });
+          return res.status(202).json({ error: "Wrong password." });
         }
       });
     })
@@ -330,7 +330,7 @@ app.post('/api/products', async (req, res) => {
       res.status(202).json(products);
   } catch (err) {
       console.log(err);
-      res.status(500).json({ error: 'Veritabanından ürünler alınamıyor.' });
+      res.status(500).json({ error: 'Unable to retrieve products from database.' });
   }
 });
   
@@ -418,12 +418,12 @@ app.get('/products/:productId', async (req, res) => {
       select: 'username img'
     })
     if (!product) {
-      return res.status(404).json({ error: 'Ürün bulunamadı' });
+      return res.status(404).json({ error: 'Product not found.' });
     }
     res.json({product, seller});
   } catch (err) {
     console.error(err);
-    res.status(500).json({ error: 'Ürün getirilirken bir hata oluştu.' });
+    res.status(500).json({ error: 'An error occurred while fetching the product.' });
   }
 });
 
@@ -436,7 +436,7 @@ app.post('/productStatusChange', async (req, res) => {
       const product = await Product.findById(updateItem._id);
   
       if (!product) {
-        console.log("ürün bulunamadı")
+        console.log("Product not found.")
         return res.status(404).json({ error: 'Product not found.' });
       }
   

@@ -146,7 +146,7 @@ const Cart = (props) => {
       setCurrentStep(currentStep + 1);
       setFormState(prevState => ({ ...prevState, user: props.user }));
     } else {
-      setErrorMessage("Lütfen gerekli alanları doldurun.");
+      setErrorMessage("Please fill in the required fields.");
     }
   };
   

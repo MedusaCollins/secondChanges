@@ -78,7 +78,7 @@ export default function ProductDetail({user, islogging, handleLogin}){
                 <div className='flex flex-col'>
                   <span className='font-semibold text-xl'>{product.buyers._id.username}</span>
                   <div>
-                    {[...Array(5)].map((_, index) => (
+                  {[...Array(5)].map((_, index) => (
                       <FontAwesomeIcon key={index} icon={product.buyers.rating >= index + 1 ? solidStar : regularStar} className='w-min text-orange-500'/>
                       ))}
                     <span className='text-lg flex mt-2'>{product.buyers.comment}</span>
