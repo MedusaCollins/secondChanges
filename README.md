@@ -26,22 +26,72 @@ While SecondChances is a demo, I've aimed to make it as close to a real project 
 
 ## Technologies Used
 Our platform is powered by a modern technology stack, making it a seamless and efficient experience for our users. The key technologies we've used include:
-<ul>
-  <li>MongoDB: A NoSQL database for storing product and user information.</li>
-  <li>Express.js: A Node.js web application framework for building the backend.</li>
-  <li>React: A JavaScript library for building the user interface.</li>
-  <li>Node.js: A JavaScript runtime environment for server-side scripting.</li>
-  <li>Tailwind CSS: A utility-first CSS framework for creating a responsive and clean design.</li>
-</ul>
+  - [MongoDB](https://www.mongodb.com/): A NoSQL database for storing product and user information.</li>
+  - [Express](https://github.com/expressjs/express): A Node.js web application framework for building the backend.</li>
+  - [React](https://react.dev/): A JavaScript library for building the user interface.</li>
+  - [NodeJS](https://nodejs.org/en): A JavaScript runtime environment for server-side scripting.</li>
+  - [Tailwind CSS](https://tailwindcss.com/): A utility-first CSS framework for creating a responsive and clean design.</li>
+
+## Getting Started
+1- Clone the project to your computer and install the necessary dependencies using the code below.
+
+##### Note: Modify the "path/to" part according to the location of the project.
+ ```bash
+git clone https://github.com/MedusaCollins/secondChanges.git
+cd path/to/secondChanges/client
+npm i
+touch .env
+cd path/to/secondChanges/server
+npm i
+mkdir uploads
+touch .env
+```
+
+
+2- **.env** files are files where we will store various settings for the project, and we created a file named **.env** inside the client and server folders while setting up. Now, we need to make the project operational by configuring the contents of the **.env** files.
+
+### Client/.env
+Simply write these default settings into the **.env** file located inside the Client folder.
+```env
+REACT_APP_DB=http://localhost:3001
+```
+
+### Server/.env
+Configuring the **.env** file for the Server folder is a bit more complicated because you need to make connections for MongoDB and Iyzico.
+
+Fill in the blanks sequentially for **DB** (MongoDB connection, if you don't know how to find your connection string, you can check here: [https://www.mongodb.com/docs/manual/reference/connection-string/#find-your-connection-string](https://www.mongodb.com/docs/manual/reference/connection-string/#find-your-connection-string)), **IYZI_API_KEY** for iyzico's API key, and **IYZI_SEC_KEY** for the security key in iyzico (if you don't know how to make the iyzico connection, you can check here: [https://dev.iyzipay.com/en](https://dev.iyzipay.com/en)).
+```env
+PORT=3001
+DB=
+
+IYZI_API_KEY=
+IYZI_SEC_KEY=
+IYZI_BASEURL=https://sandbox-api.iyzipay.com
+
+```
+
+
+3- After making all the configurations, what remains is to start the project. For this, you will need two different terminals.
+
+In the first terminal, start the backend part of the project by typing these commands.
+```bash
+cd path/to/secondChanges/server
+npm start
+```
+
+In the other terminal, start the frontend part of the project by typing these commands.
+```bash
+cd path/to/secondChanges/client
+npm start
+```
+
 
 ## Features
 
 #### Create an account / Log in
-<ul>
-  <li>Users can easily register in the system, creating an account by providing their details or logging in using their email or username for existing accounts.</li>
-  <li>Having an account is essential for actions such as purchasing products, saving favorites, creating products, or editing profiles. Therefore, by registering, users gain access to a wide range of features.</li>
-  <li>During the registration process, the passwords entered by users are securely stored in the backend using bcrypt, ensuring the safe storage of user information.</li>
-</ul>
+  - Users can easily register in the system, creating an account by providing their details or logging in using their email or username for existing accounts.</li>
+  - Having an account is essential for actions such as purchasing products, saving favorites, creating products, or editing profiles. Therefore, by registering, users gain access to a wide range of features.</li>
+  - During the registration process, the passwords entered by users are securely stored in the backend using bcrypt, ensuring the safe storage of user information.</li>
 
 #### Products  
 <ul>
